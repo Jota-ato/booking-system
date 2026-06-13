@@ -5,7 +5,11 @@ import { toast } from "sonner";
 import { LogOut } from "lucide-react";
 import { AlertDialogCustom } from "../../ui/alert-dialog-custom";
 
-export function SignOutButton() {
+export function SignOutButton({
+    isCollapse
+}: {
+    isCollapse: boolean
+}) {
     const router = useRouter();
 
     const handleSignOut = async () => {
@@ -32,6 +36,7 @@ export function SignOutButton() {
                 triggerLabel="Sign out"
                 dialogDescription="You will need to sign in again to access your dashboard."
                 srOnlyDescription
+                showText={isCollapse}
             />
         </>
     )

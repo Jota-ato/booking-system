@@ -10,6 +10,7 @@ export function AlertDialogCustom({
     dialogDescription,
     srOnlyDescription = false,
     actionLabel,
+    showText = true,
     action
 }: {
     triggerIcon?: IconType
@@ -17,15 +18,16 @@ export function AlertDialogCustom({
     dialogTitle: string
     dialogDescription?: string
     srOnlyDescription?: boolean
+    showText?: boolean
     actionLabel: string
     action: () => Promise<void> | void
 }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button variant="destructive">
+                <Button className="flex items-center justify-center" variant="destructive">
                     {TriggerIcon && <TriggerIcon className="mr-2 h-5 w-5" />}
-                    {triggerLabel}
+                    {showText && (triggerLabel)}
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>

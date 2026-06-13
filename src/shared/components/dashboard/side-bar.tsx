@@ -16,13 +16,14 @@ import { ThemeToggleSideBar } from "./sidebar/theme-sidebar-toggle";
 
 export function DashboardSidebar() {
 
-    const { open: isCollapse } = useSidebar()
+    const { open } = useSidebar()
+    const isCollapse = !open
     const pathname = usePathname()
 
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader className="p-4">
-                {isCollapse && (<>
+                {!isCollapse && (<>
                     <Link
                         href={'/admin'}
                     >
@@ -34,17 +35,17 @@ export function DashboardSidebar() {
             <SidebarContent>
                 <SidebarNavGroup
                     label="Navigation"
-                    isCollapsed={!isCollapse}
+                    isCollapsed={isCollapse}
                     items={navigation}
                     pathName={pathname}
                     groupIcon={MdMenu}
                 />
                 <ThemeToggleSideBar
-                    isCollapsed={!isCollapse}
+                    isCollapsed={isCollapse}
                 />
             </SidebarContent>
             <SidebarFooter className="p-4">
-                <SignOutButton />
+                <SignOutButton isCollapse={open} />
             </SidebarFooter>
         </Sidebar>
     )
