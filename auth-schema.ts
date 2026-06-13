@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
 
-export const users = pgTable("users", {
+export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
@@ -18,8 +18,8 @@ export const users = pgTable("users", {
   banExpires: timestamp("ban_expires"),
 });
 
-export const sessions = pgTable(
-  "sessions",
+export const session = pgTable(
+  "session",
   {
     id: text("id").primaryKey(),
     expiresAt: timestamp("expires_at").notNull(),
@@ -32,21 +32,21 @@ export const sessions = pgTable(
     userAgent: text("user_agent"),
     userId: text("user_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     impersonatedBy: text("impersonated_by"),
   },
-  (table) => [index("sessions_userId_idx").on(table.userId)],
+  (table) => [index("session_userId_idx").on(table.userId)],
 );
 
-export const accounts = pgTable(
-  "accounts",
+export const account = pgTable(
+  "account",
   {
     id: text("id").primaryKey(),
     accountId: text("account_id").notNull(),
     providerId: text("provider_id").notNull(),
     userId: text("user_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     accessToken: text("access_token"),
     refreshToken: text("refresh_token"),
     idToken: text("id_token"),
@@ -59,11 +59,11 @@ export const accounts = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("accounts_userId_idx").on(table.userId)],
+  (table) => [index("account_userId_idx").on(table.userId)],
 );
 
-export const verifications = pgTable(
-  "verifications",
+export const verification = pgTable(
+  "verification",
   {
     id: text("id").primaryKey(),
     identifier: text("identifier").notNull(),
@@ -75,24 +75,24 @@ export const verifications = pgTable(
       .$onUpdate(() => /* @__PURE__ */ new Date())
       .notNull(),
   },
-  (table) => [index("verifications_identifier_idx").on(table.identifier)],
+  (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
-export const usersRelations = relations(users, ({ many }) => ({
-  sessions: many(sessions),
-  accounts: many(accounts),
+export const userRelations = relations(user, ({ many }) => ({
+  sessions: many(session),
+  accounts: many(account),
 }));
 
-export const sessionsRelations = relations(sessions, ({ one }) => ({
-  users: one(users, {
-    fields: [sessions.userId],
-    references: [users.id],
+export const sessionRelations = relations(session, ({ one }) => ({
+  user: one(user, {
+    fields: [session.userId],
+    references: [user.id],
   }),
 }));
 
-export const accountsRelations = relations(accounts, ({ one }) => ({
-  users: one(users, {
-    fields: [accounts.userId],
-    references: [users.id],
+export const accountRelations = relations(account, ({ one }) => ({
+  user: one(user, {
+    fields: [account.userId],
+    references: [user.id],
   }),
 }));

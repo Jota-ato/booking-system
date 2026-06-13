@@ -1,7 +1,8 @@
+import 'dotenv/config'
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin } from "better-auth/plugins";
-
+import { nextCookies } from "better-auth/next-js"
 import { db } from "@/db";
 import * as schema from "@/db/schema";
 
@@ -26,15 +27,6 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [
-    admin({
-      // Any email that signs in via Google will land as "user" by default.
-      // The only way to become "admin" is via the seed script or a manual
-      // DB update — never via the client.
-      defaultRole: "user",
-    }),
-  ],
-
   session: {
     // Sliding session: extends expiry on each active request.
     // 30-day max, 1-day extension window.
@@ -45,6 +37,16 @@ export const auth = betterAuth({
       maxAge:    60 * 5, // 5-minute client cache avoids a DB hit on every render
     },
   },
+
+  plugins: [
+    admin({
+      // Any email that signs in via Google will land as "user" by default.
+      // The only way to become "admin" is via the seed script or a manual
+      // DB update — never via the client.
+      defaultRole: "user",
+    }),
+    nextCookies()
+  ],
 });
 
 // Export the type so you get full autocomplete on session.user everywhere.
