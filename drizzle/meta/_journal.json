@@ -15,6 +15,20 @@
       "when": 1781316785698,
       "tag": "0001_majestic_martin_li",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781363263040,
+      "tag": "0002_mighty_champions",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1781364076310,
+      "tag": "0003_parallel_groot",
+      "breakpoints": true
     }
   ]
 }

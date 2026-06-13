@@ -19,6 +19,8 @@ export const customers = pgTable(
     // at booking time so renaming a customer never corrupts history.
     name:  varchar("name",  { length: 100 }).notNull(),
 
+    lastName: varchar("last_name", { length: 100 }).notNull(),
+
     // Phone is the natural dedup key for service businesses.
     // Stored in E.164 format (+15551234567) for consistency.
     // Validated by Zod (FR-09) before any insert reaches the DB.

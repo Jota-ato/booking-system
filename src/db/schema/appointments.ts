@@ -1,10 +1,8 @@
 import {
   index,
-  integer,
   numeric,
   pgEnum,
   pgTable,
-  text,
   timestamp,
   uuid,
   varchar,
