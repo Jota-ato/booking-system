@@ -1,9 +1,11 @@
 import GoogleAuthButton from "@/features/auth/components/google-auth-button";
 import { SignInForm } from "@/features/auth/components/sign-in-form";
 import { Heading } from "@/shared/components/typography/heading";
+import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Container } from "@/shared/components/ui/container";
 import { Separator } from "@/shared/components/ui/separator";
+import Link from "next/link";
 
 export default function SignInPage() {
     return (
@@ -33,6 +35,26 @@ export default function SignInPage() {
                         <GoogleAuthButton />
                     </CardFooter>
                 </Card>
+                <div className="max-w-lg w-full mx-auto flex mt-4 items-center justify-between">
+                    <Button
+                        variant={'link'}
+                    >
+                        <Link
+                            href="/auth/sign-up"
+                        >
+                            Sign Up
+                        </Link>
+                    </Button>
+                    <Button
+                        variant={'link'}
+                    >
+                        <Link
+                            href="/auth/sign-up"
+                        >
+                            Forgot Password?
+                        </Link>
+                    </Button>
+                </div>
             </Container>
         </section>
     );

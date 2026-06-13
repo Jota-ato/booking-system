@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { signOut } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { LogOut } from "lucide-react";
 import { AlertDialogCustom } from "../../ui/alert-dialog-custom";
 
 export function SignOutButton() {
@@ -11,11 +12,11 @@ export function SignOutButton() {
         await signOut({
             fetchOptions: {
                 onSuccess: () => {
-                    toast.success("Sesión cerrada correctamente");
+                    toast.success("Session closed successfully");
                     router.push("/auth/sign-in");
                 },
                 onError: () => {
-                    toast.error("Ocurrió un error, intenta nuevamente");
+                    toast.error("Something went wrong while closing the session. Please try again.");
                 },
             },
         });
@@ -24,11 +25,12 @@ export function SignOutButton() {
     return (
         <>
             <AlertDialogCustom
+                triggerIcon={LogOut}
                 action={handleSignOut}
-                actionLabel="Cerra sesión"
-                dialogTitle="¿Seguro que quieres cerrar sesión?"
-                triggerLabel="Cerrar sesión"
-                dialogDescription="Salir de tu cuenta"
+                actionLabel="Sign out"
+                dialogTitle="Are you sure you want to sign out?"
+                triggerLabel="Sign out"
+                dialogDescription="You will need to sign in again to access your dashboard."
                 srOnlyDescription
             />
         </>

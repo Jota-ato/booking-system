@@ -1,8 +1,10 @@
 import { cn } from "@/shared/lib/utils";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./alert-dialog";
 import { Button } from "./button";
+import { IconType } from "react-icons";
 
 export function AlertDialogCustom({
+    triggerIcon: TriggerIcon,
     triggerLabel,
     dialogTitle,
     dialogDescription,
@@ -10,6 +12,7 @@ export function AlertDialogCustom({
     actionLabel,
     action
 }: {
+    triggerIcon?: IconType
     triggerLabel: string
     dialogTitle: string
     dialogDescription?: string
@@ -21,6 +24,7 @@ export function AlertDialogCustom({
         <AlertDialog>
             <AlertDialogTrigger asChild>
                 <Button variant="destructive">
+                    {TriggerIcon && <TriggerIcon className="mr-2 h-5 w-5" />}
                     {triggerLabel}
                 </Button>
             </AlertDialogTrigger>
@@ -34,7 +38,7 @@ export function AlertDialogCustom({
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction variant="destructive" onClick={action}>
                         {actionLabel}
                     </AlertDialogAction>
