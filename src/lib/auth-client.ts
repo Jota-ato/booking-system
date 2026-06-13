@@ -6,3 +6,5 @@ export const authClient = createAuthClient({
         adminClient()  
     ]
 })
+
+export const { signOut } = authClient

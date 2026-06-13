@@ -13,8 +13,8 @@ export default async function AuthLayout({
         redirect('/admin')
 
     return (
-        <div>
+        <>
             {children}
-        </div>
+        </>
     );
 }

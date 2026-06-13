@@ -1,0 +1,16 @@
+import { Route } from 'next';
+import { IconType } from 'react-icons';
+import { LuLayoutDashboard, LuCircleDollarSign, LuBriefcase, LuFileText } from 'react-icons/lu';
+
+type navigationType = {
+    label: string;
+    href: Route;
+    icon: IconType;
+};
+
+export const navigation: navigationType[] = [
+    { label: 'Dashboard panel', href: '/admin', icon: LuLayoutDashboard },
+    { label: 'Finance', href: '/admin/finance', icon: LuCircleDollarSign },
+    { label: 'Services', href: '/admin/services', icon: LuBriefcase },
+    { label: 'Record', href: '/admin/record', icon: LuFileText },
+];

@@ -1,4 +1,6 @@
 import { requireAuth } from "@/lib/auth-server";
+import { DashboardSidebar } from "@/shared/components/dashboard/side-bar";
+import { SidebarProvider, SidebarTrigger } from "@/shared/components/ui/sidebar";
 import { redirect } from "next/navigation";
 
 export default async function AdminLayout({
@@ -14,8 +16,12 @@ export default async function AdminLayout({
 
 
   return (
-    <div>
-      {children}
-    </div>
-  );
+    <SidebarProvider>
+      <DashboardSidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
+  )
 }
