@@ -18,8 +18,8 @@ export default async function AdminLayout({
   return (
     <SidebarProvider>
       <DashboardSidebar />
-      <main>
-        <SidebarTrigger />
+      <main className="min-h-screen w-full relative">
+        <SidebarTrigger className="absolute top-4 left-4" />
         {children}
       </main>
     </SidebarProvider>
