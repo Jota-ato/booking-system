@@ -1,3 +1,5 @@
+import { ThemeToggle } from "@/shared/components/ui/toggle-theme";
+
 export default function Home() {
   return (
     <>

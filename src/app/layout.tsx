@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { cn } from "@/shared/lib/utils";
+import { ThemeProvider } from "@/shared/components/ui/theme-provider";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Booking System",
-  description: "Booking system for beauty salon, clinics  and other service-based businesses.",
+  description:
+    "Booking system for beauty salon, clinics  and other service-based businesses.",
 };
 
 export default function RootLayout({
@@ -19,8 +21,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn("h-full antialiased", "font-sans", inter.variable)}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
