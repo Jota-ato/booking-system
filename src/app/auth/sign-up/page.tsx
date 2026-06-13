@@ -9,20 +9,21 @@ export default function SignInPage() {
     return (
         <section className="min-h-screen flex items-center justify-center">
             <Container>
-                <Heading>Sign In</Heading>
+                <Heading>Sign UP</Heading>
 
                 <Separator className="my-8" />
 
                 <Card className="max-w-lg mx-auto">
                     <CardHeader>
                         <CardTitle className="text-center">
-                            Enter your credentials to sign in to your account.
+                            Enter your credentials to create your account.
                         </CardTitle>
                         <CardDescription className="text-center">
-                            Only authorized users can access the admin dashboard. Please sign in to continue.
+                            Only authorized users can access the admin dashboard. Please sign up to continue.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
+                        {/* Sign-in form will go here */}
                         <SignInForm />
                     </CardContent>
                     <CardFooter className="flex flex-col items-center gap-4">
@@ -30,7 +31,9 @@ export default function SignInPage() {
                         <p className="text-center text-sm text-muted-foreground">
                             Or sign in with
                         </p>
-                        <GoogleAuthButton />
+                        <GoogleAuthButton
+                            mode="signup"
+                        />
                     </CardFooter>
                 </Card>
             </Container>
