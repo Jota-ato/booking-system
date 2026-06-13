@@ -1,34 +1,29 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getSessionCookie } from "better-auth/cookies";
+import { NextRequest, NextResponse } from "next/server"
 
-export async function proxy(request: NextRequest) {
-  const session = getSessionCookie(request);
+const PROTECTED_PREFIX = "/admin"
+const AUTH_PREFIX = "/auth"
 
-  if (!session) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("callbackUrl", request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+export function proxy(request: NextRequest) {
+    const sessionCookie =
+        request.cookies.get("better-auth.session_token") ||
+        request.cookies.get("__Secure-better-auth.session_token")
+    
+    const pathname = request.nextUrl.pathname
 
-  return NextResponse.next();
+    const isProtectedRoute = pathname === PROTECTED_PREFIX || pathname.startsWith(`${PROTECTED_PREFIX}/`)
+    const isAuthRoute = pathname === AUTH_PREFIX || pathname.startsWith(`${AUTH_PREFIX}/`)
+
+    if (!sessionCookie && isProtectedRoute) {
+        return NextResponse.redirect(new URL("/auth/sign-in", request.url))
+    }
+
+    if (sessionCookie && isAuthRoute) {
+        return NextResponse.redirect(new URL("/admin", request.url))
+    }
+
+    return NextResponse.next()
 }
 
 export const config = {
-  matcher: [
-    // ── All dashboard UI routes ──────────────────────────────────
-    "/admin/:path*",
-
-    // ── Protected API routes ─────────────────────────────────────
-    // Mutations that should never be callable without a session.
-    // The Better Auth handler (/api/auth/**) is intentionally absent
-    // here — it must stay public for Google OAuth callbacks to work.
-    "/api/appointments/:path*",
-    "/api/services/:path*",
-    "/api/customers/:path*",
-
-    // ── Catch-all safety net ─────────────────────────────────────
-    // Any future /api/admin/** routes are protected automatically.
-    "/api/admin/:path*",
-  ],
-};
+    matcher: ["/admin/:path*", "/auth/:path*"],
+}
