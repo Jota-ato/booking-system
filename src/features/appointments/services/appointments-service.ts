@@ -1,6 +1,7 @@
 import { TIMEZONE } from "@/shared/lib/date";
 import { appointmentsRepository, IAppointmentsRepository } from "./appointments-repository";
 import { TZDate } from "@date-fns/tz"
+import { UpdateApointmentInput } from "../schemas/appointment-schema";
 
 class AppointmentsService {
     constructor(
@@ -15,6 +16,14 @@ class AppointmentsService {
         endDay.setHours(23, 59, 59, 999)
 
         return await this.appointmentsRepository.getByDay(startDay, endDay)
+    }
+
+    async updateAppointment(data: UpdateApointmentInput, id: string) {
+        const appointment = await this.appointmentsRepository.getById(id)
+
+        if (!appointment) throw new Error('Appointment not found')
+
+        await this.appointmentsRepository.update(data, appointment.id)
     }
 }
 

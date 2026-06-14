@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import { cn } from "@/shared/lib/utils";
 import { ThemeProvider } from "@/shared/components/ui/theme-provider";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
+import { Toaster } from "sonner";
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -33,6 +35,22 @@ export default function RootLayout({
         >
           <TooltipProvider>
             {children}
+            <Toaster
+              position='top-right'
+              closeButton
+              toastOptions={{
+                classNames: {
+                  toast: 'font-sans',
+                  success: '!border-success/30 !bg-success !text-success-foreground',
+                  warning: '!border-warning/30 !bg-warning !text-warning-foreground',
+                  error: '!border-destructive/30 !bg-destructive !text-destructive-foreground',
+                  info: '!border-info/30 !bg-info !text-info-foreground',
+                  actionButton: '!bg-primary !text-primary-foreground hover:!bg-primary/90',
+                  cancelButton: '!bg-secondary !text-secondary-foreground hover:!bg-secondary/80',
+                  closeButton: '!border-border !bg-background !text-muted-foreground hover:!bg-accent hover:!text-accent-foreground',
+                },
+              }}
+            />
           </TooltipProvider>
         </ThemeProvider>
       </body>

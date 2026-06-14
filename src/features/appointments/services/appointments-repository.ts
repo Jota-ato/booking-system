@@ -1,9 +1,14 @@
 import { db } from "@/db"
 import { TZDate } from "@date-fns/tz"
 import { FullAppointment } from "../types/appointments.types"
+import { UpdateApointmentInput } from "../schemas/appointment-schema"
+import { Appointment, appointments } from "@/db/schema"
+import { eq } from "drizzle-orm"
 
 export interface IAppointmentsRepository {
     getByDay(startDay: TZDate, endDay: TZDate): Promise<FullAppointment[]>
+    getById(id: string): Promise<Appointment | undefined>
+    update(data: UpdateApointmentInput, id: string): Promise<void>
 }
 
 class AppointmentsRepository implements IAppointmentsRepository {
@@ -12,16 +17,36 @@ class AppointmentsRepository implements IAppointmentsRepository {
             .query
             .appointments
             .findMany({
-                where: (apt, { gte, lte, and }) => and(
-                    gte(apt.startTime, startDay.toISOString()),
-                    lte(apt.startTime, endDay.toISOString())
+                where: (appointment, { gte, lte, and }) => and(
+                    gte(appointment.startTime, startDay.toISOString()),
+                    lte(appointment.startTime, endDay.toISOString())
                 ),
                 with: {
                     service: true,
                     customer: true
                 },
-                orderBy: (apt, {desc}) => desc(apt.startTime)
+                orderBy: (apt, { asc }) => asc(apt.startTime)
             })
+    }
+
+    async getById(id: string): Promise<Appointment | undefined> {
+        return await db
+            .query
+            .appointments
+            .findFirst({
+                where: (appointment, { eq }) => eq(appointment.id, id)
+            })
+    }
+
+    async update(data: UpdateApointmentInput, id: string): Promise<void> {
+        await db
+        .update(appointments)
+        .set({
+            ...data,
+            startTime: data.startTime.toISOString(),
+            endTime: data.endTime.toISOString()
+        })
+        .where(eq(appointments.id, id))
     }
 }
 

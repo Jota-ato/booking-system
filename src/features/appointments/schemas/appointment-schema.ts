@@ -12,7 +12,6 @@ const baseAppointmentSchema = z.object({
 })
 
 export const updateAppointmentSchema = baseAppointmentSchema.extend({
-    id: z.uuid(),
     status: appointmentStatusSchema
 })
 

@@ -11,6 +11,8 @@ import { appointmentStatusEnum, Service } from "@/db/schema"
 import { CustomSelect } from "./services-select"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
 import { translatedStatusMap } from "@/shared/lib/date"
+import { showResponse } from "@/shared/lib/actions"
+import { updateAppointmentAction } from "../actions/appointment-actions"
 
 const statusMap = [
     {
@@ -40,12 +42,11 @@ export function UpdateAppointmentForm({
             startTime: new Date(appointment.startTime),
             endTime: new Date(appointment.endTime),
             serviceId: appointment.serviceId,
-            id: appointment.id
         }
     })
 
     const update = async (data: UpdateApointmentInput) => {
-        console.log(data)
+        const success = showResponse(await updateAppointmentAction(data, appointment.id))
     }
 
     return (
@@ -69,6 +70,9 @@ export function UpdateAppointmentForm({
                     groupLabel="Services"
                     placeholder="Select service"
                 />
+                {errors.serviceId && (
+                    <FieldError>{errors.serviceId.message}</FieldError>
+                )}
 
                 <CustomSelect
                     control={control}
@@ -77,10 +81,8 @@ export function UpdateAppointmentForm({
                     placeholder="Select status"
                     options={appointmentStatusEnum.enumValues.map(s => ({value: s, label: translatedStatusMap[s]}))}
                 />
-
-
-                {errors.serviceId && (
-                    <FieldError>{errors.serviceId.message}</FieldError>
+                {errors.status && (
+                    <FieldError>{errors.status.message}</FieldError>
                 )}
 
                 <Button

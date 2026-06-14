@@ -13,6 +13,7 @@ export async function requireAuth() {
 
     return {
         session,
-        isAuth: session ? true : false
+        isAuth: session ? true : false,
+        isAdmin: session?.user.role === 'admin' ? true : false
     }
 }
