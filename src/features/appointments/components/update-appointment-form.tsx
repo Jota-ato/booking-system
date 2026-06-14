@@ -1,16 +1,22 @@
 "use client"
-import { Field, FieldGroup, FieldLabel, FieldSet } from "@/shared/components/ui/field"
+import { Field, FieldError, FieldGroup, FieldLabel, FieldSeparator, FieldSet } from "@/shared/components/ui/field"
 import { FullAppointment } from "../types/appointments.types"
 import { Input } from "@/shared/components/ui/input"
 import { useForm } from "react-hook-form"
-import { UpdateApointmentInput, updateAppointmentSchema } from "../schemas/appointment-schema"
+import { appointmentStatusSchema, UpdateApointmentInput, updateAppointmentSchema } from "../schemas/appointment-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/shared/components/ui/button"
 import { Spinner } from "@/shared/components/ui/spinner"
-import { Service } from "@/db/schema"
-import { ServicesSelect } from "./services-select"
+import { appointmentStatusEnum, Service } from "@/db/schema"
+import { CustomSelect } from "./services-select"
+import { DatePickerTime } from "@/shared/components/form/date-picker"
+import { translatedStatusMap } from "@/shared/lib/date"
 
+const statusMap = [
+    {
 
+    }
+]
 
 export function UpdateAppointmentForm({
     appointment,
@@ -33,37 +39,49 @@ export function UpdateAppointmentForm({
             appointmentDate: appointment.appointmentDate,
             startTime: new Date(appointment.startTime),
             endTime: new Date(appointment.endTime),
-            serviceId: appointment.serviceId
+            serviceId: appointment.serviceId,
+            id: appointment.id
         }
     })
 
     const update = async (data: UpdateApointmentInput) => {
-
+        console.log(data)
     }
 
     return (
         <form onSubmit={handleSubmit(update)}>
             <FieldSet>
                 <FieldGroup>
-                    <Field>
-                        <FieldLabel>
-                            Date
-                        </FieldLabel>
-                        {/**TODO add datepicker */}
-                    </Field>
-                    <Field>
-                        <FieldLabel>Start time</FieldLabel>
-                        <Input type="time" />
-                    </Field>
-                    <Field>
-                        <FieldLabel>End time</FieldLabel>
-                        <Input type="time" />
-                    </Field>
+                    <DatePickerTime
+                        control={control}
+                        appointmentDateName="appointmentDate"
+                        startTimeName="startTime"
+                        endTimeName="endTime"
+                    />
+                    <FieldSeparator />
+
                 </FieldGroup>
 
-                <ServicesSelect 
-                    services={services}
+                <CustomSelect
+                    control={control}
+                    name="serviceId"
+                    options={services.map((s) => ({ value: s.id, label: s.name }))}
+                    groupLabel="Services"
+                    placeholder="Select service"
                 />
+
+                <CustomSelect
+                    control={control}
+                    name="status"
+                    groupLabel="Status"
+                    placeholder="Select status"
+                    options={appointmentStatusEnum.enumValues.map(s => ({value: s, label: translatedStatusMap[s]}))}
+                />
+
+
+                {errors.serviceId && (
+                    <FieldError>{errors.serviceId.message}</FieldError>
+                )}
 
                 <Button
                     type="submit"
