@@ -9,7 +9,7 @@ import { CustomersService, customersService } from "@/features/customers/service
 class AppointmentsService {
     constructor(
         private appointmentsRepository: IAppointmentsRepository,
-        private customersService : CustomersService
+        private customersService: CustomersService
     ) { }
 
     async getDayAppointments(day: Date) {
@@ -39,6 +39,7 @@ class AppointmentsService {
     }
 
     async createManualAppointment(data: NewAppointmentManuallyInput) {
+
         const { appointmentDate, clientPhone, endTime, extrasPrice, isRegisterClient, serviceId, startTime } = data
         let customer: Customer;
         if (isRegisterClient) {
@@ -61,6 +62,16 @@ class AppointmentsService {
             startTime,
             extrasPrice: extrasPrice.toString()
         })
+    }
+
+    async cancellAllDayAppointments(day: Date) {
+        const startDay = new TZDate(day, TIMEZONE)
+        startDay.setHours(0, 0, 0, 0)
+
+        const endDay = new TZDate(day, TIMEZONE)
+        endDay.setHours(23, 59, 59, 999)
+
+        await this.appointmentsRepository.cancellAllOfDay(startDay, endDay)
     }
 }
 

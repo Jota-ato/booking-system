@@ -20,6 +20,7 @@ export default async function AdminPage() {
           appointments={todayAppointments}
         />
         <QuickActions
+          today={today}
           services={services}
         />
         <DailyIncome

@@ -3,7 +3,7 @@ import { FullAppointment } from "../types/appointments.types";
 
 export function getExpectedPaidAppointments(appointments: (FullAppointment | Appointment)[]): {expected: number, paid: number} { 
 
-    const confirmedAppintments = appointments.filter(apt => (apt.status === 'CONFIRMED' || apt.status === 'PAID'));
+    const confirmedAppintments = appointments.filter(apt => (apt.status === 'CONFIRMED' || apt.status === 'PAID' || apt.status === 'COMPLETED'));
     const expected = confirmedAppintments.reduce((acc, apt) => acc + +apt.fullPrice, 0);
     const paidAppointments = appointments.filter(apt => apt.status === 'PAID');
     const paid = paidAppointments.reduce((acc, apt) => acc + +apt.fullPrice, 0);

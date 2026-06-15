@@ -3,13 +3,14 @@ import { TZDate } from "@date-fns/tz"
 import { FullAppointment } from "../types/appointments.types"
 import { UpdateApointmentInput } from "../schemas/appointment-schema"
 import { Appointment, appointments, NewAppointment } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { and, eq, gte, lte, not, or } from "drizzle-orm"
 
 export interface IAppointmentsRepository {
     getByDay(startDay: TZDate, endDay: TZDate): Promise<FullAppointment[]>
     getById(id: string): Promise<Appointment | undefined>
     update(data: UpdateApointmentInput, id: string): Promise<void>
     delete(id: string): Promise<void>
+    cancellAllOfDay(startDay: TZDate, endDay: TZDate): Promise<void>
     createManually(data: NewAppointment): Promise<void>
 }
 
@@ -42,14 +43,14 @@ class AppointmentsRepository implements IAppointmentsRepository {
 
     async update(data: UpdateApointmentInput, id: string): Promise<void> {
         await db
-        .update(appointments)
-        .set({
-            ...data,
-            extrasPrice: data.extrasPrice.toString(),
-            startTime: data.startTime,
-            endTime: data.endTime
-        })
-        .where(eq(appointments.id, id))
+            .update(appointments)
+            .set({
+                ...data,
+                extrasPrice: data.extrasPrice.toString(),
+                startTime: data.startTime,
+                endTime: data.endTime
+            })
+            .where(eq(appointments.id, id))
     }
 
     async delete(id: string): Promise<void> {
@@ -62,6 +63,20 @@ class AppointmentsRepository implements IAppointmentsRepository {
         await db
             .insert(appointments)
             .values(data)
+    }
+
+    async cancellAllOfDay(startDay: TZDate, endDay: TZDate): Promise<void> {
+        await db
+            .update(appointments)
+            .set({
+                status: 'CANCELLED'
+            })
+            .where(and(
+                gte(appointments.startTime, startDay.toISOString()),
+                lte(appointments.startTime, endDay.toISOString()),
+                not(eq(appointments.status, 'PAID')),
+                not(eq(appointments.status, 'COMPLETED'))
+            ))
     }
 }
 

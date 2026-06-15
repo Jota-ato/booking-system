@@ -1,11 +1,13 @@
 "use client"
 import { Service } from "@/db/schema";
+import { cancellAllDayAction } from "@/features/appointments/actions/appointment-actions";
 import { NewAppointmentManuallyForm } from "@/features/appointments/components/new-appointment-manual";
 import { ActionModal } from "@/shared/components/form/action-modal";
 import QuickActionsButton from "@/shared/components/form/quick-action-button";
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Separator } from "@/shared/components/ui/separator";
+import { showResponse } from "@/shared/lib/actions";
 import { CalendarOff, CalendarRange, CalendarX, Plus } from "lucide-react";
 import { ReactNode } from "react";
 
@@ -17,9 +19,11 @@ interface quickActionsType {
 }
 
 export function QuickActions({
-    services
+    services,
+    today
 }: {
     services: Service[]
+    today: Date
 }) {
 
     const quickActions: quickActionsType[] = [
@@ -40,6 +44,10 @@ export function QuickActions({
             trigger: <QuickActionsButton variant="outline" label="Block period" Icon={CalendarRange} />,
         },
     ];
+
+    const cancelAllDay = async () => {
+        const success = showResponse(await cancellAllDayAction(today))
+    }
 
     return (
         <Card>
@@ -66,7 +74,7 @@ export function QuickActions({
                     <Separator className="my-4" />
                     <AlertDialogCustom 
                         fullWith
-                        action={() => console.log('cancel')}
+                        action={cancelAllDay}
                         actionLabel="Cancell all day"
                         dialogTitle="Are you sure you want to cancel?"
                         triggerLabel="Cancell all day"
