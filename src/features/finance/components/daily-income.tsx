@@ -1,6 +1,19 @@
-import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { DailyIncomeChart } from "@/features/appointments/components/daily-income-chart";
+import { FullAppointment } from "@/features/appointments/types/appointments.types";
+import { getExpectedPaidAppointments } from "@/features/appointments/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { formatMXN } from "@/shared/lib/currency";
 
-export function DailyIncome() {
+export function DailyIncome({
+    appointments,
+    day
+}: {
+    appointments: FullAppointment[]
+    day: Date
+}) {
+
+    const { expected, paid } = getExpectedPaidAppointments(appointments)
+
     return (
         <Card className="md:col-span-2">
             <CardHeader>
@@ -8,12 +21,16 @@ export function DailyIncome() {
                     Daily incomes
                 </CardTitle>
                 <CardDescription>
-                    {/**TODO show the relation between expected incomes and paid incomes 
-               * Temporal placeholders
-              */}
-                    <p className="text-muted-foreground">1200/<span className="text-accent-foreground">2500</span></p>
+                    <p className="text-muted-foreground">{formatMXN(paid)}/<span className="text-accent-foreground">{formatMXN(expected)}</span></p>
                 </CardDescription>
             </CardHeader>
+            <CardContent>
+                <DailyIncomeChart 
+                    day={day}
+                    expected={expected}
+                    paid={paid}
+                />
+            </CardContent>
         </Card>
     )
 }

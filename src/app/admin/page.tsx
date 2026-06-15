@@ -10,17 +10,20 @@ export default async function AdminPage() {
 
   const today = new Date()
 
-  const appointments = await appointmentsService.getDayAppointments(today)
+  const todayAppointments = await appointmentsService.getDayAppointments(today)
   const services = await servicesService.getServices()
 
   return (
     <section className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12">
       <Container className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <DailyAppointmentsSection
-          appointments={appointments}
+          appointments={todayAppointments}
         />
         <QuickActions />
-        <DailyIncome />
+        <DailyIncome
+          day={today}
+          appointments={todayAppointments}
+        />
       </Container>
       <EditAppointmentDialog
         services={services}
