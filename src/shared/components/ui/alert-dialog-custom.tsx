@@ -9,6 +9,7 @@ export function AlertDialogCustom({
     dialogTitle,
     dialogDescription,
     srOnlyDescription = false,
+    fullWith = false, 
     actionLabel,
     showText = true,
     action
@@ -19,13 +20,16 @@ export function AlertDialogCustom({
     dialogDescription?: string
     srOnlyDescription?: boolean
     showText?: boolean
+    fullWith?: boolean
     actionLabel: string
     action: () => Promise<void> | void
 }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <Button className="flex items-center justify-center" variant="destructive">
+                <Button 
+                className={cn("flex items-center justify-center", fullWith ? 'w-full' : '')}
+                variant="destructive">
                     {TriggerIcon && <TriggerIcon className="mr-2 h-5 w-5" />}
                     {showText && (triggerLabel)}
                 </Button>

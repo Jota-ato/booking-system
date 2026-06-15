@@ -161,7 +161,7 @@
     /* ─── UI Elements ──────────────────────────────────────────────────────── */
     --destructive: oklch(0.45 0.15 25);
     /* FIX: opacidad 40% → 55% — border más visible en pantallas con brillo reducido */
-    --border: oklch(0.28 0.03 340 / 55%);
+    --border: oklch(0.28 0.03 340 / 75%);
     --input: oklch(0.28 0.03 340 / 55%);
     --ring: oklch(0.75 0.11 340);
 
