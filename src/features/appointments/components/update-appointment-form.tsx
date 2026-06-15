@@ -78,7 +78,7 @@ export function UpdateAppointmentForm({
 
     const servicePrice = useMemo(
         () => services.filter(service => service.id === serviceId)[0].price
-    , [serviceId])
+        , [serviceId])
 
     return (
         <form onSubmit={handleSubmit(update)}>
@@ -90,9 +90,9 @@ export function UpdateAppointmentForm({
                         startTimeName="startTime"
                         endTimeName="endTime"
                     />
-                    <FieldSeparator />
-
                 </FieldGroup>
+                <FieldSeparator />
+
 
                 <CustomSelect
                     control={control}
@@ -123,12 +123,14 @@ export function UpdateAppointmentForm({
                     </p>
                     <Field>
                         <FieldLabel>Extra price</FieldLabel>
-                        <Input 
+                        <Input
                             id="extraPrice"
                             type="number"
-                            {...register('extraPrice', {setValueAs(value) {
-                                return +value
-                            },})}
+                            {...register('extraPrice', {
+                                setValueAs(value) {
+                                    return +value
+                                },
+                            })}
                         />
                         {errors.extraPrice && (
                             <FieldError>
