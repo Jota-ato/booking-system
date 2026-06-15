@@ -16,8 +16,8 @@ import { ThemeToggleSideBar } from "./sidebar/theme-sidebar-toggle";
 
 export function DashboardSidebar() {
 
-    const { open } = useSidebar()
-    const isCollapse = !open
+    const { open, isMobile } = useSidebar()
+    const isCollapse = isMobile ? false : !open
     const pathname = usePathname()
 
     return (
