@@ -9,6 +9,7 @@ export interface IAppointmentsRepository {
     getByDay(startDay: TZDate, endDay: TZDate): Promise<FullAppointment[]>
     getById(id: string): Promise<Appointment | undefined>
     update(data: UpdateApointmentInput, id: string): Promise<void>
+    delete(id: string): Promise<void>
     createManually(data: NewAppointment): Promise<void>
 }
 
@@ -49,6 +50,12 @@ class AppointmentsRepository implements IAppointmentsRepository {
             endTime: data.endTime
         })
         .where(eq(appointments.id, id))
+    }
+
+    async delete(id: string): Promise<void> {
+        await db
+            .delete(appointments)
+            .where(eq(appointments.id, id))
     }
 
     async createManually(data: NewAppointment): Promise<void> {

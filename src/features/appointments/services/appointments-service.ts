@@ -30,6 +30,14 @@ class AppointmentsService {
         await this.appointmentsRepository.update(data, appointment.id)
     }
 
+    async deleteAppointment(id: string) {
+        const appointment = await this.appointmentsRepository.getById(id)
+
+        if (!appointment) throw new Error('Appointment not found')
+
+        await this.appointmentsRepository.delete(id)
+    }
+
     async createManualAppointment(data: NewAppointmentManuallyInput) {
         const { appointmentDate, clientPhone, endTime, extrasPrice, isRegisterClient, serviceId, startTime } = data
         let customer: Customer;

@@ -12,10 +12,12 @@ import { CustomSelect } from "./services-select"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
 import { formatTime, translatedStatusMap } from "@/shared/lib/date"
 import { showResponse } from "@/shared/lib/actions"
-import { updateAppointmentAction } from "../actions/appointment-actions"
+import { deleteAppointmentAction, updateAppointmentAction } from "../actions/appointment-actions"
 import { redirect } from "next/navigation"
 import { useMemo } from "react"
 import { formatMXN } from "@/shared/lib/currency"
+import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom"
+import { useAppointmentStore } from "../stores/appointment-store"
 
 const statusMap = [
     {
@@ -30,6 +32,8 @@ export function UpdateAppointmentForm({
     appointment: FullAppointment
     services: Service[]
 }) {
+
+    const { toggleOpen, setActiveAppointment } = useAppointmentStore()
 
     const {
         handleSubmit,
@@ -70,7 +74,18 @@ export function UpdateAppointmentForm({
         )
         if (success) {
             reset(data)
+            setActiveAppointment(undefined)
             redirect('/admin')
+        }
+    }
+
+    const deleteAppointment = async () => {
+        const success = showResponse(await deleteAppointmentAction(appointment.id))
+
+        if (success) {
+            toggleOpen()
+            setActiveAppointment(undefined)
+            reset()
         }
     }
 
@@ -140,12 +155,21 @@ export function UpdateAppointmentForm({
                     </Field>
                 </div>
 
-                <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                >
-                    {isSubmitting ? <><Spinner />Updating...</> : 'Update'}
-                </Button>
+                <div className="flex items-center gap-4 justify-end">
+                    <AlertDialogCustom
+                        actionLabel="Delete"
+                        triggerLabel="Delete Appointment"
+                        dialogDescription="This action cannot be undone"
+                        dialogTitle={`Delete ${appointment.customer.name}'s appointment?`}
+                        action={deleteAppointment}
+                    />
+                    <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? <><Spinner />Updating...</> : 'Update'}
+                    </Button>
+                </div>
             </FieldSet>
         </form>
     )

@@ -11,7 +11,7 @@ export async function updateAppointmentAction(input: UpdateApointmentInput, appo
     if (!isAdmin) {
         return {
             success: false,
-            message: "you don't have authorization"
+            message: "You don't have authorization"
         }
     }
 
@@ -34,6 +34,25 @@ export async function updateAppointmentAction(input: UpdateApointmentInput, appo
     }
 }
 
+export async function deleteAppointmentAction(id: string): ActionResponse {
+     const { isAdmin } = await requireAuth()
+
+    if (!isAdmin) {
+        return {
+            success: false,
+            message: "You don't have authorization"
+        }
+    }
+
+    await appointmentsService.deleteAppointment(id)
+    revalidatePath('/')
+
+    return {
+        success: true,
+        message: 'Appointment deleted successfully'
+    }
+}
+
 export async function createManualAppointmentAction(input: NewAppointmentManuallyInput): ActionResponse {
 
     const { isAdmin } = await requireAuth()
@@ -41,7 +60,7 @@ export async function createManualAppointmentAction(input: NewAppointmentManuall
     if (!isAdmin) {
         return {
             success: false,
-            message: "you don't have authorization"
+            message: "You don't have authorization"
         }
     }
 
