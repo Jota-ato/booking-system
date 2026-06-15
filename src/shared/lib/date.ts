@@ -1,6 +1,5 @@
 import { AppointmentStatus } from "@/db/schema";
 import { format, isValid } from "date-fns"
-import { es } from "date-fns/locale";
 
 export const translatedStatusMap: Record<AppointmentStatus, string> = {
     PENDING: 'pendiente',
@@ -11,7 +10,7 @@ export const translatedStatusMap: Record<AppointmentStatus, string> = {
 }
 
 export const TIMEZONE = "America/Mexico_City";
-export const formateDailyDate = (date: Date) => format(date, 'EEEE dd MMMM yyyy', { locale: es })
+export const formateDailyDate = (date: Date) => format(date, 'EEEE dd MMMM yyyy')
 
 export const formatTime = (time: Date | string) => {
     const date = typeof time === "string"

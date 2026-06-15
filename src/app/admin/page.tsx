@@ -4,10 +4,7 @@ import { QuickActions } from "@/features/appointments/components/quick-actions";
 import { appointmentsService } from "@/features/appointments/services/appointments-service";
 import { DailyIncome } from "@/features/finance/components/daily-income";
 import { servicesService } from "@/features/services/services/services-service";
-import { Heading } from "@/shared/components/typography/heading";
-
 import { Container } from "@/shared/components/ui/container";
-import { Separator } from "@/shared/components/ui/separator";
 
 export default async function AdminPage() {
 
@@ -18,10 +15,6 @@ export default async function AdminPage() {
 
   return (
     <section className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12">
-      <Heading level={2}>Admin dashboard</Heading>
-
-      <Separator className="my-8" />
-
       <Container className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <DailyAppointmentsSection
           appointments={appointments}

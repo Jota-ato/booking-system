@@ -46,7 +46,7 @@ export function UpdateAppointmentForm({
             startTime: formatTime(appointment.startTime),
             endTime: formatTime(appointment.endTime),
             serviceId: appointment.serviceId,
-            extraPrice: 0
+            extraPrice: +appointment.extrasPrice
         }
     })
 

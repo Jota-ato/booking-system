@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { formateDailyDate, formatTime } from "@/shared/lib/date"
+import { formateDailyDate } from "@/shared/lib/date"
 import { FullAppointment } from "../types/appointments.types"
 import { AppointmentRow } from "./appointment-row"
+import { NoDailyAppointments } from "./no-daily-appointments"
 
 export function DailyAppointmentsSection({
     appointments
@@ -19,10 +20,11 @@ export function DailyAppointmentsSection({
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                {/**TODO daily appointments table */}
-                {appointments.map(appointment => (
-                    <AppointmentRow key={appointment.id} appointment={appointment} />
-                ))}
+                {appointments.length ? (
+                    appointments.map(appointment => (
+                        <AppointmentRow key={appointment.id} appointment={appointment} />
+                    ))
+                ) : <NoDailyAppointments />}
             </CardContent>
         </Card>
     )
