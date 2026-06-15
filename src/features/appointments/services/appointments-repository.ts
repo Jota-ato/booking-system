@@ -43,6 +43,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
         .update(appointments)
         .set({
             ...data,
+            extrasPrice: data.extraPrice.toString(),
             startTime: data.startTime,
             endTime: data.endTime
         })

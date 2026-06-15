@@ -1,0 +1,1 @@
+ALTER TABLE "appointments" ADD COLUMN "extras_price" numeric(10, 2);

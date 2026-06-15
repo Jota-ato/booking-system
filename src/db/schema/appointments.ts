@@ -45,8 +45,8 @@ export const appointments = pgTable(
     //   • Dashboard list views render without any joins.
     customerNameSnapshot: varchar("customer_name_snapshot", { length: 100 }).notNull(),
 
-    serviceNameSnapshot:     varchar("service_name_snapshot",     { length: 100 }).notNull(),
-    servicePriceSnapshot:    numeric("service_price_snapshot",    { precision: 10, scale: 2 }).notNull(),
+    serviceNameSnapshot: varchar("service_name_snapshot", { length: 100 }).notNull(),
+    servicePriceSnapshot: numeric("service_price_snapshot", { precision: 10, scale: 2 }).notNull(),
 
     // ── Scheduling ────────────────────────────────────────────────
     // appointmentDate is a separate column so the slot engine (FR-08)
@@ -80,6 +80,8 @@ export const appointments = pgTable(
       .notNull()
       .defaultNow()
       .$onUpdate(() => new Date()),
+    extrasPrice: numeric('extras_price', { precision: 10, scale: 2 }).notNull().default('0'),
+    fullPrice: numeric('full_price', { precision: 10, scale: 2 }).notNull().default('0')
   },
   (table) => [
     // Slot collision engine (FR-08): primary lookup is always by date.
@@ -104,6 +106,6 @@ export const appointments = pgTable(
 );
 
 // ─── Types ───────────────────────────────────────────────────────────────────
-export type Appointment       = typeof appointments.$inferSelect;
-export type NewAppointment    = typeof appointments.$inferInsert;
+export type Appointment = typeof appointments.$inferSelect;
+export type NewAppointment = typeof appointments.$inferInsert;
 export type AppointmentStatus = (typeof appointmentStatusEnum.enumValues)[number];

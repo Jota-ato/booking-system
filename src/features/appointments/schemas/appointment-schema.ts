@@ -12,7 +12,8 @@ const baseAppointmentSchema = z.object({
 })
 
 export const updateAppointmentSchema = baseAppointmentSchema.extend({
-    status: appointmentStatusSchema
+    status: appointmentStatusSchema,
+    extraPrice: z.number()
 })
 
 export type UpdateApointmentInput = z.infer<typeof updateAppointmentSchema>

@@ -14,6 +14,8 @@ import { formatTime, translatedStatusMap } from "@/shared/lib/date"
 import { showResponse } from "@/shared/lib/actions"
 import { updateAppointmentAction } from "../actions/appointment-actions"
 import { redirect } from "next/navigation"
+import { useMemo } from "react"
+import { formatMXN } from "@/shared/lib/currency"
 
 const statusMap = [
     {
@@ -31,6 +33,8 @@ export function UpdateAppointmentForm({
 
     const {
         handleSubmit,
+        register,
+        watch,
         control,
         reset,
         formState: { errors, isSubmitting }
@@ -42,6 +46,7 @@ export function UpdateAppointmentForm({
             startTime: formatTime(appointment.startTime),
             endTime: formatTime(appointment.endTime),
             serviceId: appointment.serviceId,
+            extraPrice: 0
         }
     })
 
@@ -68,6 +73,12 @@ export function UpdateAppointmentForm({
             redirect('/admin')
         }
     }
+
+    const serviceId = watch('serviceId')
+
+    const servicePrice = useMemo(
+        () => services.filter(service => service.id === serviceId)[0].price
+    , [serviceId])
 
     return (
         <form onSubmit={handleSubmit(update)}>
@@ -104,6 +115,28 @@ export function UpdateAppointmentForm({
                 {errors.status && (
                     <FieldError>{errors.status.message}</FieldError>
                 )}
+
+                <div className="flex gap-2">
+                    <p className="flex flex-col justify-center">
+                        Precio del servicio
+                        <span>{formatMXN(+servicePrice)}</span>
+                    </p>
+                    <Field>
+                        <FieldLabel>Precio extra</FieldLabel>
+                        <Input 
+                            id="extraPrice"
+                            type="number"
+                            {...register('extraPrice', {setValueAs(value) {
+                                return +value
+                            },})}
+                        />
+                        {errors.extraPrice && (
+                            <FieldError>
+                                {errors.extraPrice.message}
+                            </FieldError>
+                        )}
+                    </Field>
+                </div>
 
                 <Button
                     type="submit"
