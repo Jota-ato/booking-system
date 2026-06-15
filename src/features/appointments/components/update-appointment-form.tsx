@@ -10,9 +10,10 @@ import { Spinner } from "@/shared/components/ui/spinner"
 import { appointmentStatusEnum, Service } from "@/db/schema"
 import { CustomSelect } from "./services-select"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
-import { translatedStatusMap } from "@/shared/lib/date"
+import { formatTime, translatedStatusMap } from "@/shared/lib/date"
 import { showResponse } from "@/shared/lib/actions"
 import { updateAppointmentAction } from "../actions/appointment-actions"
+import { redirect } from "next/navigation"
 
 const statusMap = [
     {
@@ -30,7 +31,6 @@ export function UpdateAppointmentForm({
 
     const {
         handleSubmit,
-        register,
         control,
         reset,
         formState: { errors, isSubmitting }
@@ -39,14 +39,34 @@ export function UpdateAppointmentForm({
         defaultValues: {
             status: appointment.status,
             appointmentDate: appointment.appointmentDate,
-            startTime: new Date(appointment.startTime),
-            endTime: new Date(appointment.endTime),
+            startTime: formatTime(appointment.startTime),
+            endTime: formatTime(appointment.endTime),
             serviceId: appointment.serviceId,
         }
     })
 
     const update = async (data: UpdateApointmentInput) => {
-        const success = showResponse(await updateAppointmentAction(data, appointment.id))
+        const [startHour, startMinutes] = data.startTime.split(':')
+        const [endHour, endMinutes] = data.endTime.split(':')
+
+        const startTime = new Date(data.appointmentDate)
+        startTime.setHours(+startHour, +startMinutes, 0, 0)
+        const endTime = new Date(data.appointmentDate)
+        endTime.setHours(+endHour, +endMinutes, 0, 0)
+
+        const success = showResponse(await updateAppointmentAction(
+            {
+                ...data,
+                startTime: startTime.toISOString(),
+                endTime: endTime.toISOString()
+            }
+            , appointment.id
+        )
+        )
+        if (success) {
+            reset(data)
+            redirect('/admin')
+        }
     }
 
     return (
@@ -79,7 +99,7 @@ export function UpdateAppointmentForm({
                     name="status"
                     groupLabel="Status"
                     placeholder="Select status"
-                    options={appointmentStatusEnum.enumValues.map(s => ({value: s, label: translatedStatusMap[s]}))}
+                    options={appointmentStatusEnum.enumValues.map(s => ({ value: s, label: translatedStatusMap[s] }))}
                 />
                 {errors.status && (
                     <FieldError>{errors.status.message}</FieldError>

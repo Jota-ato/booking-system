@@ -79,7 +79,7 @@ export function DatePickerTime<T extends FieldValues>({
                 id="startTime"
                 step="1"
                 className="text-sm md:text-md"
-                value={formatTime(field.value)}
+                value={field.value }
                 onChange={(e) => field.onChange(e.target.value)}
               />
             </Field>
@@ -97,7 +97,7 @@ export function DatePickerTime<T extends FieldValues>({
                 id="endTime"
                 step="1"
                 className="text-sm md:text-md"
-                value={formatTime(field.value)}
+                value={field.value }
                 onChange={(e) => field.onChange(e.target.value)}
               />
             </Field>

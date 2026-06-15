@@ -43,8 +43,8 @@ class AppointmentsRepository implements IAppointmentsRepository {
         .update(appointments)
         .set({
             ...data,
-            startTime: data.startTime.toISOString(),
-            endTime: data.endTime.toISOString()
+            startTime: data.startTime,
+            endTime: data.endTime
         })
         .where(eq(appointments.id, id))
     }

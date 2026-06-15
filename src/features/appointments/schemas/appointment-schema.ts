@@ -7,8 +7,8 @@ export type appointmentStatusEnum = z.infer<typeof appointmentStatusSchema>
 const baseAppointmentSchema = z.object({
     serviceId: z.uuid(),
     appointmentDate: z.date(),
-    startTime: z.date(),
-    endTime: z.date()
+    startTime: z.string(),
+    endTime: z.string()
 })
 
 export const updateAppointmentSchema = baseAppointmentSchema.extend({
