@@ -43,10 +43,10 @@ export const appointments = pgTable(
     //   • Renaming a customer never rewrites past records.
     //   • Changing a service price doesn't alter what was charged.
     //   • Dashboard list views render without any joins.
-    customerNameSnapshot: varchar("customer_name_snapshot", { length: 100 }).notNull(),
+    customerNameSnapshot: varchar("customer_name_snapshot", { length: 100 }),
 
-    serviceNameSnapshot: varchar("service_name_snapshot", { length: 100 }).notNull(),
-    servicePriceSnapshot: numeric("service_price_snapshot", { precision: 10, scale: 2 }).notNull(),
+    serviceNameSnapshot: varchar("service_name_snapshot", { length: 100 }),
+    servicePriceSnapshot: numeric("service_price_snapshot", { precision: 10, scale: 2 }),
 
     // ── Scheduling ────────────────────────────────────────────────
     // appointmentDate is a separate column so the slot engine (FR-08)

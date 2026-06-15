@@ -1,11 +1,15 @@
 import { TIMEZONE } from "@/shared/lib/date";
 import { appointmentsRepository, IAppointmentsRepository } from "./appointments-repository";
 import { TZDate } from "@date-fns/tz"
-import { UpdateApointmentInput } from "../schemas/appointment-schema";
+import { NewAppointmentManuallyInput, UpdateApointmentInput } from "../schemas/appointment-schema";
+import { Customer } from "@/db/schema";
+import { customersRepository, ICustomersRepository } from "@/features/customers/services/customers-repository";
+import { CustomersService, customersService } from "@/features/customers/services/customers-service";
 
 class AppointmentsService {
     constructor(
-        private appointmentsRepository: IAppointmentsRepository
+        private appointmentsRepository: IAppointmentsRepository,
+        private customersService : CustomersService
     ) { }
 
     async getDayAppointments(day: Date) {
@@ -25,8 +29,34 @@ class AppointmentsService {
 
         await this.appointmentsRepository.update(data, appointment.id)
     }
+
+    async createManualAppointment(data: NewAppointmentManuallyInput) {
+        const { appointmentDate, clientPhone, endTime, extrasPrice, isRegisterClient, serviceId, startTime } = data
+        let customer: Customer;
+        if (isRegisterClient) {
+            const dbCustomer = await this.customersService.getClientByPhone(clientPhone)
+            if (!dbCustomer) throw new Error('Client not found')
+            customer = dbCustomer
+        } else {
+            customer = await this.customersService.createClient({
+                name: data.clientName,
+                lastName: data.clientLastName,
+                phone: clientPhone
+            })
+        }
+
+        await this.appointmentsRepository.createManually({
+            appointmentDate,
+            customerId: customer.id,
+            endTime,
+            serviceId,
+            startTime,
+            extrasPrice: extrasPrice.toString()
+        })
+    }
 }
 
 export const appointmentsService = new AppointmentsService(
-    appointmentsRepository
+    appointmentsRepository,
+    customersService
 )

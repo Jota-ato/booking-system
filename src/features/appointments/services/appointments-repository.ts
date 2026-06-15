@@ -2,13 +2,14 @@ import { db } from "@/db"
 import { TZDate } from "@date-fns/tz"
 import { FullAppointment } from "../types/appointments.types"
 import { UpdateApointmentInput } from "../schemas/appointment-schema"
-import { Appointment, appointments } from "@/db/schema"
+import { Appointment, appointments, NewAppointment } from "@/db/schema"
 import { eq } from "drizzle-orm"
 
 export interface IAppointmentsRepository {
     getByDay(startDay: TZDate, endDay: TZDate): Promise<FullAppointment[]>
     getById(id: string): Promise<Appointment | undefined>
     update(data: UpdateApointmentInput, id: string): Promise<void>
+    createManually(data: NewAppointment): Promise<void>
 }
 
 class AppointmentsRepository implements IAppointmentsRepository {
@@ -43,11 +44,17 @@ class AppointmentsRepository implements IAppointmentsRepository {
         .update(appointments)
         .set({
             ...data,
-            extrasPrice: data.extraPrice.toString(),
+            extrasPrice: data.extrasPrice.toString(),
             startTime: data.startTime,
             endTime: data.endTime
         })
         .where(eq(appointments.id, id))
+    }
+
+    async createManually(data: NewAppointment): Promise<void> {
+        await db
+            .insert(appointments)
+            .values(data)
     }
 }
 

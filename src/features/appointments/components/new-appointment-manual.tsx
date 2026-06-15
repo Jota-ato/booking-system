@@ -22,6 +22,8 @@ import { Button } from "@/shared/components/ui/button"
 import { Spinner } from "@/shared/components/ui/spinner"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
 import { FieldSwitch } from "@/shared/components/form/field-switch"
+import { showResponse } from "@/shared/lib/actions"
+import { createManualAppointmentAction } from "../actions/appointment-actions"
 
 export function NewAppointmentManuallyForm({
     services
@@ -39,7 +41,7 @@ export function NewAppointmentManuallyForm({
         resolver: zodResolver(newAppointmentManuallySchema),
         defaultValues: {
             isRegisterClient: true,
-            extraPrice: 0,
+            extrasPrice: 0,
             clientPhone: "",
             appointmentDate: new Date(),
             startTime: '10:00',
@@ -59,7 +61,18 @@ export function NewAppointmentManuallyForm({
     }, [serviceId, services])
 
     const create = async (data: NewAppointmentManuallyInput) => {
-        console.log('Creating manual appointment with data:', data)
+        const [startHour, startMinutes] = data.startTime.split(':')
+        const [endHour, endMinutes] = data.endTime.split(':')
+
+        const startTime = new Date(data.appointmentDate)
+        startTime.setHours(+startHour, +startMinutes, 0, 0)
+        const endTime = new Date(data.appointmentDate)
+        endTime.setHours(+endHour, +endMinutes, 0, 0)
+        const success = showResponse(await createManualAppointmentAction({
+            ...data,
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString()
+        }))
     }
 
     return (
@@ -146,12 +159,12 @@ export function NewAppointmentManuallyForm({
                         <Input
                             id="extraPrice"
                             type="number"
-                            {...register('extraPrice', {
+                            {...register('extrasPrice', {
                                 setValueAs: (value) => value === "" ? 0 : +value,
                             })}
                         />
-                        {errors.extraPrice && (
-                            <FieldError>{errors.extraPrice.message}</FieldError>
+                        {errors.extrasPrice && (
+                            <FieldError>{errors.extrasPrice.message}</FieldError>
                         )}
                     </Field>
                 </div>
