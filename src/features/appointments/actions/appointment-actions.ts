@@ -119,17 +119,16 @@ export async function createTimeBlockAction(input: BlockTimeInput): ActionRespon
             message: "You don't have authorization"
         }
     }
+    const zodResponse = blockTimeSchema.safeParse(input)
 
-    // const zodResponse = blockTimeSchema.safeParse(input)
-
-    // if (zodResponse.error) {
-    //     console.log(zodResponse.error)
-    //     console.log(input.startTime < input.endTime)
-    //     return {
-    //         success: false,
-    //         message: 'Something went wrong'
-    //     }
-    // }
+    if (zodResponse.error) {
+        console.log(zodResponse.error)
+        console.log(input.startTime, input.endTime, input.appointmentDate)
+        return {
+            success: false,
+            message: 'Something went wrong'
+        }
+    }
 
     await appointmentsService.createBlockTime(input)
 

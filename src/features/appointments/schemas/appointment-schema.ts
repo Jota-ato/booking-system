@@ -6,20 +6,31 @@ export const appointmentStatusSchema = z.enum(appointmentStatusEnum.enumValues);
 export type appointmentStatusEnum = z.infer<typeof appointmentStatusSchema>
 
 const validateTimeRange = (data: { startTime: string; endTime: string, appointmentDate: Date }) => {
+    const startTime = new Date(data.appointmentDate);
+    const endTime = new Date(data.appointmentDate);
 
-    const [startHour, startMinutes] = data.startTime.split(':')
-    const [endHour, endMinutes] = data.endTime.split(':')
+    if (data.startTime.includes('T') && data.endTime.includes('T')) {
+        const parsedStart = new Date(data.startTime);
+        const parsedEnd = new Date(data.endTime);
 
-    const startTime = new Date(data.appointmentDate)
-    startTime.setHours(+startHour, +startMinutes, 0, 0)
-    const endTime = new Date(data.appointmentDate)
-    endTime.setHours(+endHour, +endMinutes, 0, 0)
+        return parsedEnd.getTime() > parsedStart.getTime();
+    }
+
+    const [startHour, startMinutes] = data.startTime.split(':');
+    const [endHour, endMinutes] = data.endTime.split(':');
+
+    startTime.setHours(Number(startHour), Number(startMinutes), 0, 0);
+    endTime.setHours(Number(endHour), Number(endMinutes), 0, 0);
+
+    if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
+        return false;
+    }
 
     return endTime > startTime;
 };
 
 const timeRangeError = {
-    message: "La hora de inicio debe ser menor a la hora de fin",
+    message: "Start hour must be less than the end hour",
     path: ["appointmentDate"],
 };
 
