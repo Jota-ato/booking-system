@@ -1,6 +1,6 @@
 "use server"
 import { requireAuth } from "@/lib/auth-server";
-import { NewAppointmentManuallyInput, newAppointmentManuallySchema, UpdateApointmentInput, updateAppointmentSchema } from "../schemas/appointment-schema";
+import { BlockTimeInput, blockTimeSchema, NewAppointmentManuallyInput, newAppointmentManuallySchema, UpdateApointmentInput, updateAppointmentSchema } from "../schemas/appointment-schema";
 import { ActionResponse } from "@/shared/lib/actions";
 import { appointmentsService } from "../services/appointments-service";
 import { revalidatePath } from "next/cache";
@@ -107,5 +107,36 @@ export async function cancellAllDayAction(day: Date): ActionResponse {
     return {
         success: true,
         message: 'All appointments cancelled successfully'
+    }
+}
+
+export async function createTimeBlockAction(input: BlockTimeInput): ActionResponse {
+    const { isAdmin } = await requireAuth()
+
+    if (!isAdmin) {
+        return {
+            success: false,
+            message: "You don't have authorization"
+        }
+    }
+
+    // const zodResponse = blockTimeSchema.safeParse(input)
+
+    // if (zodResponse.error) {
+    //     console.log(zodResponse.error)
+    //     console.log(input.startTime < input.endTime)
+    //     return {
+    //         success: false,
+    //         message: 'Something went wrong'
+    //     }
+    // }
+
+    await appointmentsService.createBlockTime(input)
+
+    revalidatePath('/')
+
+    return {
+        success: true,
+        message: 'Block time successfully'
     }
 }

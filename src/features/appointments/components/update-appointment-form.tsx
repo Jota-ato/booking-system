@@ -19,12 +19,6 @@ import { formatMXN } from "@/shared/lib/currency"
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom"
 import { useAppointmentStore } from "../stores/appointment-store"
 
-const statusMap = [
-    {
-
-    }
-]
-
 export function UpdateAppointmentForm({
     appointment,
     services

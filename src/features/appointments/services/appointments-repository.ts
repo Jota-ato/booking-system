@@ -1,15 +1,16 @@
 import { db } from "@/db"
 import { TZDate } from "@date-fns/tz"
 import { FullAppointment } from "../types/appointments.types"
-import { UpdateApointmentInput } from "../schemas/appointment-schema"
+import { BlockTimeInput, UpdateApointmentInput } from "../schemas/appointment-schema"
 import { Appointment, appointments, NewAppointment } from "@/db/schema"
-import { and, eq, gte, lte, not, or } from "drizzle-orm"
+import { and, eq, gte, lte, not } from "drizzle-orm"
 
 export interface IAppointmentsRepository {
     getByDay(startDay: TZDate, endDay: TZDate): Promise<FullAppointment[]>
     getById(id: string): Promise<Appointment | undefined>
     update(data: UpdateApointmentInput, id: string): Promise<void>
     delete(id: string): Promise<void>
+    createBlockTime(data: BlockTimeInput): Promise<void>
     cancellAllOfDay(startDay: TZDate, endDay: TZDate): Promise<void>
     createManually(data: NewAppointment): Promise<void>
 }
@@ -77,6 +78,18 @@ class AppointmentsRepository implements IAppointmentsRepository {
                 not(eq(appointments.status, 'PAID')),
                 not(eq(appointments.status, 'COMPLETED'))
             ))
+    }
+
+    async createBlockTime(data: BlockTimeInput): Promise<void> {
+        await db
+            .insert(appointments)
+            .values(
+                {
+                    ...data,
+                    serviceId: "388308b9-56aa-4bf9-b86b-b6be42222660",
+                    customerId: '4da3ada8-9960-45d9-86fa-1498bfcb3584'
+                }
+            )
     }
 }
 

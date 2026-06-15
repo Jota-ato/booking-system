@@ -1,7 +1,7 @@
 import { TIMEZONE } from "@/shared/lib/date";
 import { appointmentsRepository, IAppointmentsRepository } from "./appointments-repository";
 import { TZDate } from "@date-fns/tz"
-import { NewAppointmentManuallyInput, UpdateApointmentInput } from "../schemas/appointment-schema";
+import { BlockTimeInput, NewAppointmentManuallyInput, UpdateApointmentInput } from "../schemas/appointment-schema";
 import { Customer } from "@/db/schema";
 import { customersRepository, ICustomersRepository } from "@/features/customers/services/customers-repository";
 import { CustomersService, customersService } from "@/features/customers/services/customers-service";
@@ -72,6 +72,10 @@ class AppointmentsService {
         endDay.setHours(23, 59, 59, 999)
 
         await this.appointmentsRepository.cancellAllOfDay(startDay, endDay)
+    }
+
+    async createBlockTime(data: BlockTimeInput) {
+        await this.appointmentsRepository.createBlockTime(data)
     }
 }
 
