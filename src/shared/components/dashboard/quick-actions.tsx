@@ -1,11 +1,12 @@
 "use client"
+import { Service } from "@/db/schema";
+import { NewAppointmentManuallyForm } from "@/features/appointments/components/new-appointment-manual";
 import { ActionModal } from "@/shared/components/form/action-modal";
 import QuickActionsButton from "@/shared/components/form/quick-action-button";
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";
-import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Separator } from "@/shared/components/ui/separator";
-import { AlignVerticalSpaceBetweenIcon, CalendarOff, CalendarRange, CalendarX, CandyCaneIcon, Plus } from "lucide-react";
+import { CalendarOff, CalendarRange, CalendarX, Plus } from "lucide-react";
 import { ReactNode } from "react";
 
 interface quickActionsType {
@@ -15,23 +16,28 @@ interface quickActionsType {
     children?: ReactNode
 }
 
-export function QuickActions() {
+export function QuickActions({
+    services
+}: {
+    services: Service[]
+}) {
 
     const quickActions: quickActionsType[] = [
         {
-            title: 'Crear cita manualmente',
+            title: 'Create new appointment manually',
             description: '',
-            trigger: <QuickActionsButton label="Nueva Cita Manual" Icon={Plus} />,
+            trigger: <QuickActionsButton label="New manual appointment" Icon={Plus} />,
+            children: <NewAppointmentManuallyForm services={services} />
         },
         {
-            title: 'Bloquear Día / Horario',
+            title: 'Block day / time',
             description: '',
-            trigger: <QuickActionsButton variant="outline" label="Bloquear Día / Horario" Icon={CalendarOff} />,
+            trigger: <QuickActionsButton variant="outline" label="Block day / time" Icon={CalendarOff} />,
         },
         {
-            title: 'Bloquear Periodo',
+            title: 'Block period',
             description: '',
-            trigger: <QuickActionsButton variant="outline" label="Bloquear Periodo" Icon={CalendarRange} />,
+            trigger: <QuickActionsButton variant="outline" label="Block period" Icon={CalendarRange} />,
         },
     ];
 

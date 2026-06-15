@@ -1,6 +1,6 @@
 import { DailyAppointmentsSection } from "@/features/appointments/components/daily-appointments-section";
 import { EditAppointmentDialog } from "@/features/appointments/components/edit-appointment-dialog";
-import { QuickActions } from "@/features/appointments/components/quick-actions";
+import { QuickActions } from "@/shared/components/dashboard/quick-actions";
 import { appointmentsService } from "@/features/appointments/services/appointments-service";
 import { DailyIncome } from "@/features/finance/components/daily-income";
 import { servicesService } from "@/features/services/services/services-service";
@@ -19,7 +19,9 @@ export default async function AdminPage() {
         <DailyAppointmentsSection
           appointments={todayAppointments}
         />
-        <QuickActions />
+        <QuickActions
+          services={services}
+        />
         <DailyIncome
           day={today}
           appointments={todayAppointments}

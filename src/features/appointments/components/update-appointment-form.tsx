@@ -118,11 +118,11 @@ export function UpdateAppointmentForm({
 
                 <div className="flex gap-2">
                     <p className="flex flex-col justify-center">
-                        Precio del servicio
+                        Service Price
                         <span>{formatMXN(+servicePrice)}</span>
                     </p>
                     <Field>
-                        <FieldLabel>Precio extra</FieldLabel>
+                        <FieldLabel>Extra price</FieldLabel>
                         <Input 
                             id="extraPrice"
                             type="number"
@@ -142,7 +142,7 @@ export function UpdateAppointmentForm({
                     type="submit"
                     disabled={isSubmitting}
                 >
-                    {isSubmitting ? <><Spinner />Actualizando...</> : 'Actualizar'}
+                    {isSubmitting ? <><Spinner />Updating...</> : 'Update'}
                 </Button>
             </FieldSet>
         </form>
