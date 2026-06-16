@@ -28,6 +28,8 @@ class AppointmentsService {
 
         if (!appointment) throw new AppError('Appointment not found')
 
+        await this.avoidCollision(data.startTime, data.endTime, appointment.id)
+
         await this.appointmentsRepository.update(data, appointment.id)
     }
 
@@ -42,6 +44,9 @@ class AppointmentsService {
     async createManualAppointment(data: NewAppointmentManuallyInput) {
 
         const { appointmentDate, clientPhone, endTime, extrasPrice, isRegisterClient, serviceId, startTime } = data
+
+        await this.avoidCollision(startTime, endTime)
+
         let customer: Customer;
         if (isRegisterClient) {
             const dbCustomer = await this.customersService.getClientByPhone(clientPhone)
@@ -76,7 +81,14 @@ class AppointmentsService {
     }
 
     async createBlockTime(data: BlockTimeInput) {
+        await this.avoidCollision(data.startTime, data.endTime)
         await this.appointmentsRepository.createBlockTime(data)
+    }
+
+    async avoidCollision(startRange: string, endRange: string, exludeId?: string) {
+        const appointments = await this.appointmentsRepository.getByRange(startRange, endRange, exludeId)
+
+        if (appointments?.length) throw new AppError('There is already an appointment  in this range')
     }
 }
 

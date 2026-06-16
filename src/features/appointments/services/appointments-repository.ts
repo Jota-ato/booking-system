@@ -13,6 +13,7 @@ export interface IAppointmentsRepository {
     createBlockTime(data: BlockTimeInput): Promise<void>
     cancellAllOfDay(startDay: TZDate, endDay: TZDate): Promise<void>
     createManually(data: NewAppointment): Promise<void>
+    getByRange(startRange: string, endRange: string, excludeId?: string): Promise<Appointment[]>
 }
 
 class AppointmentsRepository implements IAppointmentsRepository {
@@ -90,6 +91,26 @@ class AppointmentsRepository implements IAppointmentsRepository {
                     customerId: '4da3ada8-9960-45d9-86fa-1498bfcb3584'
                 }
             )
+    }
+
+    async getByRange(startRange: string, endRange: string, excludeId?: string): Promise<Appointment[]> {
+        return await db
+            .query
+            .appointments
+            .findMany({
+                where: (appointment, { and, lt, gt, not }) => {
+                    const conditions = [
+                        lt(appointment.startTime, endRange),
+                        gt(appointment.endTime, startRange)
+                    ];
+
+                    if (excludeId) {
+                        conditions.push(not(eq(appointment.id, excludeId)));
+                    }
+
+                    return and(...conditions);
+                }
+            });
     }
 }
 
