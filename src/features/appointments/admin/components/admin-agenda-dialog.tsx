@@ -18,7 +18,6 @@ export function AdminAgendaDialog() {
     }
 
     const { startTime, endTime } = activeCreateAppointmentTime
-    console.log(startTime, endTime)
 
     return (
         <Dialog open={createDialogOpen} onOpenChange={toggleCreateDialogOpen}>

@@ -6,7 +6,8 @@ export const translatedStatusMap: Record<AppointmentStatus, string> = {
     CONFIRMED: 'confirmed',
     COMPLETED: 'completed',
     PAID: 'paid',
-    CANCELLED: 'cancelled'
+    CANCELLED: 'cancelled',
+    "NO_SHOW": "no show"
 }
 
 export const TIMEZONE = "America/Mexico_City";
