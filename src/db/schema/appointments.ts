@@ -19,6 +19,7 @@ export const appointmentStatusEnum = pgEnum("appointment_status", [
   "COMPLETED",  // Appointment has taken place
   "PAID",       // Payment received (can be after COMPLETED)
   "CANCELLED",  // Cancelled by admin or customer
+  "NO_SHOW",    // Appointment is not visible in the calendar
 ]);
 
 // ─── Table ───────────────────────────────────────────────────────────────────
