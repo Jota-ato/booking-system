@@ -1,9 +1,9 @@
 "use client"
 import { Service } from "@/db/schema";
 import { cancellAllDayAction } from "@/features/appointments/actions/appointment-actions";
-import { BlockPeriodForm } from "@/features/appointments/components/block-period-form";
-import { BlockTimeForm } from "@/features/appointments/components/block-time-form";
-import { NewAppointmentManuallyForm } from "@/features/appointments/components/new-appointment-manual";
+import { BlockPeriodForm } from "@/features/appointments/admin/components/block-period-form";
+import { BlockTimeForm } from "@/features/appointments/admin/components/block-time-form";
+import { NewAppointmentManuallyForm } from "@/features/appointments/admin/components/new-appointment-manual";
 import { ActionModal } from "@/shared/components/form/action-modal";
 import QuickActionsButton from "@/shared/components/form/quick-action-button";
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";

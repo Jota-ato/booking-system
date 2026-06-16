@@ -1,11 +1,11 @@
 "use client"
-import { FullAppointment } from "../types/appointments.types";
 import { Separator } from "@/shared/components/ui/separator"
 import { AppointmentRowDetails } from "./appointment-row-details";
 import { AppointmentRowTime } from "./appointment-row-time";
 import { StatusBadge } from "@/shared/components/ui/status-badge";
-import { useAppointmentStore } from "../stores/appointment-store";
 import { ShieldAlert } from "lucide-react"; 
+import { useAppointmentStore } from "../stores/appointment-store";
+import { FullAppointment } from "../../core/types/appointments.types";
 
 export function AppointmentRow({
     appointment

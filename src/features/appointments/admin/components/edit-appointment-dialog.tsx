@@ -1,9 +1,9 @@
 "use client"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog"
-import { useAppointmentStore } from "../stores/appointment-store"
 import { UpdateAppointmentForm } from "./update-appointment-form"
 import { Separator } from "@/shared/components/ui/separator"
 import { Service } from "@/db/schema"
+import { useAppointmentStore } from "../stores/appointment-store"
 
 export function EditAppointmentDialog({
     services

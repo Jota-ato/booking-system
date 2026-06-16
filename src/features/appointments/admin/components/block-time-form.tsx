@@ -15,7 +15,7 @@ import { Spinner } from "@/shared/components/ui/spinner"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
 import { showResponse } from "@/shared/lib/client-actions"
 import { BlockTimeInput, blockTimeSchema } from "../schemas/appointment-schema"
-import { createTimeBlockAction } from "../actions/appointment-actions"
+import { createTimeBlockAction } from "../actions/admin-appointment-actions"
 
 export function BlockTimeForm({
     initialData,

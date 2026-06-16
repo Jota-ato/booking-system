@@ -1,6 +1,6 @@
-import { FullAppointment } from "../types/appointments.types"
 import { Sparkles, User, CalendarDays, Ban } from "lucide-react";
 import { format } from "date-fns";
+import { FullAppointment } from "../../core/types/appointments.types";
 
 interface AppointmentRowDetailsProps {
     appointment: FullAppointment;

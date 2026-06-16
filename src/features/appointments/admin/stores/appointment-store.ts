@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { FullAppointment } from "../types/appointments.types"
+import { FullAppointment } from "../../core/types/appointments.types"
 
 export type AppointmentStore = {
     open: boolean

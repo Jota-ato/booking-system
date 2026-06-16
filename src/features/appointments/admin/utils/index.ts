@@ -1,5 +1,5 @@
 import { Appointment } from "@/db/schema";
-import { FullAppointment } from "../types/appointments.types";
+import { FullAppointment } from "../../core/types/appointments.types";
 
 export function getExpectedPaidAppointments(appointments: (FullAppointment | Appointment)[]): {expected: number, paid: number} { 
 

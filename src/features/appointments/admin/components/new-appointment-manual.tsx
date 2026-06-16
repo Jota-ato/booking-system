@@ -11,10 +11,9 @@ import {
     FieldSet
 } from "@/shared/components/ui/field"
 import { useForm, FieldErrors } from "react-hook-form"
-import { NewAppointmentManuallyInput, newAppointmentManuallySchema } from "../schemas/appointment-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/shared/components/ui/input"
-import { CustomSelect } from "./services-select"
+import { CustomSelect } from "../../core/components/services-select"
 import { Service } from "@/db/schema"
 import { useMemo } from "react"
 import { formatMXN } from "@/shared/lib/currency"
@@ -23,7 +22,8 @@ import { Spinner } from "@/shared/components/ui/spinner"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
 import { FieldSwitch } from "@/shared/components/form/field-switch"
 import { showResponse } from "@/shared/lib/client-actions"
-import { createManualAppointmentAction } from "../actions/appointment-actions"
+import { NewAppointmentManuallyInput, newAppointmentManuallySchema } from "../schemas/appointment-schema"
+import { createManualAppointmentAction } from "../actions/admin-appointment-actions"
 
 export function NewAppointmentManuallyForm({
     services

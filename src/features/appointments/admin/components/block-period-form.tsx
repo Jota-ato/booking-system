@@ -11,9 +11,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/shared/components/ui/button"
 import { Spinner } from "@/shared/components/ui/spinner"
 import { showResponse } from "@/shared/lib/client-actions"
-import { createTimeBlockAction } from "../actions/appointment-actions"
-import { BlockPeriodInput, blockPeriodSchema } from "../schemas/appointment-schema"
 import { DatePickerRange } from "@/shared/components/form/date-picker-range"
+import { BlockPeriodInput, blockPeriodSchema } from "../schemas/appointment-schema"
+import { createTimeBlockAction } from "../actions/admin-appointment-actions"
 
 export function BlockPeriodForm() {
     const {

@@ -1,6 +1,6 @@
-import { DailyIncomeChart } from "@/features/appointments/components/daily-income-chart";
-import { FullAppointment } from "@/features/appointments/types/appointments.types";
-import { getExpectedPaidAppointments } from "@/features/appointments/utils";
+import { DailyIncomeChart } from "@/features/appointments/admin/components/daily-income-chart";
+import { FullAppointment } from "@/features/appointments/core/types/appointments.types";
+import { getExpectedPaidAppointments } from "@/features/appointments/admin/utils";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { formatMXN } from "@/shared/lib/currency";
 
