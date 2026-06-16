@@ -70,6 +70,33 @@ export const blockTimeSchema = baseAppointmentSchema.pick({
     validateTimeRange, timeRangeError
 )
 
+export const blockPeriodSchema = z.object({
+    dateRange: z.object({
+        from: z.date({ error: "Start date is required" }),
+        to: z.date({ error: "End date is required" })
+    }, { error: "Please select a date range" }),
+    startTime: z.string({ error: "Start time is required" }),
+    endTime: z.string({ error: "End time is required" })
+}).refine(
+    (data) => {
+        const [startHour, startMin] = data.startTime.split(':');
+        const [endHour, endMin] = data.endTime.split(':');
+
+        const fullStart = new Date(data.dateRange.from);
+        fullStart.setHours(Number(startHour), Number(startMin), 0, 0);
+
+        const fullEnd = new Date(data.dateRange.to);
+        fullEnd.setHours(Number(endHour), Number(endMin), 0, 0);
+
+        return fullEnd > fullStart;
+    },
+    {
+        message: "The end date and time must be after the start date and time",
+        path: ["endTime"] // Resalta el input de hora final si falla
+    }
+);
+
 export type NewAppointmentManuallyInput = z.infer<typeof newAppointmentManuallySchema>;
 export type UpdateApointmentInput = z.infer<typeof updateAppointmentSchema>
 export type BlockTimeInput = z.infer<typeof blockTimeSchema>
+export type BlockPeriodInput = z.infer<typeof blockPeriodSchema>

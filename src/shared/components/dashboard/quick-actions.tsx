@@ -1,6 +1,7 @@
 "use client"
 import { Service } from "@/db/schema";
 import { cancellAllDayAction } from "@/features/appointments/actions/appointment-actions";
+import { BlockPeriodForm } from "@/features/appointments/components/block-period-form";
 import { BlockTimeForm } from "@/features/appointments/components/block-time-form";
 import { NewAppointmentManuallyForm } from "@/features/appointments/components/new-appointment-manual";
 import { ActionModal } from "@/shared/components/form/action-modal";
@@ -44,6 +45,7 @@ export function QuickActions({
             title: 'Block period',
             description: '',
             trigger: <QuickActionsButton variant="outline" label="Block period" Icon={CalendarRange} />,
+            children: <BlockPeriodForm />
         },
     ];
 
