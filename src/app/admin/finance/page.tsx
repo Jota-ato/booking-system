@@ -34,7 +34,7 @@ export default async function FinancePage({
   const data = await financeService.getFinancialData(startRange, endRange, range)
 
   return (
-    <section className="py-4">
+    <section className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12">
       <FinanceDashboard
         data={data}
       />
