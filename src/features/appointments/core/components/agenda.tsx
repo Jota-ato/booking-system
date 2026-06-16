@@ -38,14 +38,12 @@ export function Agenda({
 
     const endOfView = endOfDay(addDays(startOfView, daysToShow - 1));
 
-    const visibleEvents = useMemo(() => {
-        return events.filter(event => {
-            const safeStartDate = new TZDate(event.startTime, TIMEZONE);
-            const safeEndDate = new TZDate(event.endTime, TIMEZONE);
-            safeStartDate.toISOString() <= endOfView.toISOString() &&
-                safeEndDate.toISOString() >= startOfView.toISOString()
-        })
-    }, [events, startOfView, endOfView]);
+    const visibleEvents = useMemo(() => events
+        .filter(event => 
+            event.startTime <= endOfView.toISOString() &&
+            event.endTime >= startOfView.toISOString()
+        )
+    ,[events, startOfView, endOfView]);
 
     const weekDays = Array.from({ length: daysToShow }).map((_, i) => addDays(startOfView, i));
 
@@ -55,6 +53,8 @@ export function Agenda({
     const hours = Array.from({ length: 5 }).map((_, i) =>
         addHours(startOfDay(startOfView), 10 + (2.5 * i))
     );
+
+    console.log(visibleEvents)
 
     return (
         <div className="w-full rounded-2xl border shadow-sm overflow-hidden relative">

@@ -9,7 +9,7 @@ import { TZDate } from "@date-fns/tz";
 export default async function AgendaPage() {
 
     const today = new TZDate(new Date(), TIMEZONE);
-    const appointments = await appointmentsService.getDayAppointments(new Date());
+    const appointments = await appointmentsService.getDayAppointments(today);
     const services = await servicesService.getServices();
 
     return (

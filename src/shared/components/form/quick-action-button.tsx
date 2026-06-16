@@ -20,7 +20,7 @@ const QuickActionsButton = React.forwardRef<HTMLButtonElement, QuickActionsButto
                 {...props}
             >
                 <Icon />
-                {label}
+                <span className="text-xs sm:text-sm max-w-4/5 truncate">{label}</span>
             </Button>
         );
     }

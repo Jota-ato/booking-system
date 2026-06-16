@@ -7,7 +7,7 @@ import { NewAppointmentManuallyForm } from "@/features/appointments/admin/compon
 import { ActionModal } from "@/shared/components/form/action-modal";
 import QuickActionsButton from "@/shared/components/form/quick-action-button";
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Separator } from "@/shared/components/ui/separator";
 import { showResponse } from "@/shared/lib/client-actions";
 import { CalendarOff, CalendarRange, CalendarX, Plus } from "lucide-react";
@@ -54,7 +54,7 @@ export function QuickActions({
     }
 
     return (
-        <Card>
+        <Card className="h-full">
             <CardHeader>
                 <CardTitle>
                     Quick actions
@@ -62,32 +62,35 @@ export function QuickActions({
                 <CardDescription>
                     Create, cancel, create block time
                 </CardDescription>
-                <Separator className="my-4" />
-                <CardContent className="space-y-2 px-0">
-                    {/**TODO quick actions */}
-                    {quickActions.map(action => (
-                        <ActionModal
-                            key={action.title}
-                            title={action.title}
-                            description={action.description}
-                            trigger={action.trigger}
-                        >
-                            {action.children}
-                        </ActionModal>
-                    ))}
-                    <Separator className="my-4" />
-                    <AlertDialogCustom 
-                        fullWith
-                        action={cancelAllDay}
-                        actionLabel="Cancell all day"
-                        dialogTitle="Are you sure you want to cancel?"
-                        triggerLabel="Cancell all day"
-                        dialogDescription="If you regret it you'll need to change every state manually"
-                        showText
-                        triggerIcon={CalendarX}
-                    />
-                </CardContent>
+                <Separator />
             </CardHeader>
+
+            <CardContent className="space-y-2">
+                {quickActions.map(action => (
+                    <ActionModal
+                        key={action.title}
+                        title={action.title}
+                        description={action.description}
+                        trigger={action.trigger}
+                    >
+                        {action.children}
+                    </ActionModal>
+                ))}
+                <Separator className="my-4" />
+
+            </CardContent>
+            <CardFooter>
+                <AlertDialogCustom
+                    fullWith
+                    action={cancelAllDay}
+                    actionLabel="Cancell all day"
+                    dialogTitle="Are you sure you want to cancel?"
+                    triggerLabel="Cancell all day"
+                    dialogDescription="If you regret it you'll need to change every state manually"
+                    showText
+                    triggerIcon={CalendarX}
+                />
+            </CardFooter>
         </Card>
     )
 }
