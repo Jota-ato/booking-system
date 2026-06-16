@@ -17,7 +17,7 @@ export default async function RecordPage({ searchParams }: RecordPageProps) {
   const services = await servicesService.getServices()
 
   return (
-    <section className="min-h-screen p-8 md:p-12 flex items-center justify-center">
+    <section className="min-h-screen py-8 md:py-12 flex items-center justify-center">
       <Container>
         <RecordCard
           currentPage={currentPage}

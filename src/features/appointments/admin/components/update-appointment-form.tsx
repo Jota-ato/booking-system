@@ -29,7 +29,9 @@ export function UpdateAppointmentForm({
 
     const { toggleEditDialogOpen: toggleOpen, setActiveEditingAppointment: setActiveAppointment } = useAppointmentStore()
 
+
     const {
+        getValues,
         handleSubmit,
         register,
         watch,
@@ -98,6 +100,9 @@ export function UpdateAppointmentForm({
                         startTimeName="startTime"
                         endTimeName="endTime"
                     />
+                    {errors.appointmentDate && (
+                        <FieldError>{errors.appointmentDate.message}</FieldError>
+                    )}
                 </FieldGroup>
                 <FieldSeparator />
 

@@ -40,6 +40,7 @@ export interface IAppointmentsRepository {
      */
     getByRange(startRange: string, endRange: string, excludeId?: string, limit?: number): Promise<Appointment[]>
     getHistory(page: number, dateFilter?: string): Promise<{ data: FullAppointment[], totalPages: number }>
+    getFromDay(day: string, full?: boolean): Promise<(FullAppointment | Appointment)[]>
 }
 
 /**
@@ -121,6 +122,19 @@ class AppointmentsRepository implements IAppointmentsRepository {
             data,
             totalPages: Math.ceil(total / ITEMS_PER_PAGE)
         }
+    }
+
+    async getFromDay(day: string, full: boolean = false): Promise<(FullAppointment | Appointment)[]> {
+        return await db
+            .query
+            .appointments
+            .findMany({
+                where: (appointment, { gte }) => gte(appointment.startTime, day),
+                with: {
+                    service: full ? true : undefined,
+                    customer: full ? true : undefined
+                }
+            })
     }
 }
 

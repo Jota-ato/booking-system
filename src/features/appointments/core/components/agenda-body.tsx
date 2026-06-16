@@ -4,9 +4,9 @@ import { isSameDay } from "date-fns";
 import { FullAppointment } from "../types/appointments.types";
 import { HoursColumn } from "./hours-column";
 import { HourCell } from "./hour-cell";
-import { EventPublic } from "./event-public";
 import { AdminAgendaDialog } from "../../admin/components/admin-agenda-dialog";
 import { AdminHourCell } from "../../admin/components/admin-hour-cell";
+import { AdminEvent } from "../../admin/components/admin-event";
 
 
 export function AgendaBody({
@@ -43,12 +43,17 @@ export function AgendaBody({
                     {events
                         .filter(event => isSameDay(day, event.startTime))
                         .map(event => (
-                            <EventPublic
-                                key={event.id}
-                                event={event}
-                                START_HOUR={START_HOUR}
-                                ROW_HEIGHT_REM={ROW_HEIGHT_REM}
-                            />
+                            isAdmin ? (
+                                <AdminEvent
+                                    key={event.id}
+                                    event={event as FullAppointment}
+                                    START_HOUR={START_HOUR}
+                                    ROW_HEIGHT_REM={ROW_HEIGHT_REM}
+                                />
+                            ) : (
+                                <>
+                                </>
+                            )
                         ))
                     }
                 </div>

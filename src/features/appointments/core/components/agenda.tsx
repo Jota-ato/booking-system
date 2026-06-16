@@ -50,11 +50,10 @@ export function Agenda({
     const nextPeriod = () => setViewDate(prev => addDays(prev, daysToShow));
     const prevPeriod = () => setViewDate(prev => subDays(prev, daysToShow));
 
-    const hours = Array.from({ length: 5 }).map((_, i) =>
+    const hours = Array.from({ length: 4 }).map((_, i) =>
         addHours(startOfDay(startOfView), 10 + (2.5 * i))
     );
 
-    console.log(visibleEvents)
 
     return (
         <div className="w-full rounded-2xl border shadow-sm overflow-hidden relative">
@@ -70,7 +69,6 @@ export function Agenda({
                 hours={hours}
                 events={visibleEvents}
             />
-
         </div>
     );
 }

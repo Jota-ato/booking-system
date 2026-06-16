@@ -40,6 +40,13 @@ class AppointmentsService {
         return await this.appointmentsRepository.getByDay(startDay, endDay)
     }
 
+    async getFromDay(day: Date, full: boolean = false) {
+        const startDay = new TZDate(day, TIMEZONE)
+        startDay.setHours(0, 0, 0, 0)
+
+        return await this.appointmentsRepository.getFromDay(startDay.toISOString(), full)
+    }
+
     /**
      * Checks whether any existing appointment overlaps with the given time range
      * and throws if a conflict is detected.
