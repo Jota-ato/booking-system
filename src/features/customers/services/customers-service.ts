@@ -1,19 +1,46 @@
 import { NewCustomer } from "@/db/schema";
 import { customersRepository, ICustomersRepository } from "./customers-repository";
 
+/**
+ * Application-layer service responsible for customer business logic.
+ *
+ * Enforces uniqueness constraints and delegates all persistence operations
+ * to the injected {@link ICustomersRepository}.
+ *
+ * @example
+ * const customer = await customersService.getClientByPhone('525512345678');
+ */
 export class CustomersService {
-    constructor (
+    /**
+     * @param customersRepository - Data access layer for customer records.
+     */
+    constructor(
         private customersRepository: ICustomersRepository
-    ) {}
+    ) { }
 
+    /**
+     * Retrieves a customer by their phone number.
+     *
+     * @param phone - The phone number to look up.
+     * @returns A promise that resolves to the matching `Customer` record,
+     *          or `undefined` if no customer is found.
+     */
     async getClientByPhone(phone: string) {
         return await this.customersRepository.getByPhone(phone)
     }
 
+    /**
+     * Creates a new customer after verifying that no existing customer
+     * is registered with the same phone number.
+     *
+     * @param data - The new customer data, conforming to `NewCustomer`.
+     * @throws {Error} If a customer with the same phone number already exists.
+     * @returns A promise that resolves to the newly created `Customer` record.
+     */
     async createClient(data: NewCustomer) {
         const client = await this.getClientByPhone(data.phone)
         if (client) throw new Error('Client already exist')
-        
+
         return await this.customersRepository.createClient(data)
     }
 }

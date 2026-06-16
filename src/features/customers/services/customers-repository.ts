@@ -1,27 +1,55 @@
 import { db } from "@/db"
 import { Customer, customers, NewCustomer } from "@/db/schema"
 
+/**
+ * Contract for all customer persistence operations.
+ *
+ * Implementations must support looking up customers by phone number
+ * and inserting new customer records into the data store.
+ */
 export interface ICustomersRepository {
-    getByPhone(phone:string): Promise<Customer | undefined>
+    /**
+     * Retrieves a single customer by their phone number.
+     *
+     * @param phone - The phone number to search for.
+     * @returns A promise that resolves to the matching customer record,
+     *          or `undefined` if no customer is found.
+     */
+    getByPhone(phone: string): Promise<Customer | undefined>
+
+    /**
+     * Inserts a new customer record and returns the persisted entity.
+     *
+     * @param data - The customer data to insert, conforming to `NewCustomer`.
+     * @returns A promise that resolves to the newly created `Customer` record,
+     *          including any database-generated fields such as `id`.
+     */
     createClient(data: NewCustomer): Promise<Customer>
 }
 
+/**
+ * Drizzle ORM–based implementation of {@link ICustomersRepository}.
+ *
+ * All database interactions are performed through the shared `db` instance.
+ */
 class CustomersRepository implements ICustomersRepository {
+    /** @inheritdoc */
     async getByPhone(phone: string): Promise<Customer | undefined> {
         return await db
             .query
             .customers
             .findFirst({
-                where: (customer, {eq}) => eq(customer.phone, phone)
+                where: (customer, { eq }) => eq(customer.phone, phone)
             })
     }
 
+    /** @inheritdoc */
     async createClient(data: NewCustomer): Promise<Customer> {
         return (
             await db
-            .insert(customers)
-            .values(data)
-            .returning()
+                .insert(customers)
+                .values(data)
+                .returning()
         )[0]
     }
 }
