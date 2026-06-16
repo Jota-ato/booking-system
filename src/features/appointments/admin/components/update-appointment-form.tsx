@@ -27,7 +27,7 @@ export function UpdateAppointmentForm({
     services: Service[]
 }) {
 
-    const { toggleOpen, setActiveAppointment } = useAppointmentStore()
+    const { toggleEditDialogOpen: toggleOpen, setActiveEditingAppointment: setActiveAppointment } = useAppointmentStore()
 
     const {
         handleSubmit,

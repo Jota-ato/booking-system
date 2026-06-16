@@ -1,16 +1,19 @@
 'use client';
 import { Appointment } from "@/db/schema";
-import { endOfDay, isSameDay, startOfDay } from "date-fns";
+import { isSameDay } from "date-fns";
 import { FullAppointment } from "../types/appointments.types";
 import { HoursColumn } from "./hours-column";
 import { HourCell } from "./hour-cell";
 import { EventPublic } from "./event-public";
+import { AdminAgendaDialog } from "../../admin/components/admin-agenda-dialog";
+import { AdminHourCell } from "../../admin/components/admin-hour-cell";
 
 
 export function AgendaBody({
     weekDays,
     hours,
-    events
+    events,
+    isAdmin = false
 }: {
     weekDays: Date[];
     hours: Date[];
@@ -34,7 +37,7 @@ export function AgendaBody({
             {weekDays.map((day, dayDifference) => (
                 <div key={day.toISOString()} className="relative border-r border-muted-foreground last:border-r-0">
                     {hours.map(hour => (
-                        <HourCell key={hour.getTime()} hour={hour} dayDifference={dayDifference} />
+                        isAdmin ? <AdminHourCell dayDifference={dayDifference} hour={hour} key={hour.getTime()} /> : <HourCell key={hour.getTime()} />
                     ))}
 
                     {events

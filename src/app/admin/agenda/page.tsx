@@ -1,3 +1,4 @@
+import { AdminAgendaDialog } from "@/features/appointments/admin/components/admin-agenda-dialog";
 import { Agenda } from "@/features/appointments/core/components/agenda";
 import { appointmentsService } from "@/features/appointments/core/services/appointments-service";
 import { Container } from "@/shared/components/ui/container";
@@ -13,10 +14,12 @@ export default async function AgendaPage() {
         <section className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12">
             <Container>
                 <Agenda
+                    isAdmin={true}
                     events={appointments}
                     today={today}
                 />
             </Container>
+            <AdminAgendaDialog />
         </section>
     )
 }

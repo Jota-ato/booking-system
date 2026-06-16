@@ -10,10 +10,12 @@ import { AgendaBody } from "./agenda-body";
 
 export function Agenda({
     events,
-    today
+    today,
+    isAdmin = false
 }: {
     events: (Appointment | FullAppointment)[]
     today: TZDate
+    isAdmin?: boolean
 }) {
     const [daysToShow, setDaysToShow] = useState(3);
     const [viewDate, setViewDate] = useState<TZDate>(today);
@@ -63,6 +65,7 @@ export function Agenda({
                 onPrev={prevPeriod}
             />
             <AgendaBody
+                isAdmin={isAdmin}
                 weekDays={weekDays}
                 hours={hours}
                 events={visibleEvents}

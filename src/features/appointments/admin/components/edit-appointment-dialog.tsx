@@ -11,7 +11,7 @@ export function EditAppointmentDialog({
     services: Service[]
 }) {
 
-    const { open, toggleOpen, activeAppointment, setActiveAppointment } = useAppointmentStore()
+    const { editDialogOpen: open, toggleEditDialogOpen: toggleOpen, activeEditingAppointment: activeAppointment, setActiveEditingAppointment: setActiveAppointment } = useAppointmentStore()
 
     if (!activeAppointment) return <></>
 

@@ -15,7 +15,7 @@ export function AppointmentRow({
     showDate?: boolean
 }) {
     const { startTime, endTime, status, service } = appointment
-    const { toggleOpen, setActiveAppointment } = useAppointmentStore()
+    const { toggleEditDialogOpen: toggleOpen, setActiveEditingAppointment: setActiveAppointment } = useAppointmentStore()
 
     const isBlock = service.name === "BLOCK" || service.id === "388308b9-56aa-4bf9-b86b-b6be42222660";
 
