@@ -22,7 +22,7 @@ export function AppointmentRowDetails({
                 <div className="flex items-center gap-1">
                     <Sparkles className="size-3.5 text-muted-foreground shrink-0" />
                     <p className="text-xs text-muted-foreground">
-                        Servicio <span className="text-accent-foreground">{serviceName}</span>
+                        Service <span className="text-accent-foreground">{serviceName}</span>
                     </p>
                 </div>
             </div>

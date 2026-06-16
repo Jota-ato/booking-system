@@ -2,11 +2,11 @@ import { AppointmentStatus } from "@/db/schema";
 import { format, isValid } from "date-fns"
 
 export const translatedStatusMap: Record<AppointmentStatus, string> = {
-    PENDING: 'pendiente',
-    CONFIRMED: 'confirmado',
-    COMPLETED: 'completado',
-    PAID: 'pagado',
-    CANCELLED: 'cancelado'
+    PENDING: 'pending',
+    CONFIRMED: 'confirmed',
+    COMPLETED: 'completed',
+    PAID: 'paid',
+    CANCELLED: 'cancelled'
 }
 
 export const TIMEZONE = "America/Mexico_City";

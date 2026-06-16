@@ -5,6 +5,7 @@ import { BlockTimeInput, NewAppointmentManuallyInput, UpdateApointmentInput } fr
 import { Customer } from "@/db/schema";
 import { customersRepository, ICustomersRepository } from "@/features/customers/services/customers-repository";
 import { CustomersService, customersService } from "@/features/customers/services/customers-service";
+import { AppError } from "@/shared/lib/errors";
 
 class AppointmentsService {
     constructor(
@@ -25,7 +26,7 @@ class AppointmentsService {
     async updateAppointment(data: UpdateApointmentInput, id: string) {
         const appointment = await this.appointmentsRepository.getById(id)
 
-        if (!appointment) throw new Error('Appointment not found')
+        if (!appointment) throw new AppError('Appointment not found')
 
         await this.appointmentsRepository.update(data, appointment.id)
     }
@@ -33,7 +34,7 @@ class AppointmentsService {
     async deleteAppointment(id: string) {
         const appointment = await this.appointmentsRepository.getById(id)
 
-        if (!appointment) throw new Error('Appointment not found')
+        if (!appointment) throw new AppError('Appointment not found')
 
         await this.appointmentsRepository.delete(id)
     }
@@ -44,7 +45,7 @@ class AppointmentsService {
         let customer: Customer;
         if (isRegisterClient) {
             const dbCustomer = await this.customersService.getClientByPhone(clientPhone)
-            if (!dbCustomer) throw new Error('Client not found')
+            if (!dbCustomer) throw new AppError('Client not found')
             customer = dbCustomer
         } else {
             customer = await this.customersService.createClient({

@@ -1,4 +1,5 @@
-import { toast } from "sonner"
+import { AppError } from "./errors"
+import { revalidatePath } from "next/cache"
 
 export type ActionResponse = Promise<NonPromiseActionResponse>
 
@@ -7,16 +8,42 @@ export type NonPromiseActionResponse = {
     message: string
 }
 
-/**
- * Toast the user if the action had success or not
- * @param response the response of an action
- * @returns whether an accion had success or not
- */
-export const showResponse = (response: NonPromiseActionResponse): boolean => {
-    if (response.success) {
-        toast.success(response.message)
-    } else {
-        toast.error(response.message)
-    }
-    return response.success
+export function adminAction<T extends any[], R>(
+    callback: (...args: T) => Promise<R>
+) {
+    return async (...args: T) => {
+        try {
+            const { requireAuth } = await import("@/lib/auth-server");
+            const { isAdmin } = await requireAuth();
+            if (!isAdmin) {
+                return {
+                    success: false,
+                    message: "You do not have authorization to perform this action."
+                };
+            }
+
+            const result = await callback(...args);
+            revalidatePath('/')
+
+            return {
+                success: true,
+                message: typeof result === 'string' ? result : "Operation successful.",
+                data: result ? result : undefined
+            };
+
+        } catch (error) {
+            if (error instanceof AppError) {
+                return {
+                    success: false,
+                    message: error.message
+                };
+            }
+
+            console.error('[SERVER_ACTION_ERROR]:', error);
+            return {
+                success: false,
+                message: "An unexpected internal error occurred. Please try again later."
+            };
+        }
+    };
 }

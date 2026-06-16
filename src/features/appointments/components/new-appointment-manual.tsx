@@ -22,7 +22,7 @@ import { Button } from "@/shared/components/ui/button"
 import { Spinner } from "@/shared/components/ui/spinner"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
 import { FieldSwitch } from "@/shared/components/form/field-switch"
-import { showResponse } from "@/shared/lib/actions"
+import { showResponse } from "@/shared/lib/client-actions"
 import { createManualAppointmentAction } from "../actions/appointment-actions"
 
 export function NewAppointmentManuallyForm({

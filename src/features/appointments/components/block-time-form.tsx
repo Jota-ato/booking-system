@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/shared/components/ui/button"
 import { Spinner } from "@/shared/components/ui/spinner"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
-import { showResponse } from "@/shared/lib/actions"
+import { showResponse } from "@/shared/lib/client-actions"
 import { BlockTimeInput, blockTimeSchema } from "../schemas/appointment-schema"
 import { createTimeBlockAction } from "../actions/appointment-actions"
 

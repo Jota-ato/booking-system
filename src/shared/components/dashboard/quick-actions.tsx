@@ -8,7 +8,7 @@ import QuickActionsButton from "@/shared/components/form/quick-action-button";
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Separator } from "@/shared/components/ui/separator";
-import { showResponse } from "@/shared/lib/actions";
+import { showResponse } from "@/shared/lib/client-actions";
 import { CalendarOff, CalendarRange, CalendarX, Plus } from "lucide-react";
 import { ReactNode } from "react";
 
