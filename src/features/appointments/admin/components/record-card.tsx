@@ -17,7 +17,7 @@ export function RecordCard({
     appointments,
 }: HistoryCardProps) {
     return (
-        <Card className="w-[90%] max-w-6xl">
+        <Card>
             <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                     <CardTitle>Appointment History</CardTitle>
