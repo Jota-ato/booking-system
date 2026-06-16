@@ -1,8 +1,10 @@
 import { db } from "@/db"
 import { TZDate } from "@date-fns/tz"
-import { Appointment } from "@/db/schema"
-import { eq } from "drizzle-orm"
+import { Appointment, appointments } from "@/db/schema"
+import { eq, lte } from "drizzle-orm"
 import { FullAppointment } from "../types/appointments.types"
+import { TIMEZONE } from "@/shared/lib/date"
+import { endOfDay } from "date-fns"
 
 /**
  * Contract for all appointment persistence operations.
@@ -36,7 +38,8 @@ export interface IAppointmentsRepository {
      *                     (useful when updating an existing appointment).
      * @returns A promise that resolves to an array of overlapping appointments.
      */
-    getByRange(startRange: string, endRange: string, excludeId?: string): Promise<Appointment[]>
+    getByRange(startRange: string, endRange: string, excludeId?: string, limit?: number): Promise<Appointment[]>
+    getHistory(page: number, dateFilter?: string): Promise<{ data: FullAppointment[], totalPages: number }>
 }
 
 /**
@@ -64,7 +67,12 @@ class AppointmentsRepository implements IAppointmentsRepository {
     }
 
     /** @inheritdoc */
-    async getByRange(startRange: string, endRange: string, excludeId?: string): Promise<Appointment[]> {
+    async getByRange(
+        startRange: string,
+        endRange: string,
+        excludeId?: string,
+        limit: number = 10
+    ): Promise<Appointment[]> {
         return await db
             .query
             .appointments
@@ -80,8 +88,39 @@ class AppointmentsRepository implements IAppointmentsRepository {
                     }
 
                     return and(...conditions);
-                }
+                },
+                limit,
             });
+    }
+
+    async getHistory(page: number, dateFilter?: string): Promise<{ data: FullAppointment[]; totalPages: number }> {
+        const ITEMS_PER_PAGE = 5
+        const offset = (page - 1) * ITEMS_PER_PAGE
+        let cutoff = new Date()
+        if (dateFilter) {
+            const [year, month, day] = dateFilter.split('-')
+            cutoff = new Date(+year, +month - 1, +day)
+        }
+        cutoff.setHours(23, 59, 59, 999)
+
+        const [data, total] = await Promise.all([
+            db
+                .query.
+                appointments
+                .findMany({
+                    where: (appointment, { lte }) => lte(appointment.startTime, cutoff.toISOString()),
+                    with: { service: true, customer: true },
+                    orderBy: (apt, { desc }) => desc(apt.startTime),
+                    limit: ITEMS_PER_PAGE,
+                    offset,
+                }),
+            db.$count(appointments, lte(appointments.startTime, cutoff.toISOString()))
+        ])
+
+        return {
+            data,
+            totalPages: Math.ceil(total / ITEMS_PER_PAGE)
+        }
     }
 }
 

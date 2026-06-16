@@ -1,4 +1,5 @@
 import { formateDailyDate, formatTime } from "@/shared/lib/date";
+import { format } from "date-fns";
 
 export function AppointmentRowTime({
     startTime,
@@ -13,8 +14,9 @@ export function AppointmentRowTime({
         <div className="flex flex-col gap-1 items-center min-w-16 text-center">
 
             {showDate && (
-                <span className="text-[10px] font-bold text-amber-700 dark:text-amber-500 uppercase bg-amber-100 dark:bg-amber-900/30 px-1.5 py-0.5 rounded-sm mb-1 w-full tracking-wider">
-                    Starts
+                <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-sm mb-1 w-full tracking-wider">
+                    {format(new Date(startTime), 'MM/dd/yyyy')}
+                    <br />
                 </span>
             )}
 

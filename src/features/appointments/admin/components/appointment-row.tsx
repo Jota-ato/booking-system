@@ -8,9 +8,11 @@ import { useAppointmentStore } from "../stores/appointment-store";
 import { FullAppointment } from "../../core/types/appointments.types";
 
 export function AppointmentRow({
-    appointment
+    appointment,
+    showDate
 }: {
     appointment: FullAppointment
+    showDate?: boolean
 }) {
     const { startTime, endTime, status, service } = appointment
     const { toggleOpen, setActiveAppointment } = useAppointmentStore()
@@ -35,10 +37,12 @@ export function AppointmentRow({
                 <AppointmentRowTime 
                     startTime={startTime} 
                     endTime={endTime} 
-                    showDate={isMultiDay && isBlock}
+                    showDate={(isMultiDay && isBlock) || showDate}
                 />
-                <Separator orientation="vertical" className="h-10" />
-                <AppointmentRowDetails appointment={appointment} isBlock={isBlock} isMultiDay={isMultiDay} />
+                <Separator orientation="vertical" />
+                <AppointmentRowDetails appointment={appointment} 
+                isBlock={isBlock} isMultiDay={isMultiDay} 
+                />
             </div>
 
             {isBlock ? (

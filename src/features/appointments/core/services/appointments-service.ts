@@ -59,6 +59,10 @@ class AppointmentsService {
 
         if (appointments?.length) throw new AppError('There is already an appointment  in this range')
     }
+
+    async getAppointmentsHistory(page: number = 1, dateFilter?: string) {
+        return await this.appointmentsRepository.getHistory(page, dateFilter)
+    }
 }
 
 export const appointmentsService = new AppointmentsService(
