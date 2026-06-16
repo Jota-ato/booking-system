@@ -1,5 +1,6 @@
 import { NewCustomer } from "@/db/schema";
 import { customersRepository, ICustomersRepository } from "./customers-repository";
+import { AppError } from "@/shared/lib/errors";
 
 /**
  * Application-layer service responsible for customer business logic.
@@ -39,7 +40,7 @@ export class CustomersService {
      */
     async createClient(data: NewCustomer) {
         const client = await this.getClientByPhone(data.phone)
-        if (client) throw new Error('Client already exist')
+        if (client) throw new AppError(`Client already exists, name: ${client.name} ${client.lastName}`)
 
         return await this.customersRepository.createClient(data)
     }

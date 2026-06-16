@@ -11,7 +11,7 @@ export const translatedStatusMap: Record<AppointmentStatus, string> = {
 }
 
 export const TIMEZONE = "America/Mexico_City";
-export const formateDailyDate = (date: Date) => format(date, 'EEEE dd MMMM yyyy')
+export const formatDailyDate = (date: Date) => format(date, 'EEEE dd MMMM yyyy')
 
 export const formatTime = (time: Date | string) => {
     const date = typeof time === "string"

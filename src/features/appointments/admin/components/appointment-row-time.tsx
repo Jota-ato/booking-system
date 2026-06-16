@@ -1,4 +1,4 @@
-import { formateDailyDate, formatTime } from "@/shared/lib/date";
+import { formatDailyDate, formatTime } from "@/shared/lib/date";
 import { format } from "date-fns";
 
 export function AppointmentRowTime({

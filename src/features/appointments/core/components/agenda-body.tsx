@@ -21,7 +21,7 @@ export function AgendaBody({
     isAdmin?: boolean
 }) {
     const ROW_HEIGHT_REM = 5;
-    const START_HOUR = 10;
+    const START_HOUR = hours[0].getHours();
 
     return (
         <main

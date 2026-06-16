@@ -4,8 +4,14 @@ import { useAppointmentStore } from "../stores/appointment-store"
 import { formatTime } from "@/shared/lib/date"
 import { format } from "date-fns"
 import { Separator } from "@/shared/components/ui/separator"
+import { Service } from "@/db/schema"
+import { NewAgendaAppointmentForm } from "./new-agenda-appointment-form"
 
-export function AdminAgendaDialog() {
+export function AdminAgendaDialog({
+    services
+}: {
+    services: Service[]
+}) {
 
     const { 
         createDialogOpen, 
@@ -21,7 +27,7 @@ export function AdminAgendaDialog() {
 
     return (
         <Dialog open={createDialogOpen} onOpenChange={toggleCreateDialogOpen}>
-            <DialogContent>
+            <DialogContent className="overflow-auto max-h-9/10">
                 <DialogTitle>Create appointment</DialogTitle>
                 <DialogDescription className="flex flex-col">
                     <span>Day: {format(startTime, 'MM/dd/yyyy')}</span>
@@ -29,6 +35,10 @@ export function AdminAgendaDialog() {
                 </DialogDescription>
                 <Separator />
                 {/** TODO: Create appointment */}
+                <NewAgendaAppointmentForm 
+                    services={services}
+                    timeRange={{ startTime, endTime }}
+                />
             </DialogContent>
         </Dialog>
     )

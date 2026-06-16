@@ -25,12 +25,18 @@ import { showResponse } from "@/shared/lib/client-actions"
 import { NewAppointmentManuallyInput, newAppointmentManuallySchema } from "../schemas/appointment-schema"
 import { createManualAppointmentAction } from "../actions/admin-appointment-actions"
 import { redirect } from "next/navigation"
+import { formatTime } from "@/shared/lib/date"
+import { useAppointmentStore } from "../stores/appointment-store"
 
-export function NewAppointmentManuallyForm({
-    services
+export function NewAgendaAppointmentForm({
+    services,
+    timeRange: { startTime, endTime }
 }: {
     services: Service[]
+    timeRange: { startTime: Date, endTime: Date }
 }) {
+
+    const { toggleCreateDialogOpen, setActiveCreateAppointmentTime } = useAppointmentStore()
 
     const {
         handleSubmit,
@@ -45,9 +51,9 @@ export function NewAppointmentManuallyForm({
             isRegisterClient: true,
             extrasPrice: 0,
             clientPhone: "",
-            appointmentDate: new Date(),
-            startTime: '10:00',
-            endTime: "12:30",
+            appointmentDate: startTime,
+            startTime: formatTime(startTime),
+            endTime: formatTime(endTime),
         }
     })
 
@@ -63,13 +69,6 @@ export function NewAppointmentManuallyForm({
     }, [serviceId, services])
 
     const create = async (data: NewAppointmentManuallyInput) => {
-        const [startHour, startMinutes] = data.startTime.split(':')
-        const [endHour, endMinutes] = data.endTime.split(':')
-
-        const startTime = new Date(data.appointmentDate)
-        startTime.setHours(+startHour, +startMinutes, 0, 0)
-        const endTime = new Date(data.appointmentDate)
-        endTime.setHours(+endHour, +endMinutes, 0, 0)
         const success = showResponse(await createManualAppointmentAction({
             ...data,
             startTime: startTime.toISOString(),
@@ -77,8 +76,10 @@ export function NewAppointmentManuallyForm({
         }))
 
         if (success) {
+            toggleCreateDialogOpen()
+            setActiveCreateAppointmentTime(undefined)
             reset()
-            redirect('/admin/agenda')
+            redirect('/admin')
         }
     }
 
@@ -92,16 +93,6 @@ export function NewAppointmentManuallyForm({
                         label="Is the client registered?"
                         description="If the client has made an appointment or you manually created one for them, this is true."
                     />
-
-                    <FieldGroup>
-                        <DatePickerTime
-                            control={control}
-                            appointmentDateName="appointmentDate"
-                            startTimeName="startTime"
-                            endTimeName="endTime"
-                        />
-                    </FieldGroup>
-                    <FieldSeparator />
 
 
                     <Field>

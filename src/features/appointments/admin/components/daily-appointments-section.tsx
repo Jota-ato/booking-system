@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { formateDailyDate } from "@/shared/lib/date"
+import { formatDailyDate } from "@/shared/lib/date"
 import { AppointmentRow } from "./appointment-row"
 import { NoDailyAppointments } from "./no-daily-appointments"
 import { FullAppointment } from "../../core/types/appointments.types"
@@ -16,7 +16,7 @@ export function DailyAppointmentsSection({
                     Daily Appointments
                 </CardTitle>
                 <CardDescription>
-                    {formateDailyDate(new Date())}
+                    {formatDailyDate(new Date())}
                 </CardDescription>
             </CardHeader>
             <CardContent>
