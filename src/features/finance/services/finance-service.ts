@@ -3,10 +3,47 @@ import { TZDate } from "@date-fns/tz";
 import { IFinanceRepository, financeRepository } from "./finance-repository";
 import { FinancialMetricsDTO, TimeRange } from "../types/finance.type";
 
+/**
+ * Application-layer service responsible for computing financial metrics
+ * from raw appointment data.
+ *
+ * Retrieves appointment records from the repository for a given date range,
+ * then aggregates them into KPIs and time/service breakdowns suitable for
+ * dashboard consumption.
+ *
+ * @example
+ * const metrics = await financeService.getFinancialData(startDate, endDate, 'month');
+ */
 class FinanceService {
+    /**
+     * @param _financeRepository - Data access layer for financial appointment records.
+     */
     constructor(
         private readonly _financeRepository: IFinanceRepository
-    ) {}
+    ) { }
+
+    /**
+     * Computes aggregated financial metrics for a given date range and time granularity.
+     *
+     * The method fetches all relevant appointments (`PAID`, `CONFIRMED`, `COMPLETED`)
+     * from the repository and derives the following:
+     *
+     * - **KPIs**: total income, total paid appointments, average ticket, expected revenue,
+     *   and confirmed-but-unpaid revenue.
+     * - **Daily income**: revenue grouped by a date label whose format depends on `range`
+     *   (e.g. `"HH:00"` for day, `"EEEE"` for week, `"dd MMM"` for month, `"MMM"` for year).
+     * - **Service income**: revenue grouped by service name, sorted descending by value.
+     *
+     * Only `PAID` appointments contribute to `totalIncome`, `totalAppointments`,
+     * and the chart breakdowns. `CONFIRMED` appointments are included only in `expected`.
+     *
+     * @param startDate - The beginning of the reporting period (inclusive), timezone-aware.
+     * @param endDate   - The end of the reporting period (inclusive), timezone-aware.
+     * @param range     - The time granularity used to format date labels in `dailyIncome`.
+     *                    Accepted values: `'day'`, `'week'`, `'month'`, `'year'`.
+     * @returns A promise that resolves to a {@link FinancialMetricsDTO} containing
+     *          KPIs, daily income series, and per-service income breakdown.
+     */
     async getFinancialData(
         startDate: TZDate,
         endDate: TZDate,
@@ -23,7 +60,7 @@ class FinanceService {
                 dateFormatStr = "dd MMM";
                 break;
             case 'week':
-                dateFormatStr = "EEEE"; 
+                dateFormatStr = "EEEE";
                 break;
             case 'day':
                 dateFormatStr = "HH:00";
@@ -78,5 +115,4 @@ class FinanceService {
     }
 }
 
-// Exportamos la instancia singleton inyectando su dependencia real
 export const financeService = new FinanceService(financeRepository);
