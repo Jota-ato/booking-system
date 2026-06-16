@@ -1,10 +1,6 @@
 import { TIMEZONE } from "@/shared/lib/date";
 import { appointmentsRepository, IAppointmentsRepository } from "./appointments-repository";
-import { TZDate } from "@date-fns/tz"
-import { BlockTimeInput, NewAppointmentManuallyInput, UpdateApointmentInput } from "../admin/schemas/appointment-schema";
-import { Customer } from "@/db/schema";
-import { customersRepository, ICustomersRepository } from "@/features/customers/services/customers-repository";
-import { CustomersService, customersService } from "@/features/customers/services/customers-service";
+import { TZDate } from "@date-fns/tz";
 import { AppError } from "@/shared/lib/errors";
 
 /**

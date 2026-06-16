@@ -1,10 +1,10 @@
 import { QuickActions } from "@/shared/components/dashboard/quick-actions";
-import { appointmentsService } from "@/features/appointments/services/appointments-service";
 import { DailyIncome } from "@/features/finance/components/daily-income";
 import { servicesService } from "@/features/services/services/services-service";
 import { Container } from "@/shared/components/ui/container";
 import { DailyAppointmentsSection } from "@/features/appointments/admin/components/daily-appointments-section";
 import { EditAppointmentDialog } from "@/features/appointments/admin/components/edit-appointment-dialog";
+import { appointmentsService } from "@/features/appointments/core/services/appointments-service";
 
 export default async function AdminPage() {
 

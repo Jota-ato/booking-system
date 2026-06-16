@@ -5,7 +5,7 @@ import { Customer } from "@/db/schema";
 import { customersService, CustomersService } from "@/features/customers/services/customers-service";
 import { TZDate } from "@date-fns/tz";
 import { TIMEZONE } from "@/shared/lib/date";
-import { appointmentsService } from "../../services/appointments-service";
+import { appointmentsService } from "../../core/services/appointments-service";
 
 class AdminAppointmentsService {
     constructor(

@@ -1,8 +1,8 @@
 import { db } from "@/db"
 import { TZDate } from "@date-fns/tz"
-import { FullAppointment } from "../core/types/appointments.types"
 import { Appointment } from "@/db/schema"
 import { eq } from "drizzle-orm"
+import { FullAppointment } from "../types/appointments.types"
 
 /**
  * Contract for all appointment persistence operations.

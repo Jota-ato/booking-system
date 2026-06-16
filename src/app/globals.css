@@ -56,144 +56,129 @@
 
 :root {
     /* ─── Base ─────────────────────────────────────────────────────────────── */
-    --background: oklch(0.98 0.006 340);
-    --foreground: oklch(0.18 0.03 340);
-    /* FIX: bajamos de 0.20 → 0.18 para garantizar contraste ≥7:1 sobre el fondo */
+    /* Warm cream — feels clean without being sterile */
+    --background: oklch(0.97 0.012 355);
+    --foreground: oklch(0.20 0.04 355);
 
     /* ─── Contenedores ─────────────────────────────────────────────────────── */
     --card: oklch(1 0 0);
-    --card-foreground: oklch(0.18 0.03 340);
+    --card-foreground: oklch(0.20 0.04 355);
     --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.18 0.03 340);
+    --popover-foreground: oklch(0.20 0.04 355);
 
-    /* ─── Acciones Principales ─────────────────────────────────────────────── */
-    /* Sin cambios — oklch(0.60 0.16 340) pasa WCAG AA con texto blanco (~4.8:1) */
-    --primary: oklch(0.60 0.16 340);
-    --primary-foreground: oklch(0.99 0.005 340);
+    /* ─── Acciones Principales — Rose Gold ─────────────────────────────────── */
+    /* oklch(0.58 0.14 355) ≈ #C4788A — passes WCAG AA with white text (~4.6:1) */
+    --primary: oklch(0.58 0.14 355);
+    --primary-foreground: oklch(0.99 0.004 355);
 
-    /* ─── Secundario ───────────────────────────────────────────────────────── */
-    --secondary: oklch(0.95 0.02 340);
-    /* FIX: 0.30 → 0.22 para subir contraste de ~3.8:1 a ~5.5:1 sobre el fondo secondary */
-    --secondary-foreground: oklch(0.22 0.04 340);
+    /* ─── Secundario — Blush Pink ───────────────────────────────────────────── */
+    --secondary: oklch(0.93 0.030 355);
+    --secondary-foreground: oklch(0.24 0.05 355);
 
-    /* ─── Muted (Atenuado) ─────────────────────────────────────────────────── */
-    --muted: oklch(0.96 0.01 340);
-    /* FIX: 0.45 → 0.40 — sube contraste de ~3.5:1 a ~4.6:1 sobre --background (WCAG AA) */
-    --muted-foreground: oklch(0.40 0.025 340);
+    /* ─── Muted — Soft Blush ───────────────────────────────────────────────── */
+    --muted: oklch(0.94 0.020 355);
+    --muted-foreground: oklch(0.42 0.04 355);
 
-    /* ─── Accent (Hovers / Selección) ──────────────────────────────────────── */
-    /* Sin cambios — diferencia de luminosidad suficiente para estados hover */
-    --accent: oklch(0.92 0.03 340);
-    --accent-foreground: oklch(0.15 0.04 340);
+    /* ─── Accent — Mauve Hover ──────────────────────────────────────────────── */
+    --accent: oklch(0.90 0.040 355);
+    --accent-foreground: oklch(0.18 0.05 355);
 
     /* ─── UI Elements ──────────────────────────────────────────────────────── */
-    --destructive: oklch(0.55 0.18 25);
-    /* FIX: 0.88 → 0.91 — borde más sutil y moderno, reduce "peso visual" */
-    --border: oklch(0.91 0.015 340);
-    /* FIX: input alineado con border para coherencia visual */
-    --input: oklch(0.91 0.015 340);
-    --ring: oklch(0.60 0.16 340);
+    --destructive: oklch(0.52 0.18 18);
+    --border: oklch(0.88 0.025 355);
+    --input: oklch(0.88 0.025 355);
+    --ring: oklch(0.58 0.14 355);
 
-    /* ─── Charts ───────────────────────────────────────────────────────────── */
-    --chart-1: oklch(0.60 0.16 340);
-    --chart-2: oklch(0.70 0.12 340);
-    --chart-3: oklch(0.45 0.14 340);
-    --chart-4: oklch(0.80 0.08 340);
-    --chart-5: oklch(0.35 0.10 340);
+    /* ─── Charts — Rose to mauve ramp ──────────────────────────────────────── */
+    --chart-1: oklch(0.58 0.14 355);
+    --chart-2: oklch(0.70 0.10 355);
+    --chart-3: oklch(0.44 0.12 355);
+    --chart-4: oklch(0.80 0.06 355);
+    --chart-5: oklch(0.34 0.09 355);
 
-    --radius: 0.625rem;
+    --radius: 0.75rem;
 
     /* ─── Sidebar ──────────────────────────────────────────────────────────── */
-    --sidebar: oklch(0.98 0.006 340);
-    --sidebar-foreground: oklch(0.18 0.03 340);
-    --sidebar-primary: oklch(0.60 0.16 340);
-    --sidebar-primary-foreground: oklch(0.99 0.005 340);
-    --sidebar-accent: oklch(0.92 0.03 340);
-    --sidebar-accent-foreground: oklch(0.15 0.04 340);
-    /* FIX: alineado con --border */
-    --sidebar-border: oklch(0.91 0.015 340);
-    --sidebar-ring: oklch(0.60 0.16 340);
+    --sidebar: oklch(0.97 0.012 355);
+    --sidebar-foreground: oklch(0.20 0.04 355);
+    --sidebar-primary: oklch(0.58 0.14 355);
+    --sidebar-primary-foreground: oklch(0.99 0.004 355);
+    --sidebar-accent: oklch(0.90 0.040 355);
+    --sidebar-accent-foreground: oklch(0.18 0.05 355);
+    --sidebar-border: oklch(0.88 0.025 355);
+    --sidebar-ring: oklch(0.58 0.14 355);
 
-    /* ─── Toast States ───────────────────────────────────────────────────── */
+    /* ─── Toast States ─────────────────────────────────────────────────────── */
+    --success: oklch(0.68 0.12 155);
+    --success-foreground: oklch(0.18 0.04 155);
 
-    --success: oklch(0.72 0.12 160);
-    --success-foreground: oklch(0.18 0.03 160);
+    --warning: oklch(0.78 0.14 75);
+    --warning-foreground: oklch(0.22 0.04 75);
 
-    --warning: oklch(0.82 0.14 85);
-    --warning-foreground: oklch(0.22 0.03 85);
-
-    --info: oklch(0.74 0.10 250);
-    --info-foreground: oklch(0.18 0.02 250);
+    --info: oklch(0.70 0.10 245);
+    --info-foreground: oklch(0.18 0.03 245);
 }
 
 .dark {
-    /* ─── Base ─────────────────────────────────────────────────────────────── */
-    --background: oklch(0.14 0.015 340);
-    /* FIX: 0.97 0.01 → 0.96 0.015 — sutil tinte rosado que armoniza con la paleta */
-    --foreground: oklch(0.96 0.015 340);
+    /* ─── Base — Deep Plum Night ────────────────────────────────────────────── */
+    --background: oklch(0.14 0.022 355);
+    --foreground: oklch(0.95 0.018 355);
 
     /* ─── Contenedores ─────────────────────────────────────────────────────── */
-    --card: oklch(0.18 0.02 340);
-    --card-foreground: oklch(0.96 0.015 340);
-    --popover: oklch(0.18 0.02 340);
-    --popover-foreground: oklch(0.96 0.015 340);
+    --card: oklch(0.18 0.028 355);
+    --card-foreground: oklch(0.95 0.018 355);
+    --popover: oklch(0.18 0.028 355);
+    --popover-foreground: oklch(0.95 0.018 355);
 
-    /* ─── Acciones Principales ─────────────────────────────────────────────── */
-    /* Sin cambios — oklch(0.75 0.11 340) pasa WCAG AA con texto oscuro (~5.2:1) */
-    --primary: oklch(0.75 0.11 340);
-    --primary-foreground: oklch(0.12 0.02 340);
+    /* ─── Acciones Principales — Light Rose Gold ────────────────────────────── */
+    /* oklch(0.76 0.10 355) — passes WCAG AA with dark text (~5.1:1) */
+    --primary: oklch(0.76 0.10 355);
+    --primary-foreground: oklch(0.14 0.022 355);
 
-    /* ─── Secundario ───────────────────────────────────────────────────────── */
-    --secondary: oklch(0.22 0.03 340);
-    --secondary-foreground: oklch(0.96 0.015 340);
+    /* ─── Secundario ─────────────────────────────────────────────────────────── */
+    --secondary: oklch(0.24 0.038 355);
+    --secondary-foreground: oklch(0.95 0.018 355);
 
-    /* ─── Muted (Atenuado) ─────────────────────────────────────────────────── */
-    --muted: oklch(0.20 0.02 340);
-    /* FIX: 0.65 → 0.72 — sube contraste de ~3.2:1 a ~4.6:1 sobre --muted (WCAG AA) */
-    --muted-foreground: oklch(0.72 0.02 340);
+    /* ─── Muted ──────────────────────────────────────────────────────────────── */
+    --muted: oklch(0.21 0.028 355);
+    --muted-foreground: oklch(0.70 0.025 355);
 
-    /* ─── Accent (Hovers / Selección) ──────────────────────────────────────── */
-    /* FIX: 0.25 → 0.28 — diferencia con background sube de 0.11L a 0.14L,
-       hace el hover state visible en monitores con gama reducida */
-    --accent: oklch(0.28 0.035 340);
-    --accent-foreground: oklch(0.97 0.015 340);
+    /* ─── Accent — Deep Mauve Hover ─────────────────────────────────────────── */
+    --accent: oklch(0.28 0.042 355);
+    --accent-foreground: oklch(0.96 0.018 355);
 
     /* ─── UI Elements ──────────────────────────────────────────────────────── */
-    --destructive: oklch(0.45 0.15 25);
-    /* FIX: opacidad 40% → 55% — border más visible en pantallas con brillo reducido */
-    --border: oklch(0.28 0.03 340 / 75%);
-    --input: oklch(0.28 0.03 340 / 55%);
-    --ring: oklch(0.75 0.11 340);
+    --destructive: oklch(0.46 0.16 18);
+    --border: oklch(0.30 0.038 355 / 75%);
+    --input: oklch(0.30 0.038 355 / 55%);
+    --ring: oklch(0.76 0.10 355);
 
     /* ─── Charts ───────────────────────────────────────────────────────────── */
-    --chart-1: oklch(0.75 0.11 340);
-    --chart-2: oklch(0.60 0.12 340);
-    --chart-3: oklch(0.85 0.08 340);
-    --chart-4: oklch(0.50 0.10 340);
-    --chart-5: oklch(0.40 0.09 340);
+    --chart-1: oklch(0.76 0.10 355);
+    --chart-2: oklch(0.62 0.12 355);
+    --chart-3: oklch(0.86 0.07 355);
+    --chart-4: oklch(0.50 0.10 355);
+    --chart-5: oklch(0.40 0.08 355);
 
     /* ─── Sidebar ──────────────────────────────────────────────────────────── */
-    --sidebar: oklch(0.16 0.02 340);
-    --sidebar-foreground: oklch(0.96 0.015 340);
-    --sidebar-primary: oklch(0.75 0.11 340);
-    --sidebar-primary-foreground: oklch(0.12 0.02 340);
-    /* FIX: alineado con --accent */
-    --sidebar-accent: oklch(0.28 0.035 340);
-    --sidebar-accent-foreground: oklch(0.97 0.015 340);
-    /* FIX: alineado con --border */
-    --sidebar-border: oklch(0.28 0.03 340 / 55%);
-    --sidebar-ring: oklch(0.75 0.11 340);
+    --sidebar: oklch(0.16 0.025 355);
+    --sidebar-foreground: oklch(0.95 0.018 355);
+    --sidebar-primary: oklch(0.76 0.10 355);
+    --sidebar-primary-foreground: oklch(0.14 0.022 355);
+    --sidebar-accent: oklch(0.28 0.042 355);
+    --sidebar-accent-foreground: oklch(0.96 0.018 355);
+    --sidebar-border: oklch(0.30 0.038 355 / 55%);
+    --sidebar-ring: oklch(0.76 0.10 355);
 
-    /* ─── Toast States ───────────────────────────────────────────────────── */
+    /* ─── Toast States ─────────────────────────────────────────────────────── */
+    --success: oklch(0.60 0.10 155);
+    --success-foreground: oklch(0.95 0.012 155);
 
-    --success: oklch(0.62 0.10 160);
-    --success-foreground: oklch(0.96 0.01 160);
+    --warning: oklch(0.70 0.12 75);
+    --warning-foreground: oklch(0.14 0.03 75);
 
-    --warning: oklch(0.72 0.12 85);
-    --warning-foreground: oklch(0.14 0.02 85);
-
-    --info: oklch(0.66 0.09 250);
-    --info-foreground: oklch(0.96 0.01 250);
+    --info: oklch(0.64 0.09 245);
+    --info-foreground: oklch(0.95 0.012 245);
 }
 
 @layer base {
@@ -212,6 +197,5 @@
 
     html {
         @apply font-sans;
-        scroll-behavior: smooth;
     }
 }
