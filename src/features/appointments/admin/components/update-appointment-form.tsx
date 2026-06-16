@@ -69,7 +69,6 @@ export function UpdateAppointmentForm({
         if (success) {
             reset(data)
             setActiveAppointment(undefined)
-            redirect('/admin')
         }
     }
 
