@@ -25,10 +25,12 @@ export const updateAppointmentAction = adminAction(async (input: UpdateApointmen
  * @param id - The unique identifier of the appointment to delete.
  * @returns A success message upon successful deletion.
  */
-export const deleteAppointmentAction = adminAction(async (id: string) => {
+export const deleteAppointmentAction = adminAction(async (id: string, isBlock: boolean = false) => {
     await adminAppointmentsService.deleteAppointment(id);
 
-    return 'Appointment deleted successfully';
+    return !isBlock ?
+        'Appointment deleted successfully'
+        : 'Block deleted successfully'
 });
 
 /**
@@ -43,7 +45,7 @@ export const createManualAppointmentAction = adminAction(async (input: NewAppoin
     if (zodResponse.error) throw new Error("Invalid form attributes.");
 
     await adminAppointmentsService.createManualAppointment(zodResponse.data);
-    
+
     return 'Appointment created successfully';
 });
 
@@ -55,7 +57,7 @@ export const createManualAppointmentAction = adminAction(async (input: NewAppoin
  */
 export const cancellAllDayAction = adminAction(async (day: Date) => {
     await adminAppointmentsService.cancellAllDayAppointments(day);
-    
+
     return 'All appointments cancelled successfully';
 });
 
@@ -66,11 +68,20 @@ export const cancellAllDayAction = adminAction(async (day: Date) => {
  * @returns A success message upon successful application of the time block.
  * @throws Error if the provided input is invalid.
  */
-export const createTimeBlockAction = adminAction(async (input: BlockTimeInput) => {
+export const createBlockAction = adminAction(async (input: BlockTimeInput) => {
     const zodResponse = blockTimeSchema.safeParse(input);
     if (zodResponse.error) throw new Error("Invalid form attributes.");
 
     await adminAppointmentsService.createBlockTime(zodResponse.data);
-    
-    return 'Block time successfully applied';
+
+    return 'Block successfully applied';
+});
+
+export const updateBlockAction = adminAction(async (input: BlockTimeInput, blockId: string) => {
+    const zodResponse = blockTimeSchema.safeParse(input);
+    if (zodResponse.error) throw new Error("Invalid form attributes.");
+
+    await adminAppointmentsService.updateBlock(zodResponse.data, blockId);
+
+    return 'Block successfully updated';
 });

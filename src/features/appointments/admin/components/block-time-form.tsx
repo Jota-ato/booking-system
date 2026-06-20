@@ -15,12 +15,14 @@ import { Spinner } from "@/shared/components/ui/spinner"
 import { DatePickerTime } from "@/shared/components/form/date-picker"
 import { showResponse } from "@/shared/lib/client-actions"
 import { BlockTimeInput, blockTimeSchema } from "../schemas/appointment-schema"
-import { createTimeBlockAction } from "../actions/admin-appointment-actions"
+import { createBlockAction, deleteAppointmentAction, updateBlockAction } from "../actions/admin-appointment-actions"
 
 export function BlockTimeForm({
     initialData,
+    blockId
 }: {
     initialData?: BlockTimeInput;
+    blockId?: string;
 }) {
     const isEditing = !!initialData;
 
@@ -46,11 +48,18 @@ export function BlockTimeForm({
         const endTime = new Date(data.appointmentDate)
         endTime.setHours(+endHour, +endMinutes, 0, 0)
 
-        const success = showResponse(await createTimeBlockAction({
-            ...data,
-            startTime: startTime.toISOString(),
-            endTime: endTime.toISOString()
-        }))
+        showResponse(isEditing ?
+            await updateBlockAction({
+                ...data,
+                startTime: startTime.toISOString(),
+                endTime: endTime.toISOString()
+            }, blockId!) :
+            await createBlockAction({
+                ...data,
+                startTime: startTime.toISOString(),
+                endTime: endTime.toISOString()
+            })
+        )
     }
 
     return (
@@ -72,7 +81,7 @@ export function BlockTimeForm({
 
                 <Button
                     type="submit"
-                    className="w-full mt-4"
+                    className="w-full"
                     disabled={isSubmitting}
                 >
                     {isSubmitting ? (
@@ -83,7 +92,19 @@ export function BlockTimeForm({
                     ) : (
                         isEditing ? 'Guardar Cambios' : 'Bloquear Horario'
                     )}
+
                 </Button>
+                {isEditing && (
+                    <Button
+                        onClick={async () => {
+                            showResponse(await deleteAppointmentAction(blockId!, true))
+                        }}
+                        variant="destructive"
+                        type="button"
+                    >
+                        Delete
+                    </Button>
+                )}
             </FieldSet>
         </form>
     )

@@ -1,6 +1,8 @@
+"use client"
 import { cn } from "@/shared/lib/utils";
 import { format, differenceInMinutes, max, min } from "date-fns";
 import { FullAppointment } from "../../core/types/appointments.types";
+import { useAppointmentStore } from "../stores/appointment-store";
 
 interface BlockPeriodProps {
     event: FullAppointment;
@@ -10,6 +12,9 @@ interface BlockPeriodProps {
 }
 
 export function AdminBlockPeriod({ event, START_HOUR, ROW_HEIGHT_REM, currentColumnDate }: BlockPeriodProps) {
+
+    const { toggleEditDialogOpen, setActiveEditingAppointment } = useAppointmentStore()
+
     const startBase = new Date(currentColumnDate);
     startBase.setHours(START_HOUR, 0, 0, 0);
     
@@ -35,9 +40,13 @@ export function AdminBlockPeriod({ event, START_HOUR, ROW_HEIGHT_REM, currentCol
 
     return (
         <div
+            onClick={() => {
+                toggleEditDialogOpen()
+                setActiveEditingAppointment(event)
+            }}
             key={event.id}
             className={cn(
-                "absolute inset-x-1 z-10 rounded-lg p-2 shadow-md overflow-hidden text-muted-foreground bg-muted border border-muted-foreground/20"
+                "absolute inset-x-1 z-10 rounded-lg p-2 shadow-md overflow-hidden text-muted-foreground bg-muted border border-muted-foreground/20 cursor-pointer"
             )}
             style={{
                 top: `${clampedTop}rem`,

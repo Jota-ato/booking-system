@@ -4,6 +4,10 @@ import { UpdateAppointmentForm } from "./update-appointment-form"
 import { Separator } from "@/shared/components/ui/separator"
 import { Service } from "@/db/schema"
 import { useAppointmentStore } from "../stores/appointment-store"
+import { format, isSameDay } from "date-fns"
+import { BlockPeriodForm } from "./block-period-form"
+import { BlockTimeForm } from "./block-time-form"
+import { formatTime } from "@/shared/lib/date"
 
 export function EditAppointmentDialog({
     services
@@ -14,6 +18,12 @@ export function EditAppointmentDialog({
     const { editDialogOpen: open, toggleEditDialogOpen: toggleOpen, activeEditingAppointment: activeAppointment, setActiveEditingAppointment: setActiveAppointment } = useAppointmentStore()
 
     if (!activeAppointment) return <></>
+
+    const description = activeAppointment.status === "NO_SHOW" ?
+        "Editing block" : 
+        `Editing ${activeAppointment.customer.name}'s appointment`
+
+    const isPeriod = !isSameDay(activeAppointment.startTime, activeAppointment.endTime)
 
     return (
         <Dialog open={open} onOpenChange={() => {
@@ -26,16 +36,42 @@ export function EditAppointmentDialog({
                         Editing
                     </DialogTitle>
                     <DialogDescription>
-                        Editing appointment of {activeAppointment.customer.name}
+                        {description}
                     </DialogDescription>
                 </DialogHeader>
 
                 <Separator />
 
-                <UpdateAppointmentForm
-                    appointment={activeAppointment}
-                    services={services}
-                />
+                {activeAppointment.status === "NO_SHOW" ? (
+                    isPeriod ? (
+                        <BlockPeriodForm
+                            blockPeriod={{
+                                dateRange: {
+                                    from: new Date(activeAppointment.startTime),
+                                    to: new Date(activeAppointment.endTime)
+                                },
+                                startTime: formatTime(activeAppointment.startTime),
+                                endTime: formatTime(activeAppointment.endTime)
+                            }}
+                            blockId={activeAppointment.id}
+                        />
+                    ) :
+                    (
+                        <BlockTimeForm
+                            initialData={{
+                                appointmentDate: activeAppointment.appointmentDate,
+                                startTime: activeAppointment.startTime,
+                                endTime: activeAppointment.endTime
+                            }}
+                            blockId={activeAppointment.id}
+                        />
+                    )
+                ) : (
+                    <UpdateAppointmentForm
+                        appointment={activeAppointment}
+                        services={services}
+                    />
+                )}
             </DialogContent>
         </Dialog>
     )

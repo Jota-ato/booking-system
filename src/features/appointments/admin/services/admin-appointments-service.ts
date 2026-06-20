@@ -124,6 +124,10 @@ class AdminAppointmentsService {
         await appointmentsService.avoidCollision(data.startTime, data.endTime)
         await this.adminAppointmentsRepository.createBlockTime(data)
     }
+
+    async updateBlock(data: BlockTimeInput, id: string) {
+        await this.adminAppointmentsRepository.updateBlock(data, id)
+    }
 }
 
 export const adminAppointmentsService = new AdminAppointmentsService(

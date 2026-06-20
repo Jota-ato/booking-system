@@ -59,6 +59,7 @@ export interface IAdminAppointmentsRepository {
      * @returns A promise that resolves when the record has been inserted.
      */
     createManually(data: NewAppointment): Promise<void>
+    updateBlock(data: BlockTimeInput, id: string): Promise<void>
 }
 
 class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
@@ -126,6 +127,15 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
                     status: 'NO_SHOW',
                 }
             )
+    }
+
+    async updateBlock(data: BlockTimeInput, id: string): Promise<void> {
+        await db
+            .update(appointments)
+            .set({
+                ...data
+            })
+            .where(eq(appointments.id, id))
     }
 }
 

@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useMemo } from "react";
-import { startOfWeek, addDays, addHours, startOfDay, subDays, endOfDay } from "date-fns";
+import { startOfWeek, addDays, addHours, startOfDay, subDays, endOfDay, isSameDay } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import { Appointment } from "@/db/schema";
 import { FullAppointment } from "../types/appointments.types";
@@ -40,13 +40,17 @@ export function Agenda({
         : startOfDay(viewDate);
 
     const endOfView = endOfDay(addDays(startOfView, daysToShow - 1));
-
     const visibleEvents = useMemo(() => events
-        .filter(event =>
-            event.startTime <= endOfView.toISOString() &&
-            event.endTime >= startOfView.toISOString()
+        .filter(event => {
+            const eventStart = new Date(event.startTime);
+            const eventEnd = new Date(event.endTime);
+
+            const isValid = eventStart <= endOfView &&
+                eventEnd >= startOfView
+            return isValid
+        }
         )
-    , [events, startOfView, endOfView]);
+        , [events, startOfView, endOfView]);
 
     const weekDays = Array.from({ length: daysToShow }).map((_, i) => addDays(startOfView, i));
 

@@ -79,7 +79,7 @@ export function NewAgendaAppointmentForm({
             toggleCreateDialogOpen()
             setActiveCreateAppointmentTime(undefined)
             reset()
-            redirect('/admin')
+            redirect('/admin/agenda')
         }
     }
 

@@ -13,16 +13,24 @@ import { Spinner } from "@/shared/components/ui/spinner"
 import { showResponse } from "@/shared/lib/client-actions"
 import { DatePickerRange } from "@/shared/components/form/date-picker-range"
 import { BlockPeriodInput, blockPeriodSchema } from "../schemas/appointment-schema"
-import { createTimeBlockAction } from "../actions/admin-appointment-actions"
+import { createBlockAction, deleteAppointmentAction, updateBlockAction } from "../actions/admin-appointment-actions"
 
-export function BlockPeriodForm() {
+export function BlockPeriodForm({
+    blockPeriod,
+    blockId
+}: {
+    blockPeriod?: BlockPeriodInput;
+    blockId?: string;
+}) {
+
+    const isEditing = !!blockPeriod;
     const {
         handleSubmit,
         control,
         formState: { errors, isSubmitting }
     } = useForm<BlockPeriodInput>({
         resolver: zodResolver(blockPeriodSchema),
-        defaultValues: {
+        defaultValues: blockPeriod ?? {
             dateRange: { from: new Date(), to: undefined },
             startTime: "10:00",
             endTime: "20:00"
@@ -38,14 +46,23 @@ export function BlockPeriodForm() {
         const endDateTime = new Date(data.dateRange.to);
         endDateTime.setHours(Number(endHour), Number(endMinutes), 0, 0);
 
-        const response = await createTimeBlockAction({
-            appointmentDate: startDateTime,
-            startTime: startDateTime.toISOString(),
-            endTime: endDateTime.toISOString()
-        });
+        const response = isEditing ?
+            await updateBlockAction({
+                appointmentDate: startDateTime,
+                startTime: startDateTime.toISOString(),
+                endTime: endDateTime.toISOString()
+            }, blockId!) :
+            await createBlockAction({
+                appointmentDate: startDateTime,
+                startTime: startDateTime.toISOString(),
+                endTime: endDateTime.toISOString()
+            });
 
         showResponse(response);
     }
+
+    const submitLabel = isEditing ? 'Update Block' : 'Create Block'
+    const submitLoadingLabel = isEditing ? 'Updating...' : 'Creating...'
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -59,9 +76,9 @@ export function BlockPeriodForm() {
                         label="Custom Blocking Period"
                     />
                 </FieldGroup>
-                
+
                 <FieldSeparator />
-                
+
                 {errors.endTime && (
                     <FieldError>{errors.endTime.message}</FieldError>
                 )}
@@ -77,12 +94,25 @@ export function BlockPeriodForm() {
                     {isSubmitting ? (
                         <>
                             <Spinner />
-                            <span>Applying Custom Block...</span>
+                            <span>{submitLoadingLabel}</span>
                         </>
                     ) : (
-                        "Create Range Time Block"
+                        <p>{submitLabel}</p>
                     )}
+
+
                 </Button>
+                {isEditing && (
+                    <Button
+                        onClick={async () => {
+                            showResponse(await deleteAppointmentAction(blockId!, true))
+                        }}
+                        variant="destructive"
+                        type="button"
+                    >
+                        Delete
+                    </Button>
+                )}
             </FieldSet>
         </form>
     )
