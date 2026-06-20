@@ -18,8 +18,8 @@ export const appointmentStatusEnum = pgEnum("appointment_status", [
   "CONFIRMED",  // Admin confirmed via dashboard or WhatsApp bridge
   "COMPLETED",  // Appointment has taken place
   "PAID",       // Payment received (can be after COMPLETED)
-  "CANCELLED",  // Cancelled by admin or customer
-  "NO_SHOW",    // Appointment is not visible in the calendar
+  "CANCELLED",  // Cancelled by admin or customer,
+  "NO_SHOW",    // No show for this customer
 ]);
 
 // ─── Table ───────────────────────────────────────────────────────────────────

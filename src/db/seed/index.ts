@@ -26,11 +26,11 @@ const customersData = [
 ];
 
 const dailyTimeSlots = [
-  { hour: 9, minute: 0 },
-  { hour: 11, minute: 0 },
-  { hour: 13, minute: 0 },
-  { hour: 15, minute: 30 },
-  { hour: 17, minute: 30 }
+  { hour: 10, minute: 0 },
+  { hour: 12, minute: 30 },
+  { hour: 15, minute: 0 },
+  { hour: 17, minute: 30 },
+  { hour: 20, minute: 0 }
 ];
 
 async function main() {

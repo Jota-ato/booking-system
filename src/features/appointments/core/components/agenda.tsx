@@ -32,6 +32,9 @@ export function Agenda({
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const weekStart = startOfWeek(today, { weekStartsOn: 1 });
+    const maxDate = addDays(today, 30);
+
     const startOfView = daysToShow === 7
         ? startOfWeek(viewDate, { weekStartsOn: 1 })
         : startOfDay(viewDate);
@@ -39,21 +42,33 @@ export function Agenda({
     const endOfView = endOfDay(addDays(startOfView, daysToShow - 1));
 
     const visibleEvents = useMemo(() => events
-        .filter(event => 
+        .filter(event =>
             event.startTime <= endOfView.toISOString() &&
             event.endTime >= startOfView.toISOString()
         )
-    ,[events, startOfView, endOfView]);
+    , [events, startOfView, endOfView]);
 
     const weekDays = Array.from({ length: daysToShow }).map((_, i) => addDays(startOfView, i));
 
-    const nextPeriod = () => setViewDate(prev => addDays(prev, daysToShow));
-    const prevPeriod = () => setViewDate(prev => subDays(prev, daysToShow));
+    const nextPeriod = () => setViewDate(prev => {
+        const newDate = addDays(prev, daysToShow);
+        const newStart = daysToShow === 7
+            ? startOfWeek(newDate, { weekStartsOn: 1 })
+            : startOfDay(newDate);
+        return newStart <= maxDate ? newDate : prev;
+    });
+
+    const prevPeriod = () => setViewDate(prev => {
+        const newDate = subDays(prev, daysToShow);
+        const newStart = daysToShow === 7
+            ? startOfWeek(newDate, { weekStartsOn: 1 })
+            : startOfDay(newDate);
+        return newStart >= weekStart ? newDate : prev;
+    });
 
     const hours = Array.from({ length: 4 }).map((_, i) =>
         addHours(startOfDay(startOfView), 10 + (2.5 * i))
     );
-
 
     return (
         <div className="w-full rounded-2xl border shadow-sm overflow-hidden relative">

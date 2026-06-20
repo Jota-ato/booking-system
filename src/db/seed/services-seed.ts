@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { drizzle } from 'drizzle-orm/node-postgres'; // Swap out with your pool provider if using neon/pg
+import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import { services } from '../schema';
 

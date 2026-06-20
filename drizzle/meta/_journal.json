@@ -71,6 +71,20 @@
       "when": 1781631590206,
       "tag": "0009_nostalgic_penance",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1781979594174,
+      "tag": "0010_bizarre_brother_voodoo",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1781979609201,
+      "tag": "0011_lethal_fantastic_four",
+      "breakpoints": true
     }
   ]
 }

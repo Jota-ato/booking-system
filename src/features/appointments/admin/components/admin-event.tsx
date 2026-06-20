@@ -44,6 +44,7 @@ export function AdminEvent({ event, START_HOUR, ROW_HEIGHT_REM }: EventProps) {
                 endTime={format(endDate, 'HH:mm')}
                 label={event.customer.name}
                 description={event.service.name}
+                eventStatus={event.status}
             />
         </div>
     )
