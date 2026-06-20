@@ -21,7 +21,7 @@ export const services = pgTable(
     // ── Service definition (FR-04) ────────────────────────────────
     name: varchar("name", { length: 100 }).notNull(),
     description: text("description"),
-    imgage: varchar("image", { length: 120 }),
+    image: varchar("image", { length: 120 }),
 
     // numeric(10,2) avoids float rounding errors on currency values.
     price: numeric("price", { precision: 10, scale: 2 }).notNull(),
