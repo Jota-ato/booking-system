@@ -1,3 +1,4 @@
+import { ServiceWithExtras } from "../types/service.types";
 import { IServiceRepository, serviceRepository } from "./services-repository";
 
 /**
@@ -23,9 +24,19 @@ class ServicesService {
      * @returns A promise that resolves to an array of `Service` records.
      *          Returns an empty array if no services exist.
      */
-    async getServices() {
-        const services = await this.serviceRepository.getAll()
-        return services.filter(service => service.isActive && service.name !== "Manual Block")
+    async getServices(): Promise<ServiceWithExtras[]> {
+        const rawServices = await this.serviceRepository.getAll();
+
+        const activeServices = rawServices.filter(
+            service => service.isActive && service.name !== "Manual Block"
+        );
+
+        return activeServices.map(service => {
+            return {
+                data: service,
+                extras: service.serviceExtras.map(pivot => pivot.extra)
+            };
+        });
     }
 }
 

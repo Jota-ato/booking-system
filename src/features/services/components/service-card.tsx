@@ -3,21 +3,27 @@ import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { formatMXN } from "@/shared/lib/currency"
 import Image from "next/image"
+import { ServiceWithExtras } from "../types/service.types"
 
 export function ServiceCard({
     service,
     isAdmin = false
 }: {
-    service: Service
+    service: ServiceWithExtras
     isAdmin?: boolean
 }) {
 
     const {
-        description,
+        data,
+        extras
+    } = service
+
+    const {
         image,
+        description,
         name,
         price
-    } = service
+    } = data
 
     return (
         <Card>

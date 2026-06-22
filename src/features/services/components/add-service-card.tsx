@@ -1,8 +1,14 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { ActionModal } from "@/shared/components/form/action-modal";
+import { ServiceForm } from "./service-form";
+import { Extra } from "@/db/schema";
 
-export function AddServiceCard() {
+export function AddServiceCard({
+    extras
+} : {
+    extras: Extra[]
+}) {
     return (
         <ActionModal
             trigger={
@@ -27,6 +33,9 @@ export function AddServiceCard() {
             title="Crear un nuevo servicio"
             description="Llena los datos a continuación para agregar una nueva opción a tu catálogo."
         >
+            <ServiceForm 
+                extras={extras}
+            />
         </ActionModal>
     );
 }

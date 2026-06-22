@@ -1,5 +1,6 @@
 import { db } from "@/db"
 import { Service } from "@/db/schema"
+import { RawServiceWithExtras } from "../types/service.types"
 
 /**
  * Contract for all service catalog persistence operations.
@@ -14,7 +15,7 @@ export interface IServiceRepository {
      * @returns A promise that resolves to an array of {@link Service} records.
      *          Returns an empty array if no services are found.
      */
-    getAll(): Promise<Service[]>
+    getAll(): Promise<RawServiceWithExtras[]>
 }
 
 /**
@@ -24,11 +25,19 @@ export interface IServiceRepository {
  */
 class ServiceRepository implements IServiceRepository {
     /** @inheritdoc */
-    async getAll(): Promise<Service[]> {
+    async getAll(): Promise<RawServiceWithExtras[]> {
         return await db
             .query
             .services
-            .findMany()
+            .findMany({
+                with: {
+                    serviceExtras: {
+                        with: {
+                            extra: true
+                        }
+                    }
+                }
+            })
     }
 }
 

@@ -31,3 +31,5 @@ export const serviceExtras = pgTable("service_extras",
 
 export type Extra = typeof extras.$inferSelect;
 export type NewExtra = typeof extras.$inferInsert;
+export type ServiceExtra = typeof serviceExtras.$inferSelect;
+export type NewServiceExtra = typeof serviceExtras.$inferInsert;
