@@ -7,14 +7,10 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
-  // ── Better Auth admin() plugin ─────────────────────────────────
-  // Must be plain text — the drizzle adapter matches by "PgText" column
-  // type. A pgEnum column type won't be recognized and throws at runtime.
   role:       text("role").default("user").notNull(),
   banned:     boolean("banned").default(false).notNull(),
   banReason:  text("ban_reason"),
   banExpires: timestamp("ban_expires"),
-  // ───────────────────────────────────────────────────────────────
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -100,6 +96,5 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
   }),
 }));
 
-// ─── Types ───────────────────────────────────────────────────────────────────
 export type User     = typeof users.$inferSelect;
 export type UserRole = "user" | "admin";
