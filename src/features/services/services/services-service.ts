@@ -24,7 +24,8 @@ class ServicesService {
      *          Returns an empty array if no services exist.
      */
     async getServices() {
-        return await this.serviceRepository.getAll()
+        const services = await this.serviceRepository.getAll()
+        return services.filter(service => service.isActive && service.name !== "Manual Block")
     }
 }
 
