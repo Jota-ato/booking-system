@@ -15,6 +15,7 @@ export const extras = pgTable("extras",
         price: numeric("price", { precision: 10, scale: 2 })
     }
 );
+
 // Pivot table
 export const serviceExtras = pgTable("service_extras",
     {

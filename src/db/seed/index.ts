@@ -69,9 +69,8 @@ async function main() {
       startTime.setHours(slot.hour, slot.minute, 0, 0);
 
       const endTime = new Date(startTime);
-      endTime.setMinutes(startTime.getMinutes() + service.durationMinutes);
+      endTime.setMinutes(startTime.getMinutes() + 150);
 
-      // Random status assignment according to appointmentStatusEnum definitions
       const statuses: ('PENDING' | 'CONFIRMED' | 'COMPLETED')[] = ['PENDING', 'CONFIRMED', 'COMPLETED'];
       const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
@@ -83,7 +82,6 @@ async function main() {
         customerNameSnapshot: `${customer.name} ${customer.lastName}`,
         serviceNameSnapshot: service.name,
         servicePriceSnapshot: service.price,
-        serviceDurationSnapshot: service.durationMinutes,
         
         appointmentDate: startTime, 
         startTime: startTime.toISOString(),
