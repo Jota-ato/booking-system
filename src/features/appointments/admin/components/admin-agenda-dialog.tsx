@@ -6,11 +6,12 @@ import { format } from "date-fns"
 import { Separator } from "@/shared/components/ui/separator"
 import { Service } from "@/db/schema"
 import { NewAgendaAppointmentForm } from "./new-agenda-appointment-form"
+import { ServiceWithExtras } from "@/features/services/types/service.types"
 
 export function AdminAgendaDialog({
     services
 }: {
-    services: Service[]
+    services: ServiceWithExtras[]
 }) {
 
     const { 

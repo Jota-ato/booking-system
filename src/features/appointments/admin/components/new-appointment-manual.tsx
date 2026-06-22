@@ -25,11 +25,12 @@ import { showResponse } from "@/shared/lib/client-actions"
 import { NewAppointmentManuallyInput, newAppointmentManuallySchema } from "../schemas/appointment-schema"
 import { createManualAppointmentAction } from "../actions/admin-appointment-actions"
 import { redirect } from "next/navigation"
+import { ServiceWithExtras } from "@/features/services/types/service.types"
 
 export function NewAppointmentManuallyForm({
     services
 }: {
-    services: Service[]
+    services: ServiceWithExtras[]
 }) {
 
     const {
@@ -58,8 +59,8 @@ export function NewAppointmentManuallyForm({
 
     const servicePrice = useMemo(() => {
         if (!serviceId) return 0
-        const selected = services.find(service => service.id === serviceId)
-        return selected ? selected.price : 0
+        const selected = services.find(service => service.data.id === serviceId)
+        return selected ? selected.data.price : 0
     }, [serviceId, services])
 
     const create = async (data: NewAppointmentManuallyInput) => {
@@ -148,7 +149,7 @@ export function NewAppointmentManuallyForm({
                 <CustomSelect
                     control={control}
                     name="serviceId"
-                    options={services.map((s) => ({ value: s.id, label: s.name }))}
+                    options={services.map((s) => ({ value: s.data.id, label: s.data.name }))}
                     groupLabel="Services"
                     placeholder="Select service"
                 />

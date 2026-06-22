@@ -27,12 +27,13 @@ import { createManualAppointmentAction } from "../actions/admin-appointment-acti
 import { redirect } from "next/navigation"
 import { formatTime } from "@/shared/lib/date"
 import { useAppointmentStore } from "../stores/appointment-store"
+import { ServiceWithExtras } from "@/features/services/types/service.types"
 
 export function NewAgendaAppointmentForm({
     services,
     timeRange: { startTime, endTime }
 }: {
-    services: Service[]
+    services: ServiceWithExtras[]
     timeRange: { startTime: Date, endTime: Date }
 }) {
 
@@ -64,8 +65,8 @@ export function NewAgendaAppointmentForm({
 
     const servicePrice = useMemo(() => {
         if (!serviceId) return 0
-        const selected = services.find(service => service.id === serviceId)
-        return selected ? selected.price : 0
+        const selected = services.find(service => service.data.id === serviceId)
+        return selected ? selected.data.id : 0
     }, [serviceId, services])
 
     const create = async (data: NewAppointmentManuallyInput) => {
@@ -139,7 +140,7 @@ export function NewAgendaAppointmentForm({
                 <CustomSelect
                     control={control}
                     name="serviceId"
-                    options={services.map((s) => ({ value: s.id, label: s.name }))}
+                    options={services.map((s) => ({ value: s.data.id, label: s.data.id }))}
                     groupLabel="Services"
                     placeholder="Select service"
                 />

@@ -8,11 +8,12 @@ import { format, isSameDay } from "date-fns"
 import { BlockPeriodForm } from "./block-period-form"
 import { BlockTimeForm } from "./block-time-form"
 import { formatTime } from "@/shared/lib/date"
+import { ServiceWithExtras } from "@/features/services/types/service.types"
 
 export function EditAppointmentDialog({
     services
 }: {
-    services: Service[]
+    services: ServiceWithExtras[]
 }) {
 
     const { editDialogOpen: open, toggleEditDialogOpen: toggleOpen, activeEditingAppointment: activeAppointment, setActiveEditingAppointment: setActiveAppointment } = useAppointmentStore()

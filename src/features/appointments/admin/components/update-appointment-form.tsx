@@ -18,13 +18,14 @@ import { FullAppointment } from "../../core/types/appointments.types"
 import { useAppointmentStore } from "../stores/appointment-store"
 import { UpdateApointmentInput, updateAppointmentSchema } from "../schemas/appointment-schema"
 import { deleteAppointmentAction, updateAppointmentAction } from "../actions/admin-appointment-actions"
+import { ServiceWithExtras } from "@/features/services/types/service.types"
 
 export function UpdateAppointmentForm({
     appointment,
     services
 }: {
     appointment: FullAppointment
-    services: Service[]
+    services: ServiceWithExtras[]
 }) {
 
     const { toggleEditDialogOpen: toggleOpen, setActiveEditingAppointment: setActiveAppointment } = useAppointmentStore()
@@ -87,7 +88,7 @@ export function UpdateAppointmentForm({
     const serviceId = watch('serviceId')
 
     const servicePrice = useMemo(
-        () => services.filter(service => service.id === serviceId)[0].price
+        () => services.filter(service => service.data.id === serviceId)[0].data.price
         , [serviceId])
 
     return (
@@ -110,7 +111,7 @@ export function UpdateAppointmentForm({
                 <CustomSelect
                     control={control}
                     name="serviceId"
-                    options={services.map((s) => ({ value: s.id, label: s.name }))}
+                    options={services.map((s) => ({ value: s.data.id, label: s.data.name }))}
                     groupLabel="Services"
                     placeholder="Select service"
                 />

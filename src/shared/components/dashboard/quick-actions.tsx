@@ -4,6 +4,7 @@ import { cancellAllDayAction } from "@/features/appointments/admin/actions/admin
 import { BlockPeriodForm } from "@/features/appointments/admin/components/block-period-form";
 import { BlockTimeForm } from "@/features/appointments/admin/components/block-time-form";
 import { NewAppointmentManuallyForm } from "@/features/appointments/admin/components/new-appointment-manual";
+import { ServiceWithExtras } from "@/features/services/types/service.types";
 import { ActionModal } from "@/shared/components/form/action-modal";
 import QuickActionsButton from "@/shared/components/form/quick-action-button";
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";
@@ -24,7 +25,7 @@ export function QuickActions({
     services,
     today
 }: {
-    services: Service[]
+    services: ServiceWithExtras[]
     today: Date
 }) {
 
