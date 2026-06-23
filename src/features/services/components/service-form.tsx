@@ -11,15 +11,12 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { Button } from "@/shared/components/ui/button";
 import { ServiceInput, serviceSchema } from "../schemas/service-schema";
 import { ExtraSwitchController } from "./extra-switch-controller";
 import { FormSubmit } from "@/shared/components/form/form-submit";
 import ImageUploader from "@/shared/components/upload/image-uploader";
 import { showResponse } from "@/shared/lib/client-actions";
 import { createServiceAction } from "../actions/service-actions";
-
-
 
 export function ServiceForm({
     service,
@@ -50,8 +47,7 @@ export function ServiceForm({
     const image = watch("image")
 
     const createService = async (data: ServiceInput) => {
-        const {} = showResponse(await createServiceAction(data));
-        console.log(data)
+        showResponse(await createServiceAction(data));
     }
 
     return (
