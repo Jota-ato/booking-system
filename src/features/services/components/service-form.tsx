@@ -132,7 +132,7 @@ export function ServiceForm({
                             <ExtraSwitchController
                                 key={extra.id}
                                 control={control}
-                                name="includedExtras"
+                                name="availableExtras"
                                 extra={extra}
                             />
                         ))}
@@ -144,7 +144,7 @@ export function ServiceForm({
                             <ExtraSwitchController
                                 key={extra.id}
                                 control={control}
-                                name="availableExtras"
+                                name="includedExtras"
                                 extra={extra}
                             />
                         ))}
