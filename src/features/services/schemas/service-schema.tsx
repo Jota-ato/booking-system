@@ -5,7 +5,8 @@ export const serviceSchema = z.object({
     description: z.string({ error: 'service description is required' }).min(3, {error: 'description too short'}),
     price: z.number({ error: 'service price is required' }).min(0),
     includedExtras: z.array(z.uuid().nullable().optional()),
-    availableExtras: z.array(z.uuid().nullable().optional())
+    availableExtras: z.array(z.uuid().nullable().optional()),
+    image: z.url({ error: 'invalid image url' })
 })
 
 export type ServiceInput = z.infer<typeof serviceSchema>

@@ -15,6 +15,7 @@ import { Button } from "@/shared/components/ui/button";
 import { ServiceInput, serviceSchema } from "../schemas/service-schema";
 import { ExtraSwitchController } from "./extra-switch-controller";
 import { FormSubmit } from "@/shared/components/form/form-submit";
+import ImageUploader from "@/shared/components/upload/image-uploader";
 
 
 
@@ -30,6 +31,7 @@ export function ServiceForm({
         control,
         handleSubmit,
         register,
+        setValues,
         formState: { errors, isSubmitting },
     } = useForm<ServiceInput>({
         resolver: zodResolver(serviceSchema),
@@ -102,6 +104,14 @@ export function ServiceForm({
                                     </FieldError>
                                 )}
                             </Field>
+                            <Field>
+                                <FieldLabel htmlFor="image">Service image</FieldLabel>
+                                <ImageUploader
+                                    label="Image service"
+                                    image=""
+                                    onChange={(url) => setValues({ image: url ? url : "" }, { shouldValidate: true })}
+                                />
+                            </Field>
                         </FieldGroup>
                     </FieldSet>
                 </TabsContent>
@@ -130,7 +140,7 @@ export function ServiceForm({
                     </FieldSet>
                 </TabsContent>
             </Tabs>
-            <FormSubmit 
+            <FormSubmit
                 className="mt-4"
                 isSubmitting={isSubmitting}
                 label="Create service"
