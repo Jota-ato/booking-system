@@ -17,14 +17,33 @@ import { FormSubmit } from "@/shared/components/form/form-submit";
 import ImageUploader from "@/shared/components/upload/image-uploader";
 import { showResponse } from "@/shared/lib/client-actions";
 import { createServiceAction } from "../actions/service-actions";
+import { ServiceWithExtras } from "../types/service.types";
 
 export function ServiceForm({
     service,
     extras
 }: {
-    service?: Service
+    service?: ServiceWithExtras
     extras: Extra[]
 }) {
+
+    const isEditing = !!service
+
+    const serviceExtras = service ? service.extras : []
+    const defaultValues = service ? {
+        name: service.data.name,
+        description: service.data.description ? service.data.description : "",
+        price: +service.data.price,
+        image: service.data.image ? service.data.image : ""
+    } : {
+        name: "",
+        description: "",
+        price: 0,
+        image: ""
+    }
+
+    const includedExtras = serviceExtras.map(extra => extra.included ? extra.id : null).filter(id => id !== null)
+    const availableExtras = serviceExtras.map(extra => !extra.included ? extra.id : null).filter(id => id !== null)
 
     const {
         control,
@@ -35,13 +54,7 @@ export function ServiceForm({
         formState: { errors, isSubmitting },
     } = useForm<ServiceInput>({
         resolver: zodResolver(serviceSchema),
-        defaultValues: {
-            name: "",
-            description: "",
-            price: 0,
-            includedExtras: [],
-            availableExtras: []
-        }
+        defaultValues
     })
 
     const image = watch("image")

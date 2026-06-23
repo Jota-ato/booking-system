@@ -15,7 +15,7 @@ export const services = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     name: varchar("name", { length: 100 }).notNull(),
-    description: text("description"),
+    description: text("description").notNull().default(""),
     image: varchar("image", { length: 120 }),
     price: numeric("price", { precision: 10, scale: 2 }).notNull(),
     isActive: boolean("is_active").notNull().default(true),
