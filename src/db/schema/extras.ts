@@ -1,4 +1,5 @@
 import {
+    boolean,
     numeric,
     pgTable,
     text,
@@ -26,6 +27,7 @@ export const serviceExtras = pgTable("service_extras",
         extraId: uuid("extra_id")
             .notNull()
             .references(() => extras.id, { onDelete: "cascade" }),
+        included: boolean("included").default(false)
     }
 );
 

@@ -1,6 +1,7 @@
 import { db } from "@/db"
-import { Service } from "@/db/schema"
+import { NewService, Service, services } from "@/db/schema"
 import { RawServiceWithExtras } from "../types/service.types"
+import { ServiceInput } from "../schemas/service-schema"
 
 /**
  * Contract for all service catalog persistence operations.
@@ -16,6 +17,7 @@ export interface IServiceRepository {
      *          Returns an empty array if no services are found.
      */
     getAll(): Promise<RawServiceWithExtras[]>
+    create(payload: NewService): Promise<Service>
 }
 
 /**
@@ -38,6 +40,13 @@ class ServiceRepository implements IServiceRepository {
                     }
                 }
             })
+    }
+
+    async create(payload: NewService): Promise<Service> {
+        return (await db
+            .insert(services)
+            .values(payload)
+            .returning())[0]
     }
 }
 

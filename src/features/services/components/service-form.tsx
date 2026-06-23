@@ -16,6 +16,8 @@ import { ServiceInput, serviceSchema } from "../schemas/service-schema";
 import { ExtraSwitchController } from "./extra-switch-controller";
 import { FormSubmit } from "@/shared/components/form/form-submit";
 import ImageUploader from "@/shared/components/upload/image-uploader";
+import { showResponse } from "@/shared/lib/client-actions";
+import { createServiceAction } from "../actions/service-actions";
 
 
 
@@ -31,7 +33,8 @@ export function ServiceForm({
         control,
         handleSubmit,
         register,
-        setValues,
+        setValue,
+        watch,
         formState: { errors, isSubmitting },
     } = useForm<ServiceInput>({
         resolver: zodResolver(serviceSchema),
@@ -44,17 +47,20 @@ export function ServiceForm({
         }
     })
 
+    const image = watch("image")
+
     const createService = async (data: ServiceInput) => {
-        console.log(data);
+        const {} = showResponse(await createServiceAction(data));
+        console.log(data)
     }
 
     return (
         <form onSubmit={handleSubmit(createService)}>
-            <Tabs>
+            <Tabs defaultValue="general">
                 <TabsList>
                     <TabsTrigger value="general">General</TabsTrigger>
                     <TabsTrigger value="includedExtras">Included Extras</TabsTrigger>
-                    <TabsTrigger value="availableExtras">Extras</TabsTrigger>
+                    <TabsTrigger value="availableExtras">Available Extras</TabsTrigger>
                 </TabsList>
                 <TabsContent value="general">
                     <FieldSet>
@@ -108,9 +114,14 @@ export function ServiceForm({
                                 <FieldLabel htmlFor="image">Service image</FieldLabel>
                                 <ImageUploader
                                     label="Image service"
-                                    image=""
-                                    onChange={(url) => setValues({ image: url ? url : "" }, { shouldValidate: true })}
+                                    image={image}
+                                    onChange={(url) => setValue("image", url ? url : "", { shouldValidate: true })}
                                 />
+                                {errors.image && (
+                                    <FieldError>
+                                        {errors.image.message}
+                                    </FieldError>
+                                )}
                             </Field>
                         </FieldGroup>
                     </FieldSet>

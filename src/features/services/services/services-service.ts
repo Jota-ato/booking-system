@@ -1,4 +1,7 @@
+import { Service } from "@/db/schema";
+import { ServiceInput } from "../schemas/service-schema";
 import { ServiceWithExtras } from "../types/service.types";
+import { extrasService } from "./extras-service";
 import { IServiceRepository, serviceRepository } from "./services-repository";
 
 /**
@@ -38,8 +41,24 @@ class ServicesService {
             };
         });
     }
-    
-    
+
+    async createService(input: ServiceInput): Promise<Service> {
+        const payload = {
+            name: input.name,
+            price: input.price.toString(),
+            description: input.description,
+            image: input.image
+        }
+
+        const service = await this.serviceRepository.create(payload);
+        await this.createExtras(input, service.id);
+        return service
+    }
+
+    async createExtras({ includedExtras, availableExtras }: ServiceInput, serviceId: string): Promise<void> {
+        await extrasService.createServiceExtras(includedExtras, serviceId, true);
+        await extrasService.createServiceExtras(availableExtras, serviceId, false);
+    }
 }
 
 export const servicesService = new ServicesService(

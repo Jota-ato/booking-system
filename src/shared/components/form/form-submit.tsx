@@ -27,7 +27,7 @@ export function FormSubmit({
             className={className}
             type="submit"
         >
-            {isSubmitting ? <span><Spinner /> {submittingLabelToShow}</span> : labelToShow}
+            {isSubmitting ? <span className="flex items-center gap-2"><Spinner /> {submittingLabelToShow}</span> : labelToShow}
         </Button>
     )
 }

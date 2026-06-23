@@ -1,0 +1,1 @@
+ALTER TABLE "service_extras" ADD COLUMN "included" boolean DEFAULT false;
