@@ -7,7 +7,7 @@ import type { NewExtra } from '../schema/extras';
 
 // 1. Datos base unificados (Usando duraciones de 150 mins de services-seed.ts)
 const servicesData = [
-  { name: 'BLOQUEO MANUAL', description: null, price: '0.00', durationMinutes: 150, isActive: true },
+  { name: 'BLOQUEO MANUAL', description: "", price: '0.00', durationMinutes: 150, isActive: true },
   { name: 'Ojo de Gato', description: 'técnica clásica para uñas largas, resistentes y de diseño', price: '450.00', durationMinutes: 150, isActive: true },
   { name: 'Acrílico', description: 'técnica clásica para uñas largas, resistentes y de diseño', price: '450.00', durationMinutes: 150, isActive: true },
   { name: 'Tech Gel', description: 'Combina lo mejor del acrílico y del gel. Limado suave sin olores fuertes', price: '400.00', durationMinutes: 150, isActive: true },
