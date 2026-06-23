@@ -8,11 +8,15 @@ import {
     TabsList,
     TabsTrigger
 } from "@/shared/components/ui/tabs"
-import { Field, FieldGroup, FieldLabel, FieldSet } from "@/shared/components/ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/shared/components/ui/field";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Button } from "@/shared/components/ui/button";
-import { FieldSwitch } from "@/shared/components/form/field-switch";
+import { ServiceInput, serviceSchema } from "../schemas/service-schema";
+import { ExtraSwitchController } from "./extra-switch-controller";
+import { FormSubmit } from "@/shared/components/form/form-submit";
+
+
 
 export function ServiceForm({
     service,
@@ -24,16 +28,31 @@ export function ServiceForm({
 
     const {
         control,
-        handleSubmit
-    } = useForm()
+        handleSubmit,
+        register,
+        formState: { errors, isSubmitting },
+    } = useForm<ServiceInput>({
+        resolver: zodResolver(serviceSchema),
+        defaultValues: {
+            name: "",
+            description: "",
+            price: 0,
+            includedExtras: [],
+            availableExtras: []
+        }
+    })
+
+    const createService = async (data: ServiceInput) => {
+        console.log(data);
+    }
 
     return (
-        <form>
+        <form onSubmit={handleSubmit(createService)}>
             <Tabs>
                 <TabsList>
                     <TabsTrigger value="general">General</TabsTrigger>
                     <TabsTrigger value="includedExtras">Included Extras</TabsTrigger>
-                    <TabsTrigger value="extras">Extras</TabsTrigger>
+                    <TabsTrigger value="availableExtras">Extras</TabsTrigger>
                 </TabsList>
                 <TabsContent value="general">
                     <FieldSet>
@@ -45,7 +64,14 @@ export function ServiceForm({
                                 <Input
                                     type="text"
                                     id="name"
+                                    {...register("name")}
+
                                 />
+                                {errors.name && (
+                                    <FieldError>
+                                        {errors.name.message}
+                                    </FieldError>
+                                )}
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="description">
@@ -53,7 +79,13 @@ export function ServiceForm({
                                 </FieldLabel>
                                 <Textarea
                                     id="description"
+                                    {...register("description")}
                                 />
+                                {errors.description && (
+                                    <FieldError>
+                                        {errors.description.message}
+                                    </FieldError>
+                                )}
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="price">
@@ -62,19 +94,25 @@ export function ServiceForm({
                                 <Input
                                     type="number"
                                     id="price"
+                                    {...register("price", { valueAsNumber: true })}
                                 />
+                                {errors.price && (
+                                    <FieldError>
+                                        {errors.price.message}
+                                    </FieldError>
+                                )}
                             </Field>
                         </FieldGroup>
                     </FieldSet>
                 </TabsContent>
-                <TabsContent value="extras">
+                <TabsContent value="availableExtras">
                     <FieldSet>
                         {extras.map(extra => (
-                            <FieldSwitch 
+                            <ExtraSwitchController
                                 key={extra.id}
                                 control={control}
-                                name={extra.name}
-                                label={extra.name}
+                                name="includedExtras"
+                                extra={extra}
                             />
                         ))}
                     </FieldSet>
@@ -82,22 +120,22 @@ export function ServiceForm({
                 <TabsContent value="includedExtras">
                     <FieldSet>
                         {extras.map(extra => (
-                            <FieldSwitch 
+                            <ExtraSwitchController
                                 key={extra.id}
                                 control={control}
-                                name={extra.name}
-                                label={extra.name}
+                                name="availableExtras"
+                                extra={extra}
                             />
                         ))}
                     </FieldSet>
                 </TabsContent>
             </Tabs>
-            <Button
-                type="submit"
+            <FormSubmit 
                 className="mt-4"
-            >
-                Save
-            </Button>
+                isSubmitting={isSubmitting}
+                label="Create service"
+                submittingLabel="Creating service..."
+            />
         </form>
     )
 }
