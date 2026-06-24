@@ -65,9 +65,8 @@ export function ServiceForm({
     const image = watch("image")
 
     const createService = async (data: ServiceInput) => {
-        console.log(data)
         showResponse(isEditing ?
-            await updateServiceAction(data)
+            await updateServiceAction(data, service.data.id)
             : await createServiceAction(data)
         );
     }

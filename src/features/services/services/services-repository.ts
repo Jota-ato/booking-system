@@ -2,6 +2,7 @@ import { db } from "@/db"
 import { NewService, Service, services } from "@/db/schema"
 import { RawServiceWithExtras } from "../types/service.types"
 import { ServiceInput } from "../schemas/service-schema"
+import { eq } from "drizzle-orm"
 
 /**
  * Contract for all service catalog persistence operations.
@@ -18,6 +19,7 @@ export interface IServiceRepository {
      */
     getAll(): Promise<RawServiceWithExtras[]>
     create(payload: NewService): Promise<Service>
+    update(payload: NewService, id: string): Promise<Service>
 }
 
 /**
@@ -47,6 +49,21 @@ class ServiceRepository implements IServiceRepository {
             .insert(services)
             .values(payload)
             .returning())[0]
+    }
+
+    async update(payload: NewService, id: string): Promise<Service> {
+        return (
+            await db
+                .update(services)
+                .set({
+                    name: payload.name,
+                    price: payload.price.toString(),
+                    description: payload.description,
+                    image: payload.image
+                })
+                .where(eq(services.id, id))
+                .returning()
+        )[0]
     }
 }
 

@@ -27,6 +27,10 @@ class ExtrasService {
 
         await this.extraRepository.createServiceExtras(payload)
     }
+
+    async deleteServiceExtras(serviceId: string) {
+        await this.extraRepository.deleteServiceExtras(serviceId)
+    }
 }
 
 export const extrasService = new ExtrasService(extrasRepository)

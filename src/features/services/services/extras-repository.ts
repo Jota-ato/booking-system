@@ -1,10 +1,12 @@
 import { db } from "@/db"
 import { Extra, NewServiceExtra, ServiceExtra, serviceExtras } from "@/db/schema"
+import { eq } from "drizzle-orm"
 
 export interface IExtrasRepository {
     getAll(): Promise<Extra[]>
     getServiceExtras(serviceId: string): Promise<ServiceExtra[]>
     createServiceExtras(payload: NewServiceExtra[]): Promise<void>
+    deleteServiceExtras(serviceId: string): Promise<void>
 }
 
 class ExtrasRepository implements IExtrasRepository {
@@ -28,6 +30,12 @@ class ExtrasRepository implements IExtrasRepository {
         await db
             .insert(serviceExtras)
             .values(payload)
+    }
+
+    async deleteServiceExtras(serviceId: string): Promise<void> {
+        await db
+            .delete(serviceExtras)
+            .where(eq(serviceExtras.serviceId, serviceId))
     }
 }
 

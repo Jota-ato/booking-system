@@ -55,9 +55,27 @@ class ServicesService {
         return service
     }
 
+    async updateService(input: ServiceInput, id: string): Promise<Service> {
+        const payload = {
+            name: input.name,
+            price: input.price.toString(),
+            description: input.description,
+            image: input.image
+        }
+
+        const service = await this.serviceRepository.update(payload, id);
+        await this.deleteExtras(id);
+        await this.createExtras(input, service.id);
+        return service
+    }
+
     async createExtras({ includedExtras, availableExtras }: ServiceInput, serviceId: string): Promise<void> {
         await extrasService.createServiceExtras(includedExtras, serviceId, true);
         await extrasService.createServiceExtras(availableExtras, serviceId, false);
+    }
+
+    async deleteExtras(serviceId: string): Promise<void> {
+        await extrasService.deleteServiceExtras(serviceId);
     }
 }
 
