@@ -16,7 +16,7 @@ import { ExtraSwitchController } from "./extra-switch-controller";
 import { FormSubmit } from "@/shared/components/form/form-submit";
 import ImageUploader from "@/shared/components/upload/image-uploader";
 import { showResponse } from "@/shared/lib/client-actions";
-import { createServiceAction } from "../actions/service-actions";
+import { createServiceAction, updateServiceAction } from "../actions/service-actions";
 import { ServiceWithExtras } from "../types/service.types";
 
 export function ServiceForm({
@@ -30,20 +30,25 @@ export function ServiceForm({
     const isEditing = !!service
 
     const serviceExtras = service ? service.extras : []
+
+    const includedExtras = serviceExtras.map(extra => extra.included ? extra.extraId : null).filter(id => id !== null)
+    const availableExtras = serviceExtras.map(extra => !extra.included ? extra.extraId : null).filter(id => id !== null)
+
     const defaultValues = service ? {
         name: service.data.name,
         description: service.data.description ? service.data.description : "",
         price: +service.data.price,
-        image: service.data.image ? service.data.image : ""
+        image: service.data.image ? service.data.image : "",
+        includedExtras,
+        availableExtras
     } : {
         name: "",
         description: "",
         price: 0,
-        image: ""
+        image: "",
+        includedExtras: [],
+        availableExtras: []
     }
-
-    const includedExtras = serviceExtras.map(extra => extra.included ? extra.id : null).filter(id => id !== null)
-    const availableExtras = serviceExtras.map(extra => !extra.included ? extra.id : null).filter(id => id !== null)
 
     const {
         control,
@@ -60,8 +65,15 @@ export function ServiceForm({
     const image = watch("image")
 
     const createService = async (data: ServiceInput) => {
-        showResponse(await createServiceAction(data));
+        console.log(data)
+        showResponse(isEditing ?
+            await updateServiceAction(data)
+            : await createServiceAction(data)
+        );
     }
+
+    const buttonLabel = isEditing ? "Update service" : "Create service"
+    const submittingLabel = isEditing ? "Updating service..." : "Creating service..."
 
     return (
         <form onSubmit={handleSubmit(createService)}>
@@ -163,8 +175,8 @@ export function ServiceForm({
             <FormSubmit
                 className="mt-4"
                 isSubmitting={isSubmitting}
-                label="Create service"
-                submittingLabel="Creating service..."
+                label={buttonLabel}
+                submittingLabel={submittingLabel}
             />
         </form>
     )

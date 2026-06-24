@@ -12,7 +12,17 @@ export const createServiceAction = adminAction(async (input: ServiceInput) => {
         throw new AppError("Something went wrong");
     }
 
-    const service =await servicesService.createService(input);
+    const service = await servicesService.createService(input);
 
     return `Service ${service.name} created successfully`
+})
+
+export const updateServiceAction = adminAction(async (input: ServiceInput) => {
+    const zodResponse = serviceSchema.safeParse(input);
+
+    if (!zodResponse.success) {
+        throw new AppError("Something went wrong");
+    }
+
+    return "Service updated successfully"
 })

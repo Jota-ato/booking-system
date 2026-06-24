@@ -1,9 +1,7 @@
-import { db } from "../index"; // Importa tu instancia configurada de Drizzle/Neon
-import { extras, type NewExtra } from "../schema/extras"; // Ajusta el path a tu archivo
+import { db } from "../index"; 
+import { extras, type NewExtra } from "../schema/extras"; 
 
-// 1. Centralizamos los datos heredados de los ENUMs
 const legacyExtrasData: string[] = [
-  // Antiguos ServiceItem
   'Pro Manicure',
   'Técnica Dual',
   'Extensión (Técnica escultural)',
@@ -11,7 +9,6 @@ const legacyExtrasData: string[] = [
   'Tonos naturales',
   'Variedad de Colores',
   'Acabado Matte/Brillo',
-  // Antiguos ServiceExtra
   'Color Gel',
   'Frances',
   'Efectos',
@@ -22,9 +19,7 @@ const legacyExtrasData: string[] = [
   'Diseño 3D'
 ];
 
-// 2. Función pura para generar el precio asegurando el formato `string` (precisión de 2 decimales)
 const generateRandomPrice = (max: number): string => {
-  // Genera un número entre 5 y max (para evitar extras de $0)
   const randomValue = Math.random() * (max - 5) + 5; 
   return randomValue.toFixed(2); // Retorna un string ej: "45.50"
 };

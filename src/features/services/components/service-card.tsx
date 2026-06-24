@@ -1,9 +1,9 @@
-import { Service } from "@/db/schema"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { formatMXN } from "@/shared/lib/currency"
 import Image from "next/image"
 import { ServiceWithExtras } from "../types/service.types"
+import { ServiceCardAdminButton } from "./service-card-admin-button"
 
 export function ServiceCard({
     service,
@@ -15,7 +15,6 @@ export function ServiceCard({
 
     const {
         data,
-        extras
     } = service
 
     const {
@@ -44,9 +43,7 @@ export function ServiceCard({
                 Precio <span className="font-bold">{formatMXN(+price)}</span>
             </CardContent>
             <CardFooter>
-                <Button>
-                    Ver detalles
-                </Button>
+                {isAdmin && <ServiceCardAdminButton service={service} />}
             </CardFooter>
         </Card>
     )
