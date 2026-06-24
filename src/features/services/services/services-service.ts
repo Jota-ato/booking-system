@@ -3,6 +3,7 @@ import { ServiceInput } from "../schemas/service-schema";
 import { ServiceWithExtras } from "../types/service.types";
 import { extrasService } from "./extras-service";
 import { IServiceRepository, serviceRepository } from "./services-repository";
+import { AppError } from "@/shared/lib/errors";
 
 /**
  * Application-layer service responsible for retrieving the service catalog.
@@ -42,6 +43,10 @@ class ServicesService {
         });
     }
 
+    async getServiceById(id: string): Promise<Service | undefined> {
+        return await this.serviceRepository.getById(id);
+    }
+
     async createService(input: ServiceInput): Promise<Service> {
         const payload = {
             name: input.name,
@@ -56,6 +61,12 @@ class ServicesService {
     }
 
     async updateService(input: ServiceInput, id: string): Promise<Service> {
+        const dbService = await this.getServiceById(id);
+
+        if (!dbService) {
+            throw new AppError("Service not found");
+        }
+
         const payload = {
             name: input.name,
             price: input.price.toString(),
@@ -63,10 +74,15 @@ class ServicesService {
             image: input.image
         }
 
-        const service = await this.serviceRepository.update(payload, id);
+        const newService = await this.serviceRepository.update(payload, dbService.id);
+        await this.deleteExtras(newService.id);
+        await this.createExtras(input, newService.id);
+        return newService
+    }
+
+    async deteleService(id: string): Promise<void> {
         await this.deleteExtras(id);
-        await this.createExtras(input, service.id);
-        return service
+        await this.serviceRepository.delete(id);
     }
 
     async createExtras({ includedExtras, availableExtras }: ServiceInput, serviceId: string): Promise<void> {

@@ -18,8 +18,10 @@ export interface IServiceRepository {
      *          Returns an empty array if no services are found.
      */
     getAll(): Promise<RawServiceWithExtras[]>
+    getById(id: string): Promise<Service | undefined>
     create(payload: NewService): Promise<Service>
     update(payload: NewService, id: string): Promise<Service>
+    delete(id: string): Promise<void>
 }
 
 /**
@@ -44,6 +46,17 @@ class ServiceRepository implements IServiceRepository {
             })
     }
 
+    async getById(id: string): Promise<Service | undefined> {
+        return (
+            await db
+                .query
+                .services
+                .findFirst({
+                    where: (service, {eq}) => eq(service.id, id)
+                })
+        ) ?? undefined
+    }
+
     async create(payload: NewService): Promise<Service> {
         return (await db
             .insert(services)
@@ -64,6 +77,12 @@ class ServiceRepository implements IServiceRepository {
                 .where(eq(services.id, id))
                 .returning()
         )[0]
+    }
+
+    async delete(id: string): Promise<void> {
+        await db
+            .delete(services)
+            .where(eq(services.id, id))
     }
 }
 

@@ -16,8 +16,10 @@ import { ExtraSwitchController } from "./extra-switch-controller";
 import { FormSubmit } from "@/shared/components/form/form-submit";
 import ImageUploader from "@/shared/components/upload/image-uploader";
 import { showResponse } from "@/shared/lib/client-actions";
-import { createServiceAction, updateServiceAction } from "../actions/service-actions";
+import { createServiceAction, deleteServiceAction, updateServiceAction } from "../actions/service-actions";
 import { ServiceWithExtras } from "../types/service.types";
+import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";
+import { useServiceStore } from "../stores/service-store";
 
 export function ServiceForm({
     service,
@@ -26,6 +28,8 @@ export function ServiceForm({
     service?: ServiceWithExtras
     extras: Extra[]
 }) {
+
+    const { setActiveService, toggleOpen } = useServiceStore()
 
     const isEditing = !!service
 
@@ -64,18 +68,30 @@ export function ServiceForm({
 
     const image = watch("image")
 
-    const createService = async (data: ServiceInput) => {
+    const onSubmit = async (data: ServiceInput) => {
         showResponse(isEditing ?
             await updateServiceAction(data, service.data.id)
             : await createServiceAction(data)
         );
+
+        if (isEditing) {
+            setActiveService(null)
+            toggleOpen()
+        }
+    }
+
+    const deleteService = async () => {
+        if (!service) return
+        showResponse(await deleteServiceAction(service.data.id));
+        toggleOpen()
+        setActiveService(null)
     }
 
     const buttonLabel = isEditing ? "Update service" : "Create service"
     const submittingLabel = isEditing ? "Updating service..." : "Creating service..."
 
     return (
-        <form onSubmit={handleSubmit(createService)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Tabs defaultValue="general">
                 <TabsList>
                     <TabsTrigger value="general">General</TabsTrigger>
@@ -171,12 +187,23 @@ export function ServiceForm({
                     </FieldSet>
                 </TabsContent>
             </Tabs>
-            <FormSubmit
-                className="mt-4"
-                isSubmitting={isSubmitting}
-                label={buttonLabel}
-                submittingLabel={submittingLabel}
-            />
+            <div className="flex gap-4 justify-end items-center mt-4">
+                <FormSubmit
+                    isSubmitting={isSubmitting}
+                    label={buttonLabel}
+                    submittingLabel={submittingLabel}
+                />
+                {isEditing &&
+                    <AlertDialogCustom
+                        action={deleteService}
+                        actionLabel="Delete"
+                        triggerLabel="Delete Service"
+                        dialogTitle="Are you sure you want to delete this service?"
+                        dialogDescription="This action cannot be undone."
+                        showText
+                    />
+                }
+            </div>
         </form>
     )
 }

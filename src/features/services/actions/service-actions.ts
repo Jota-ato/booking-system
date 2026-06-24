@@ -28,3 +28,8 @@ export const updateServiceAction = adminAction(async (input: ServiceInput, id: s
 
     return "Service updated successfully"
 })
+
+export const deleteServiceAction = adminAction(async (id: string) => {
+    await servicesService.deteleService(id);
+    return "Service deleted successfully"
+})
