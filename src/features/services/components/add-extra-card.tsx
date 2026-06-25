@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { ActionModal } from "@/shared/components/form/action-modal";
+import { ExtraForm } from "./extra-form";
 
 export function AddExtraCard({
 } : {
@@ -29,6 +30,7 @@ export function AddExtraCard({
             title="Create new extra"
             description="Fill in the data below to add a new extra to your catalog."
         >
+            <ExtraForm />
         </ActionModal>
     );
 }

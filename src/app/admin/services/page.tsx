@@ -73,14 +73,14 @@ export default async function ServicesPage() {
             </div>
           </TabsContent>
           <TabsContent className="min-h-120" value="extras">
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <AddExtraCard />
               {extras.length ?
                 extras.map(extra => (
                   <ExtraCard key={extra.id} extra={extra} />
                 ))
                 : <Heading level={2} className="md:col-span-3 lg:col-span-4 my-4">No extras</Heading>
               }
-              <AddExtraCard />
             </div>
           </TabsContent>
         </Tabs>
