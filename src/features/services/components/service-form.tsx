@@ -143,6 +143,7 @@ export function ServiceForm({
                                 <Input
                                     type="number"
                                     id="price"
+                                    step={0.01}
                                     {...register("price", { valueAsNumber: true })}
                                 />
                                 {errors.price && (

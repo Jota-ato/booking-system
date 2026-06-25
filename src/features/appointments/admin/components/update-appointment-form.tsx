@@ -140,6 +140,7 @@ export function UpdateAppointmentForm({
                         <Input
                             id="extraPrice"
                             type="number"
+                            step={0.01}
                             {...register('extrasPrice', {
                                 setValueAs(value) {
                                     return +value

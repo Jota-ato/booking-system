@@ -157,6 +157,7 @@ export function NewAgendaAppointmentForm({
                         <FieldLabel htmlFor="extraPrice">Extra price</FieldLabel>
                         <Input
                             id="extraPrice"
+                            step={0.01}
                             type="number"
                             {...register('extrasPrice', {
                                 setValueAs: (value) => value === "" ? 0 : +value,
