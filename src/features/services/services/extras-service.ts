@@ -1,6 +1,7 @@
 import { NewExtra, NewServiceExtra, ServiceExtra } from "@/db/schema";
 import { extrasRepository, IExtrasRepository } from "./extras-repository";
 import { ExtraInput, ServiceInput } from "../schemas/service-schema";
+import { AppError } from "@/shared/lib/errors";
 
 class ExtrasService {
     constructor(
@@ -9,6 +10,10 @@ class ExtrasService {
 
     async getExtras() {
         return await this.extraRepository.getAll()
+    }
+
+    async getExtraById(id: string) {
+        return await this.extraRepository.getExtraById(id)
     }
 
     async createExtra(input: ExtraInput) {
@@ -20,6 +25,24 @@ class ExtrasService {
         }
 
         return await this.extraRepository.createExtra(payload)
+    }
+
+    async editExtra(input: ExtraInput, id: string, isActive: boolean) {
+
+        const dbExtra = await this.getExtraById(id)
+
+        if (!dbExtra) {
+            throw new AppError("Extra not found")
+        }
+
+        const payLoad = {
+            ...input,
+            price: input.price.toString(),
+            id,
+            isActive
+        }
+
+        return await this.extraRepository.editExtra(payLoad, id)
     }
 
     async getServiceExtras(serviceId: string) {

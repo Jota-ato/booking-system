@@ -14,7 +14,7 @@ export const extras = pgTable("extras",
         name: varchar("name", { length: 60 }).notNull(),
         description: text('description'),
         price: numeric("price", { precision: 10, scale: 2 }).notNull(),
-        isActive: boolean("is_active").default(true)
+        isActive: boolean("is_active").default(true).notNull()
     }
 );
 

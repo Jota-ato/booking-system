@@ -14,10 +14,27 @@ import { Input } from "@/shared/components/ui/input"
 import { Textarea } from "@/shared/components/ui/textarea"
 import { FormSubmit } from "@/shared/components/form/form-submit"
 import { showResponse } from "@/shared/lib/client-actions"
-import { createExtraAction } from "../actions/extras-actions"
+import { createExtraAction, editExtraAction } from "../actions/extras-actions"
+import { Extra } from "@/db/schema"
 
 
-export function ExtraForm() {
+export function ExtraForm({
+    extra
+}: {
+    extra?: Extra
+}) {
+
+    const isEditing = !!extra
+
+    const defaultValues = extra ? {
+        name: extra.name,
+        description: extra.description,
+        price: +extra.price
+    } : {
+        name: "",
+        description: "",
+        price: 0
+    }
 
     const {
         register,
@@ -25,11 +42,19 @@ export function ExtraForm() {
         formState: { errors, isSubmitting }
     } = useForm<ExtraInput>({
         resolver: zodResolver(extraSchema),
+        defaultValues
     })
 
     const onSubmit = async (data: ExtraInput) => {
-        showResponse(await createExtraAction(data))
+        if (isEditing) {
+            showResponse(await editExtraAction(data, extra.id, extra.isActive))
+        } else {
+            showResponse(await createExtraAction(data))
+        }
     }
+
+    const label = isEditing ? "Edit extra" : "Create extra"
+    const submittingLabel = isEditing ? "Editing..." : "Creating..."
 
     return (
         <form
@@ -66,8 +91,8 @@ export function ExtraForm() {
                 </FieldGroup>
                 <FormSubmit
                     isSubmitting={isSubmitting}
-                    label="Create extra"
-                    submittingLabel="Creating..."
+                    label={label}
+                    submittingLabel={submittingLabel}
                 />
             </FieldSet>
         </form>

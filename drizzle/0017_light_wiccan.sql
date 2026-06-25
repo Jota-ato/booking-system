@@ -1,0 +1,1 @@
+ALTER TABLE "extras" ALTER COLUMN "is_active" SET NOT NULL;

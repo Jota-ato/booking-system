@@ -1,6 +1,7 @@
 import { AddExtraCard } from "@/features/services/components/add-extra-card";
 import { AddServiceCard } from "@/features/services/components/add-service-card";
 import { ExtraCard } from "@/features/services/components/extra-card";
+import { ExtraDialog } from "@/features/services/components/extra-dialog";
 import { ServiceCard } from "@/features/services/components/service-card";
 import { ServiceDialog } from "@/features/services/components/service-dialog";
 import { extrasService } from "@/features/services/services/extras-service";
@@ -88,6 +89,7 @@ export default async function ServicesPage() {
       <ServiceDialog
         extras={extras}
       />
+      <ExtraDialog />
     </section>
   )
 }

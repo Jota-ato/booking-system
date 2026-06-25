@@ -16,3 +16,15 @@ export const createExtraAction = adminAction(async (input: ExtraInput) => {
 
     return `${extra.name} created successfully`
 })
+
+export const editExtraAction = adminAction(async (input: ExtraInput, id: string, isActive: boolean) => {
+    const zodResponse = extraSchema.safeParse(input)
+
+    if (!zodResponse.success) {
+        throw new AppError(zodResponse.error.message)
+    }
+
+    const extra = await extrasService.editExtra(input, id, isActive)
+
+    return `${extra.name} updated successfully`
+})
