@@ -16,6 +16,8 @@ import {
 export default async function ServicesPage() {
 
   const services = await servicesService.getAllServices();
+  const activeServices = services.filter(service => service.data.isActive)
+  const unactiveServices = services.filter(service => !service.data.isActive)
   const extras = await extrasService.getExtras();
 
   return (
@@ -30,9 +32,8 @@ export default async function ServicesPage() {
           </TabsList>
           <TabsContent value="activeServices">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.length ?
-                services
-                  .filter(service => service.data.isActive)
+              {activeServices.length ?
+                activeServices
                   .map(service => (
                     <ServiceCard
                       key={service.data.id}
@@ -41,7 +42,7 @@ export default async function ServicesPage() {
                     />
                   ))
                 : (
-                  <p className="md:col-span-2 lg:col-span-3">No hay servicios disponibles</p>
+                  <Heading level={2} className="md:col-span-2 lg:col-span-3 my-4">No active services</Heading>
                 )
               }
               <AddServiceCard
@@ -52,9 +53,8 @@ export default async function ServicesPage() {
           </TabsContent>
           <TabsContent value="unactiveServices">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.length ?
-                services
-                  .filter(service => !service.data.isActive)
+              {unactiveServices.length ?
+                unactiveServices
                   .map(service => (
                     <ServiceCard
                       key={service.data.id}
@@ -63,7 +63,7 @@ export default async function ServicesPage() {
                     />
                   ))
                 : (
-                  <p className="md:col-span-2 lg:col-span-3">No hay servicios disponibles</p>
+                  <Heading level={2} className="md:col-span-2 lg:col-span-3 my-4">No unactive services</Heading>
                 )
               }
             </div>
