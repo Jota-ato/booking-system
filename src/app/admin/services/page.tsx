@@ -23,6 +23,8 @@ export default async function ServicesPage() {
   const activeServices = services.filter(service => service.data.isActive)
   const unactiveServices = services.filter(service => !service.data.isActive)
   const extras = await extrasService.getExtras();
+  const activeExtras = extras.filter(extra => extra.isActive)
+  const unactiveExtras = extras.filter(extra => !extra.isActive)
 
   return (
     <section className="min-h-screen py-8 md:py-12 flex items-center justify-center">
@@ -33,7 +35,8 @@ export default async function ServicesPage() {
           <TabsList>
             <TabsTrigger value="activeServices">Active services</TabsTrigger>
             <TabsTrigger value="unactiveServices">Unactive services</TabsTrigger>
-            <TabsTrigger value="extras">Extras</TabsTrigger>
+            <TabsTrigger value="activeExtras">Active extras</TabsTrigger>
+            <TabsTrigger value="unactiveExtras">Unactive extras</TabsTrigger>
           </TabsList>
           <TabsContent className="min-h-120" value="activeServices">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -73,21 +76,31 @@ export default async function ServicesPage() {
               }
             </div>
           </TabsContent>
-          <TabsContent className="min-h-120" value="extras">
+          <TabsContent className="min-h-120" value="activeExtras">
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <AddExtraCard />
-              {extras.length ?
-                extras.map(extra => (
+              {activeExtras.length ?
+                activeExtras.map(extra => (
                   <ExtraCard key={extra.id} extra={extra} />
                 ))
                 : <Heading level={2} className="md:col-span-3 lg:col-span-4 my-4">No extras</Heading>
               }
             </div>
           </TabsContent>
+          <TabsContent className="min-h-120" value="unactiveExtras">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {unactiveExtras.length ?
+                unactiveExtras.map(extra => (
+                  <ExtraCard key={extra.id} extra={extra} />
+                ))
+                : <Heading level={2} className="md:col-span-3 lg:col-span-4 my-4">No unactive extras</Heading>
+              }
+            </div>
+          </TabsContent>
         </Tabs>
       </Container>
       <ServiceDialog
-        extras={extras}
+        extras={activeExtras}
       />
       <ExtraDialog />
     </section>

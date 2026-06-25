@@ -45,6 +45,16 @@ class ExtrasService {
         return await this.extraRepository.editExtra(payLoad, id)
     }
 
+    async deleteExtra(id: string) {
+        const dbExtra = await this.getExtraById(id)
+
+        if (!dbExtra) {
+            throw new AppError("Extra not found")
+        }
+        
+        await this.extraRepository.deleteExtra(id)
+    }
+
     async getServiceExtras(serviceId: string) {
         return await this.extraRepository.getServiceExtras(serviceId)
     }

@@ -14,9 +14,10 @@ import { Input } from "@/shared/components/ui/input"
 import { Textarea } from "@/shared/components/ui/textarea"
 import { FormSubmit } from "@/shared/components/form/form-submit"
 import { showResponse } from "@/shared/lib/client-actions"
-import { createExtraAction, editExtraAction } from "../actions/extras-actions"
+import { createExtraAction, deleteExtraAction, editExtraAction } from "../actions/extras-actions"
 import { Extra } from "@/db/schema"
 import { useExtraStore } from "../stores/extra-store"
+import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom"
 
 
 export function ExtraForm({
@@ -56,6 +57,11 @@ export function ExtraForm({
         } else {
             showResponse(await createExtraAction(data))
         }
+    }
+
+    const deleteExtra = async () => {
+        if (!extra) return
+        showResponse(await deleteExtraAction(extra.id))
     }
 
     const label = isEditing ? "Edit extra" : "Create extra"
@@ -100,6 +106,15 @@ export function ExtraForm({
                     label={label}
                     submittingLabel={submittingLabel}
                 />
+                {isEditing &&
+                    <AlertDialogCustom
+                        actionLabel="Delete"
+                        triggerLabel="Delete Extra"
+                        dialogDescription="This action cannot be undone"
+                        dialogTitle={`Delete ${extra.name}'s extra?`}
+                        action={deleteExtra}
+                    />
+                }
             </FieldSet>
         </form>
     )

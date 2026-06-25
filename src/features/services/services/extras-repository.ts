@@ -7,6 +7,7 @@ export interface IExtrasRepository {
     getExtraById(id: string): Promise<Extra | undefined>
     createExtra(payload: NewExtra): Promise<Extra>
     editExtra(payload: Extra, id: string): Promise<Extra>
+    deleteExtra(id: string): Promise<void>
     getServiceExtras(serviceId: string): Promise<ServiceExtra[]>
     createServiceExtras(payload: NewServiceExtra[]): Promise<void>
     deleteServiceExtras(serviceId: string): Promise<void>
@@ -46,6 +47,13 @@ class ExtrasRepository implements IExtrasRepository {
                 .where(eq(extras.id, id))
                 .returning()
         )[0]
+    }
+
+    async deleteExtra(id: string): Promise<void> {
+        await db
+            .update(extras)
+            .set({ isActive: false })
+            .where(eq(extras.id, id))
     }
 
     async getServiceExtras(serviceId: string): Promise<ServiceExtra[]> {

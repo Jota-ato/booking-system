@@ -28,3 +28,8 @@ export const editExtraAction = adminAction(async (input: ExtraInput, id: string,
 
     return `${extra.name} updated successfully`
 })
+
+export const deleteExtraAction = adminAction(async (id: string) => {
+    await extrasService.deleteExtra(id)
+    return "Extra deleted successfully"
+})

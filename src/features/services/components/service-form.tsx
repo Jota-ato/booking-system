@@ -203,9 +203,9 @@ export function ServiceForm({
                     service.data.isActive ?
                         <AlertDialogCustom
                             action={deleteService}
-                            actionLabel="Delete"
-                            triggerLabel="Delete Service"
-                            dialogTitle="Are you sure you want to delete this service?"
+                            actionLabel="Deactivate"
+                            triggerLabel="Deactivate Service"
+                            dialogTitle="Are you sure you want to deactivate this service?"
                             showText
                         />
                         : <AlertDialogCustom
