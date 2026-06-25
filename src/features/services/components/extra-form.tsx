@@ -13,6 +13,8 @@ import { ExtraInput, extraSchema } from "../schemas/service-schema"
 import { Input } from "@/shared/components/ui/input"
 import { Textarea } from "@/shared/components/ui/textarea"
 import { FormSubmit } from "@/shared/components/form/form-submit"
+import { showResponse } from "@/shared/lib/client-actions"
+import { createExtraAction } from "../actions/extras-actions"
 
 
 export function ExtraForm() {
@@ -26,7 +28,7 @@ export function ExtraForm() {
     })
 
     const onSubmit = async (data: ExtraInput) => {
-        console.log(data)
+        showResponse(await createExtraAction(data))
     }
 
     return (

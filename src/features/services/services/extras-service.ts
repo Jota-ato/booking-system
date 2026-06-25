@@ -1,6 +1,6 @@
-import { NewServiceExtra, ServiceExtra } from "@/db/schema";
+import { NewExtra, NewServiceExtra, ServiceExtra } from "@/db/schema";
 import { extrasRepository, IExtrasRepository } from "./extras-repository";
-import { ServiceInput } from "../schemas/service-schema";
+import { ExtraInput, ServiceInput } from "../schemas/service-schema";
 
 class ExtrasService {
     constructor(
@@ -9,6 +9,17 @@ class ExtrasService {
 
     async getExtras() {
         return await this.extraRepository.getAll()
+    }
+
+    async createExtra(input: ExtraInput) {
+        const payload: NewExtra = {
+            name: input.name,
+            description: input.description,
+            price: input.price.toString(),
+            isActive: true
+        }
+
+        return await this.extraRepository.createExtra(payload)
     }
 
     async getServiceExtras(serviceId: string) {
