@@ -1,5 +1,7 @@
 import { db } from "@/db"
-import { Customer, customers, NewCustomer } from "@/db/schema"
+import { appointments, Customer, customers, NewCustomer } from "@/db/schema"
+import { CustomerWithAppointmentCount } from "../types/customer.types"
+import { eq, sql } from "drizzle-orm"
 
 /**
  * Contract for all customer persistence operations.
@@ -25,6 +27,7 @@ export interface ICustomersRepository {
      *          including any database-generated fields such as `id`.
      */
     createClient(data: NewCustomer): Promise<Customer>
+    getAll(page: number, limit: number): Promise<CustomerWithAppointmentCount[]>
 }
 
 /**
@@ -51,6 +54,22 @@ class CustomersRepository implements ICustomersRepository {
                 .values(data)
                 .returning()
         )[0]
+    }
+
+    async getAll(page: number, limit: number): Promise<CustomerWithAppointmentCount[]> {
+        return await db
+            .query
+            .customers
+            .findMany({
+                limit,
+                offset: (page - 1) * limit,
+                extras: {
+                    appointmentCount: sql<number>`
+                    (SELECT COUNT(*) FROM "appointments" WHERE "appointments"."customer_id" = "customers"."id")
+                `.as("appointment_count")
+                },
+                where: (customer, { not, eq }) => not(eq(customer.id, "caefa19f-5766-4244-8213-b9c969da4e68"))
+            })
     }
 }
 

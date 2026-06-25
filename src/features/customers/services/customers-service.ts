@@ -44,6 +44,10 @@ export class CustomersService {
 
         return await this.customersRepository.createClient(data)
     }
+
+    async getCustomers(page: number, limit: number) {
+        return await this.customersRepository.getAll(page, limit)
+    }
 }
 
 export const customersService = new CustomersService(
