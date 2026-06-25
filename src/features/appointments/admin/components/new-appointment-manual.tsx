@@ -60,7 +60,7 @@ export function NewAppointmentManuallyForm({
     const servicePrice = useMemo(() => {
         if (!serviceId) return 0
         const selected = services.find(service => service.data.id === serviceId)
-        return selected ? selected.data.price : 0
+        return selected ? +selected.data.price : 0
     }, [serviceId, services])
 
     const create = async (data: NewAppointmentManuallyInput) => {

@@ -66,7 +66,7 @@ export function NewAgendaAppointmentForm({
     const servicePrice = useMemo(() => {
         if (!serviceId) return 0
         const selected = services.find(service => service.data.id === serviceId)
-        return selected ? selected.data.id : 0
+        return selected ? +selected.data.price : 0
     }, [serviceId, services])
 
     const create = async (data: NewAppointmentManuallyInput) => {
@@ -140,7 +140,7 @@ export function NewAgendaAppointmentForm({
                 <CustomSelect
                     control={control}
                     name="serviceId"
-                    options={services.map((s) => ({ value: s.data.id, label: s.data.id }))}
+                    options={services.map((s) => ({ value: s.data.id, label: s.data.name }))}
                     groupLabel="Services"
                     placeholder="Select service"
                 />
