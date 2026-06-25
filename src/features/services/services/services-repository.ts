@@ -22,6 +22,7 @@ export interface IServiceRepository {
     create(payload: NewService): Promise<Service>
     update(payload: NewService, id: string): Promise<Service>
     delete(id: string): Promise<void>
+    reactive(id: string): Promise<void>
 }
 
 /**
@@ -81,7 +82,19 @@ class ServiceRepository implements IServiceRepository {
 
     async delete(id: string): Promise<void> {
         await db
-            .delete(services)
+            .update(services)
+            .set({
+                isActive: false
+            })
+            .where(eq(services.id, id))
+    }
+
+    async reactive(id: string): Promise<void> {
+        await db
+            .update(services)
+            .set({
+                isActive: true
+            })
             .where(eq(services.id, id))
     }
 }

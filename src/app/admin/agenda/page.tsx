@@ -11,7 +11,7 @@ export default async function AgendaPage() {
 
     const today = new TZDate(new Date(), TIMEZONE)
     const appointments = await appointmentsService.getFromDay(today, true)
-    const services = await servicesService.getServices()
+    const services = await servicesService.getActiveServices()
 
     return (
         <section className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12">

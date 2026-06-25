@@ -12,6 +12,7 @@ export function AlertDialogCustom({
     fullWith = false, 
     actionLabel,
     showText = true,
+    buttonVariant = "destructive",
     action
 }: {
     triggerIcon?: IconType
@@ -21,6 +22,7 @@ export function AlertDialogCustom({
     srOnlyDescription?: boolean
     showText?: boolean
     fullWith?: boolean
+    buttonVariant?: "default" | "destructive" | "outline"  | "secondary" | "ghost"
     actionLabel: string
     action: () => Promise<void> | void
 }) {
@@ -28,8 +30,9 @@ export function AlertDialogCustom({
         <AlertDialog>
             <AlertDialogTrigger asChild>
                 <Button 
+                variant={buttonVariant ? buttonVariant : "destructive"}
                 className={cn("flex items-center justify-center", fullWith ? 'w-full' : '')}
-                variant="destructive">
+                >
                     {TriggerIcon && <TriggerIcon className="mr-2 h-5 w-5" />}
                     {showText && (triggerLabel)}
                 </Button>
@@ -45,7 +48,7 @@ export function AlertDialogCustom({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction variant="destructive" onClick={action}>
+                    <AlertDialogAction variant={buttonVariant ? buttonVariant : "destructive"} onClick={action}>
                         {actionLabel}
                     </AlertDialogAction>
                 </AlertDialogFooter>

@@ -28,11 +28,26 @@ class ServicesService {
      * @returns A promise that resolves to an array of `Service` records.
      *          Returns an empty array if no services exist.
      */
-    async getServices(): Promise<ServiceWithExtras[]> {
+    async getActiveServices(): Promise<ServiceWithExtras[]> {
         const rawServices = await this.serviceRepository.getAll();
 
         const activeServices = rawServices.filter(
             service => service.isActive && service.name !== "Manual Block"
+        );
+
+        return activeServices.map(service => {
+            return {
+                data: service,
+                extras: service.serviceExtras.map(pivot => pivot)
+            };
+        });
+    }
+
+    async getAllServices(): Promise<ServiceWithExtras[]> {
+        const rawServices = await this.serviceRepository.getAll();
+
+        const activeServices = rawServices.filter(
+            service => service.name !== "Manual Block"
         );
 
         return activeServices.map(service => {
@@ -81,8 +96,16 @@ class ServicesService {
     }
 
     async deteleService(id: string): Promise<void> {
-        await this.deleteExtras(id);
-        await this.serviceRepository.delete(id);
+        const service = await this.getServiceById(id);
+        if (!service) throw new AppError("Service not found");
+        await this.deleteExtras(service.id);
+        await this.serviceRepository.delete(service.id);
+    }
+
+    async reactiveService(id: string): Promise<void> {
+        const service = await this.getServiceById(id);
+        if (!service) throw new AppError("Service not found");
+        await this.serviceRepository.reactive(service.id);
     }
 
     async createExtras({ includedExtras, availableExtras }: ServiceInput, serviceId: string): Promise<void> {

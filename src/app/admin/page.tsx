@@ -11,7 +11,7 @@ export default async function AdminPage() {
   const today = new Date()
 
   const todayAppointments = await appointmentsService.getDayAppointments(today)
-  const services = await servicesService.getServices()
+  const services = await servicesService.getActiveServices()
 
   return (
     <section className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12">

@@ -16,7 +16,7 @@ import { ExtraSwitchController } from "./extra-switch-controller";
 import { FormSubmit } from "@/shared/components/form/form-submit";
 import ImageUploader from "@/shared/components/upload/image-uploader";
 import { showResponse } from "@/shared/lib/client-actions";
-import { createServiceAction, deleteServiceAction, updateServiceAction } from "../actions/service-actions";
+import { createServiceAction, deleteServiceAction, reactiveServiceAction, updateServiceAction } from "../actions/service-actions";
 import { ServiceWithExtras } from "../types/service.types";
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom";
 import { useServiceStore } from "../stores/service-store";
@@ -85,6 +85,11 @@ export function ServiceForm({
         showResponse(await deleteServiceAction(service.data.id));
         toggleOpen()
         setActiveService(null)
+    }
+
+    const reactiveService = async () => {
+        if (!service) return
+        showResponse(await reactiveServiceAction(service.data.id));
     }
 
     const buttonLabel = isEditing ? "Update service" : "Create service"
@@ -193,15 +198,24 @@ export function ServiceForm({
                     label={buttonLabel}
                     submittingLabel={submittingLabel}
                 />
-                {isEditing &&
-                    <AlertDialogCustom
-                        action={deleteService}
-                        actionLabel="Delete"
-                        triggerLabel="Delete Service"
-                        dialogTitle="Are you sure you want to delete this service?"
-                        dialogDescription="This action cannot be undone."
-                        showText
-                    />
+                {isEditing ?
+                    service.data.isActive ?
+                        <AlertDialogCustom
+                            action={deleteService}
+                            actionLabel="Delete"
+                            triggerLabel="Delete Service"
+                            dialogTitle="Are you sure you want to delete this service?"
+                            showText
+                        />
+                        : <AlertDialogCustom
+                            action={reactiveService}
+                            actionLabel="Reactivate"
+                            triggerLabel="Reactivate Service"
+                            dialogTitle="Are you sure you want to activate this service?"
+                            showText
+                            buttonVariant="outline"
+                        />
+                    : <></>
                 }
             </div>
         </form>

@@ -33,3 +33,8 @@ export const deleteServiceAction = adminAction(async (id: string) => {
     await servicesService.deteleService(id);
     return "Service deleted successfully"
 })
+
+export const reactiveServiceAction = adminAction(async (id: string) => {
+    await servicesService.reactiveService(id);
+    return "Service reactivated successfully"
+})

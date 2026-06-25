@@ -14,7 +14,7 @@ export default async function RecordPage({ searchParams }: RecordPageProps) {
   const searchDate = resolvedParams?.date;
 
   const { data, totalPages } = await appointmentsService.getAppointmentsHistory(currentPage, searchDate);
-  const services = await servicesService.getServices()
+  const services = await servicesService.getActiveServices()
 
   return (
     <section className="min-h-screen py-8 md:py-12 flex items-center justify-center">
