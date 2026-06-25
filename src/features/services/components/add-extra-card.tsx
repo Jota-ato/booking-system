@@ -1,13 +1,9 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { ActionModal } from "@/shared/components/form/action-modal";
-import { ServiceForm } from "./service-form";
-import { Extra } from "@/db/schema";
 
-export function AddServiceCard({
-    extras
-}: {
-    extras: Extra[]
+export function AddExtraCard({
+} : {
 }) {
     return (
         <ActionModal
@@ -22,20 +18,17 @@ export function AddServiceCard({
 
                     <div className="space-y-1 text-center whitespace-normal">
                         <p className="text-base font-semibold text-foreground">
-                            Add new service
+                            Add new extra
                         </p>
                         <p className="text-sm font-normal text-muted-foreground">
-                            Configure the price and details of the service.
+                            Configure the price and details of the extra.
                         </p>
                     </div>
                 </Button>
             }
-            title="Create new service"
+            title="Create new extra"
             description="Fill in the data below to add a new extra to your catalog."
         >
-            <ServiceForm
-                extras={extras}
-            />
         </ActionModal>
     );
 }
