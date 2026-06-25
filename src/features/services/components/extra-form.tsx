@@ -14,7 +14,7 @@ import { Input } from "@/shared/components/ui/input"
 import { Textarea } from "@/shared/components/ui/textarea"
 import { FormSubmit } from "@/shared/components/form/form-submit"
 import { showResponse } from "@/shared/lib/client-actions"
-import { createExtraAction, deleteExtraAction, editExtraAction } from "../actions/extras-actions"
+import { createExtraAction, deleteExtraAction, editExtraAction, reactivateExtraAction } from "../actions/extras-actions"
 import { Extra } from "@/db/schema"
 import { useExtraStore } from "../stores/extra-store"
 import { AlertDialogCustom } from "@/shared/components/ui/alert-dialog-custom"
@@ -62,6 +62,15 @@ export function ExtraForm({
     const deleteExtra = async () => {
         if (!extra) return
         showResponse(await deleteExtraAction(extra.id))
+        setActiveExtra(null)
+        toggleOpen()
+    }
+
+    const reactivateExtra = async () => {
+        if (!extra) return
+        showResponse(await reactivateExtraAction(extra.id))
+        setActiveExtra(null)
+        toggleOpen()
     }
 
     const label = isEditing ? "Edit extra" : "Create extra"
@@ -106,13 +115,24 @@ export function ExtraForm({
                     label={label}
                     submittingLabel={submittingLabel}
                 />
-                {isEditing &&
+                {(isEditing && extra.isActive) &&
                     <AlertDialogCustom
                         actionLabel="Delete"
                         triggerLabel="Delete Extra"
                         dialogDescription="This action cannot be undone"
                         dialogTitle={`Delete ${extra.name}'s extra?`}
                         action={deleteExtra}
+                    />
+                }
+
+                {(isEditing && !extra.isActive) &&
+                    <AlertDialogCustom
+                        actionLabel="Reactivate"
+                        triggerLabel="Reactivate Extra"
+                        dialogDescription="This action cannot be undone"
+                        dialogTitle={`Reactivate ${extra.name}'s extra?`}
+                        buttonVariant="outline"
+                        action={reactivateExtra}
                     />
                 }
             </FieldSet>

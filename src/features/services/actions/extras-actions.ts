@@ -33,3 +33,8 @@ export const deleteExtraAction = adminAction(async (id: string) => {
     await extrasService.deleteExtra(id)
     return "Extra deleted successfully"
 })
+
+export const reactivateExtraAction = adminAction(async (id: string) => {
+    const extra = await extrasService.reactivateExtra(id)
+    return `${extra.name} reactivated successfully`
+})
