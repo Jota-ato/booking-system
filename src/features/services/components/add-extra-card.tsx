@@ -11,7 +11,7 @@ export function AddExtraCard({
             trigger={
                 <Button
                     variant="outline"
-                    className="group flex h-full  w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-muted-foreground/25 bg-transparent transition-all duration-300 hover:border-primary/50 hover:bg-muted/30"
+                    className="group flex min-h-30 sm:h-full  w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-muted-foreground/25 bg-transparent transition-all duration-300 hover:border-primary/50 hover:bg-muted/30"
                 >
                     <div className="rounded-full bg-primary/10 p-2 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary/20">
                         <Plus className="size-6" />
@@ -21,7 +21,7 @@ export function AddExtraCard({
                         <p className="text-base font-semibold text-foreground">
                             Add new extra
                         </p>
-                        <p className="text-sm font-normal text-muted-foreground">
+                        <p className="text-xs sm:text-sm font-normal text-muted-foreground">
                             Configure the price and details of the extra.
                         </p>
                     </div>
