@@ -1,0 +1,1 @@
+ALTER TABLE "extras" ADD COLUMN "is_active" boolean DEFAULT true;

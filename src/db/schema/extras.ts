@@ -13,7 +13,8 @@ export const extras = pgTable("extras",
         id: uuid('id').primaryKey().defaultRandom(),
         name: varchar("name", { length: 60 }).notNull(),
         description: text('description'),
-        price: numeric("price", { precision: 10, scale: 2 }).notNull()
+        price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+        isActive: boolean("is_active").default(true)
     }
 );
 
