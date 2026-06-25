@@ -9,10 +9,13 @@ export default async function CustomersPage({
 }: {
     searchParams: Promise<{ page?: string; }>;
 }) {
-
     const resolvedParams = await searchParams;
     const currentPage = resolvedParams?.page ? +resolvedParams?.page : 1;
-    const customers = await customersService.getCustomers(currentPage, 10)
+
+    const [customers, customerAmount] = await Promise.all([
+        customersService.getCustomers(currentPage, 10),
+        customersService.getCustomerAmount()
+    ])
 
     return (
         <section className="min-h-screen py-8 md:py-12 flex items-center justify-center">
@@ -32,7 +35,7 @@ export default async function CustomersPage({
                                     <p>Appointments: {customer.appointmentCount}</p>
                                 </div>
                             ))
-                        ): <p>No customers yet</p>}
+                        ) : <p>No customers yet</p>}
                     </CardContent>
                 </Card>
             </Container>

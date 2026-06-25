@@ -28,6 +28,7 @@ export interface ICustomersRepository {
      */
     createClient(data: NewCustomer): Promise<Customer>
     getAll(page: number, limit: number): Promise<CustomerWithAppointmentCount[]>
+    getCount(): Promise<number>
 }
 
 /**
@@ -70,6 +71,11 @@ class CustomersRepository implements ICustomersRepository {
                 },
                 where: (customer, { not, eq }) => not(eq(customer.id, "caefa19f-5766-4244-8213-b9c969da4e68"))
             })
+    }
+
+    async getCount(): Promise<number> {
+        return await db
+            .$count(customers)
     }
 }
 

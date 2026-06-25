@@ -48,6 +48,10 @@ export class CustomersService {
     async getCustomers(page: number, limit: number) {
         return await this.customersRepository.getAll(page, limit)
     }
+
+    async getCustomerAmount() {
+        return await this.customersRepository.getCount()
+    }
 }
 
 export const customersService = new CustomersService(
