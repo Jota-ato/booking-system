@@ -16,6 +16,7 @@ import { FormSubmit } from "@/shared/components/form/form-submit"
 import { showResponse } from "@/shared/lib/client-actions"
 import { createExtraAction, editExtraAction } from "../actions/extras-actions"
 import { Extra } from "@/db/schema"
+import { useExtraStore } from "../stores/extra-store"
 
 
 export function ExtraForm({
@@ -36,6 +37,8 @@ export function ExtraForm({
         price: 0
     }
 
+    const { toggleOpen, setActiveExtra } = useExtraStore()
+
     const {
         register,
         handleSubmit,
@@ -48,6 +51,8 @@ export function ExtraForm({
     const onSubmit = async (data: ExtraInput) => {
         if (isEditing) {
             showResponse(await editExtraAction(data, extra.id, extra.isActive))
+            setActiveExtra(null)
+            toggleOpen()
         } else {
             showResponse(await createExtraAction(data))
         }
@@ -84,6 +89,7 @@ export function ExtraForm({
                         <Input
                             type="number"
                             id="price"
+                            step={0.01}
                             {...register("price", { valueAsNumber: true })}
                         />
                         {errors.price && <FieldError>{errors.price.message}</FieldError>}
