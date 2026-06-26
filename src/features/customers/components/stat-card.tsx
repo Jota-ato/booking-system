@@ -16,10 +16,10 @@ const variantStyles = {
         iconWrapper: "bg-primary/10 text-primary",
     },
     success: {
-        iconWrapper: "bg-success/10 text-success-foreground",
+        iconWrapper: "bg-success/10 text-success",
     },
     warning: {
-        iconWrapper: "bg-warning/10 text-warning-foreground",
+        iconWrapper: "bg-warning/10 text-warning",
     },
     destructive: {
         iconWrapper: "bg-destructive/10 text-destructive",
