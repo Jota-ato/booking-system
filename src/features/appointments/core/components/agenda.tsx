@@ -20,7 +20,6 @@ export function Agenda({
     const [daysToShow, setDaysToShow] = useState(3);
     const [viewDate, setViewDate] = useState<TZDate>(today);
 
-    // Responsive Logic
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < 768) setDaysToShow(3);
@@ -73,6 +72,7 @@ export function Agenda({
     const hours = Array.from({ length: 4 }).map((_, i) =>
         addHours(startOfDay(startOfView), 10 + (2.5 * i))
     );
+
 
     return (
         <div className="w-full rounded-2xl border shadow-sm overflow-hidden relative">

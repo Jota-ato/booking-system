@@ -61,7 +61,8 @@ class AppointmentsRepository implements IAppointmentsRepository {
                 ),
                 with: {
                     service: true,
-                    customer: true
+                    customer: true,
+                    appoinmentExtras: true
                 },
                 orderBy: (apt, { asc }) => asc(apt.startTime)
             })
@@ -112,7 +113,11 @@ class AppointmentsRepository implements IAppointmentsRepository {
                 appointments
                 .findMany({
                     where: (appointment, { lte }) => lte(appointment.startTime, cutoff.toISOString()),
-                    with: { service: true, customer: true },
+                    with: {
+                        service: true,
+                        customer: true,
+                        appoinmentExtras: true
+                    },
                     orderBy: (apt, { desc }) => desc(apt.startTime),
                     limit: ITEMS_PER_PAGE,
                     offset,
@@ -134,7 +139,8 @@ class AppointmentsRepository implements IAppointmentsRepository {
                 where: (appointment, { gte }) => gte(appointment.startTime, day),
                 with: {
                     service: full ? true : undefined,
-                    customer: full ? true : undefined
+                    customer: full ? true : undefined,
+                    appoinmentExtras: full ? true : undefined
                 }
             })
     }

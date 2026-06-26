@@ -35,7 +35,6 @@ export function AgendaBody({
             />
 
             {/* Days columns */}
-            {/* Reemplaza esta sección dentro del mapa de weekDays en agenda-body.tsx */}
             {weekDays.map((day, dayDifference) => (
                 <div key={day.toISOString()} className="relative border-r border-muted-foreground last:border-r-0">
                     {hours.map(hour => (

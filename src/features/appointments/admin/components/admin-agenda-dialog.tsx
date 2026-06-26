@@ -17,17 +17,20 @@ export function AdminAgendaDialog({
     const { 
         createDialogOpen, 
         toggleCreateDialogOpen, 
-        activeCreateAppointmentTime
+        activeCreateAppointmentTime,
+        setActiveCreateAppointmentTime
     } = useAppointmentStore()
 
     if (!activeCreateAppointmentTime) {
         return <></>
     }
-
     const { startTime, endTime } = activeCreateAppointmentTime
 
     return (
-        <Dialog open={createDialogOpen} onOpenChange={toggleCreateDialogOpen}>
+        <Dialog open={createDialogOpen} onOpenChange={() => {
+            toggleCreateDialogOpen()
+            setActiveCreateAppointmentTime(undefined)
+        }}>
             <DialogContent className="overflow-auto max-h-9/10">
                 <DialogTitle>Create appointment</DialogTitle>
                 <DialogDescription className="flex flex-col">
