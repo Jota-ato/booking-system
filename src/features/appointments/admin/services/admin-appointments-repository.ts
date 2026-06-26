@@ -58,7 +58,7 @@ export interface IAdminAppointmentsRepository {
      * @param data - The full appointment data conforming to `NewAppointment`.
      * @returns A promise that resolves when the record has been inserted.
      */
-    createManually(data: NewAppointment): Promise<void>
+    createManually(data: NewAppointment): Promise<Appointment>
     updateBlock(data: BlockTimeInput, id: string): Promise<void>
     getNoShowRate(startRange?: string, endRange?: string): Promise<number>
 }
@@ -80,7 +80,7 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
             .update(appointments)
             .set({
                 ...data,
-                extrasPrice: data.adittionalPrice.toString(),
+                adittionalPrice: data.adittionalPrice.toString(),
                 startTime: data.startTime,
                 endTime: data.endTime
             })
@@ -95,10 +95,13 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
     }
 
     /** @inheritdoc */
-    async createManually(data: NewAppointment): Promise<void> {
-        await db
-            .insert(appointments)
-            .values(data)
+    async createManually(data: NewAppointment): Promise<Appointment> {
+        return (
+            await db
+                .insert(appointments)
+                .values(data)
+                .returning()
+        )[0]
     }
 
     /** @inheritdoc */
@@ -151,16 +154,16 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
         }
 
         const [result] = await db
-                .select({
-                    total: count(),
-                    noShows: count(sql`CASE WHEN ${appointments.status} = 'NO_SHOW' THEN 1 END`)
-                })
-                .from(appointments)
-                .where(and(
-                    gte(appointments.startTime, startRange),
-                    lte(appointments.startTime, endRange)
-                ))
-            return (result.noShows / result.total) * 100
+            .select({
+                total: count(),
+                noShows: count(sql`CASE WHEN ${appointments.status} = 'NO_SHOW' THEN 1 END`)
+            })
+            .from(appointments)
+            .where(and(
+                gte(appointments.startTime, startRange),
+                lte(appointments.startTime, endRange)
+            ))
+        return (result.noShows / result.total) * 100
     }
 }
 

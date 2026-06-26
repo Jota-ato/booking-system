@@ -1,0 +1,1 @@
+ALTER TABLE "appointments" RENAME COLUMN "extras_price" TO "adittional_price";

@@ -59,7 +59,7 @@ export const appointments = pgTable(
       .notNull()
       .defaultNow()
       .$onUpdate(() => new Date()),
-    extrasPrice: numeric('extras_price', { precision: 10, scale: 2 }).notNull().default('0'),
+    adittionalPrice: numeric('adittional_price', { precision: 10, scale: 2 }).notNull().default('0'),
     fullPrice: numeric('full_price', { precision: 10, scale: 2 }).notNull().default('0')
   },
   (table) => [

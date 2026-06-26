@@ -6,6 +6,7 @@ import { customersService, CustomersService } from "@/features/customers/service
 import { TZDate } from "@date-fns/tz";
 import { TIMEZONE } from "@/shared/lib/date";
 import { appointmentsService } from "../../core/services/appointments-service";
+import { appointmentExtrasService } from "../../core/services/appoinment-extras-service";
 
 class AdminAppointmentsService {
     constructor(
@@ -65,7 +66,7 @@ class AdminAppointmentsService {
      */
     async createManualAppointment(data: NewAppointmentManuallyInput) {
 
-        const { appointmentDate, clientPhone, endTime, adittionalPrice, isRegisterClient, serviceId, startTime } = data
+        const { appointmentDate, clientPhone, endTime, adittionalPrice, isRegisterClient, serviceId, startTime, extrasId } = data
 
         await appointmentsService.avoidCollision(startTime, endTime)
 
@@ -82,14 +83,19 @@ class AdminAppointmentsService {
             })
         }
 
-        await this.adminAppointmentsRepository.createManually({
+
+
+        const appointment = await this.adminAppointmentsRepository.createManually({
             appointmentDate,
             customerId: customer.id,
             endTime,
             serviceId,
             startTime,
-            extrasPrice: adittionalPrice.toString()
+            adittionalPrice: adittionalPrice.toString()
         })
+
+        const cleanExtrasId = extrasId.filter(id => typeof id === 'string')
+        await appointmentExtrasService.insertAppointmentExtras(appointment.id, cleanExtrasId)
     }
 
     /**
