@@ -2,7 +2,7 @@ import { Appointment, appointments, NewAppointment } from "@/db/schema"
 import { BlockTimeInput, UpdateApointmentInput } from "../schemas/appointment-schema"
 import { TZDate } from "@date-fns/tz"
 import { db } from "@/db"
-import { and, eq, gte, lte, not } from "drizzle-orm"
+import { and, count, eq, gte, lte, not, sql } from "drizzle-orm"
 
 export interface IAdminAppointmentsRepository {
     /*
@@ -60,6 +60,7 @@ export interface IAdminAppointmentsRepository {
      */
     createManually(data: NewAppointment): Promise<void>
     updateBlock(data: BlockTimeInput, id: string): Promise<void>
+    getNoShowRate(startRange?: string, endRange?: string): Promise<number>
 }
 
 class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
@@ -136,6 +137,30 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
                 ...data
             })
             .where(eq(appointments.id, id))
+    }
+
+    async getNoShowRate(startRange?: string, endRange?: string): Promise<number> {
+        if (!startRange || !endRange) {
+            const [result] = await db
+                .select({
+                    total: count(),
+                    noShows: count(sql`CASE WHEN ${appointments.status} = 'NO_SHOW' THEN 1 END`)
+                })
+                .from(appointments)
+            return (result.noShows / result.total) * 100
+        }
+
+        const [result] = await db
+                .select({
+                    total: count(),
+                    noShows: count(sql`CASE WHEN ${appointments.status} = 'NO_SHOW' THEN 1 END`)
+                })
+                .from(appointments)
+                .where(and(
+                    gte(appointments.startTime, startRange),
+                    lte(appointments.startTime, endRange)
+                ))
+            return (result.noShows / result.total) * 100
     }
 }
 

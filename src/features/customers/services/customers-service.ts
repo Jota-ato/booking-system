@@ -1,6 +1,7 @@
 import { NewCustomer } from "@/db/schema";
 import { customersRepository, ICustomersRepository } from "./customers-repository";
 import { AppError } from "@/shared/lib/errors";
+import { TZDate } from "@date-fns/tz"
 
 /**
  * Application-layer service responsible for customer business logic.
@@ -51,6 +52,10 @@ export class CustomersService {
 
     async getCustomerAmount() {
         return await this.customersRepository.getCount()
+    }
+
+    async getCustomersByTimeRange(startRange: TZDate, endRange: TZDate) {
+        return await this.customersRepository.getCountByTimeRange(startRange, endRange)
     }
 }
 

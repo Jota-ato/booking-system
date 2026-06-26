@@ -128,6 +128,13 @@ class AdminAppointmentsService {
     async updateBlock(data: BlockTimeInput, id: string) {
         await this.adminAppointmentsRepository.updateBlock(data, id)
     }
+
+    async getNoShowRate(startRange?: TZDate, endRange?: TZDate) {
+        const startRangeString = startRange ? startRange.toISOString() : undefined
+        const endRangeString = endRange ? endRange.toISOString() : undefined
+
+        return await this.adminAppointmentsRepository.getNoShowRate(startRangeString, endRangeString)
+    }
 }
 
 export const adminAppointmentsService = new AdminAppointmentsService(

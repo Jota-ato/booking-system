@@ -1,7 +1,8 @@
 import { db } from "@/db"
-import { appointments, Customer, customers, NewCustomer } from "@/db/schema"
+import { Customer, customers, NewCustomer } from "@/db/schema"
 import { CustomerWithAppointmentCount } from "../types/customer.types"
-import { eq, sql } from "drizzle-orm"
+import { and, eq, gte, lte, sql } from "drizzle-orm"
+import { TZDate } from "@date-fns/tz"
 
 /**
  * Contract for all customer persistence operations.
@@ -29,6 +30,7 @@ export interface ICustomersRepository {
     createClient(data: NewCustomer): Promise<Customer>
     getAll(page: number, limit: number): Promise<CustomerWithAppointmentCount[]>
     getCount(): Promise<number>
+    getCountByTimeRange(startRange: TZDate, endRange: TZDate): Promise<number>
 }
 
 /**
@@ -76,6 +78,14 @@ class CustomersRepository implements ICustomersRepository {
     async getCount(): Promise<number> {
         return await db
             .$count(customers)
+    }
+
+    async getCountByTimeRange(startRange: TZDate, endRange: TZDate): Promise<number> {
+        return await db
+            .$count(customers, and(
+                gte(customers.createdAt, startRange),
+                lte(customers.createdAt, endRange)
+            ))
     }
 }
 
