@@ -13,6 +13,7 @@ export const statusColorsMap: Record<AppointmentStatus, string> = {
     'CANCELLED': "bg-destructive border-destructive-foreground text-destructive-foreground",
     "COMPLETED": "bg-primary border-primary-foreground text-primary-foreground",
     "NO_SHOW": "bg-muted border-muted-foreground text-muted-foreground",
+    "BLOCKED": "bg-muted border-muted-foreground text-muted-foreground"
 };
 
 export function StatusBadge({ status }: DurationBadgeProps) {
