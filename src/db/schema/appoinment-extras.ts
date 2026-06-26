@@ -2,7 +2,7 @@ import { numeric, pgTable, uuid } from "drizzle-orm/pg-core";
 import { extras } from "./extras";
 import { appointments } from "./appointments";
 
-export const appointmentExtras = pgTable("appoinment_extras", {
+export const appointmentExtras = pgTable("appointment_extras", {
     id: uuid("id").primaryKey().defaultRandom().notNull(),
     appointmentId: uuid("appointment_id")
         .notNull()

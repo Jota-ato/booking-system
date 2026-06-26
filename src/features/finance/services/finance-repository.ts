@@ -17,7 +17,6 @@ export interface IFinanceRepository {
 
 class FinanceRepository implements IFinanceRepository {
     async getRangeData(startDate: TZDate, endDate: TZDate): Promise<AppointmentWithServiceData[]> {
-        
         const records = await db
             .select({
                 id: appointments.id,
@@ -25,6 +24,7 @@ class FinanceRepository implements IFinanceRepository {
                 status: appointments.status,
                 serviceNameSnapshot: appointments.serviceNameSnapshot,
                 servicePriceSnapshot: appointments.servicePriceSnapshot,
+                adittionalPrice: appointments.adittionalPrice,
                 extrasTotal: sql<string>`COALESCE(SUM(${appointmentExtras.extraPriceSnapshot}), '0')`
             })
             .from(appointments)
@@ -48,10 +48,11 @@ class FinanceRepository implements IFinanceRepository {
         return records.map(r => {
             const basePrice = Number(r.servicePriceSnapshot || 0);
             const extrasPrice = Number(r.extrasTotal || 0);
+            const adittionalPrice = Number(r.adittionalPrice || 0);
             
             return {
                 id: r.id,
-                totalPrice: (basePrice + extrasPrice).toString(),
+                totalPrice: (basePrice + extrasPrice + adittionalPrice).toString(),
                 startTime: r.startTime,
                 status: r.status as "PAID" | "CONFIRMED" | 'COMPLETED',
                 serviceNameSnapshot: r.serviceNameSnapshot

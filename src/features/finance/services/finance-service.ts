@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { TZDate } from "@date-fns/tz";
 import { IFinanceRepository, financeRepository } from "./finance-repository";
 import { FinancialMetricsDTO, TimeRange } from "../types/finance.type";
+import { TIMEZONE } from "@/shared/lib/date";
 
 /**
  * Application-layer service responsible for computing financial metrics
@@ -16,10 +17,10 @@ import { FinancialMetricsDTO, TimeRange } from "../types/finance.type";
  */
 class FinanceService {
     /**
-     * @param _financeRepository - Data access layer for financial appointment records.
+     * @param financeRepository - Data access layer for financial appointment records.
      */
     constructor(
-        private readonly _financeRepository: IFinanceRepository
+        private readonly financeRepository: IFinanceRepository
     ) { }
 
     /**
@@ -49,7 +50,7 @@ class FinanceService {
         endDate: TZDate,
         range: TimeRange
     ): Promise<FinancialMetricsDTO> {
-        const appointmentsData = await this._financeRepository.getRangeData(startDate, endDate);
+        const appointmentsData = await this.financeRepository.getRangeData(startDate, endDate);
 
         let dateFormatStr = "dd MMM";
         switch (range) {
@@ -112,6 +113,30 @@ class FinanceService {
                 .sort(([, valA], [, valB]) => valB - valA)
                 .map(([name, value]) => ({ name, value }))
         };
+    }
+
+    async getExpectedData(
+        startDate: Date,
+        endDate: Date
+    ) {
+
+        const startDateTZ = new TZDate(startDate, TIMEZONE);
+        const endDateTZ = new TZDate(endDate, TIMEZONE);
+
+        const appointmentsData = await this.financeRepository.getRangeData(startDateTZ, endDateTZ);
+
+        const expected = appointmentsData
+            .filter(apt => apt.status === 'CONFIRMED' || apt.status === 'PAID' || apt.status === 'COMPLETED')
+            .reduce((acc, apt) => acc + Number(apt.totalPrice), 0);
+        
+        const paid = appointmentsData
+            .filter(apt => apt.status === 'PAID')
+            .reduce((acc, apt) => acc + Number(apt.totalPrice), 0);
+        
+        return {
+            expected,
+            paid
+        }
     }
 }
 

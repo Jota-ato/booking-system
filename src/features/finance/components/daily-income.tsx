@@ -5,14 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { formatMXN } from "@/shared/lib/currency";
 
 export function DailyIncome({
-    appointments,
-    day
+    day,
+    expected,
+    paid
 }: {
-    appointments: FullAppointment[]
+    expected: number
+    paid: number
     day: Date
 }) {
-
-    const { expected, paid } = getExpectedPaidAppointments(appointments)
 
     return (
         <Card className="md:col-span-2">
@@ -25,7 +25,7 @@ export function DailyIncome({
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <DailyIncomeChart 
+                <DailyIncomeChart
                     day={day}
                     expected={expected}
                     paid={paid}

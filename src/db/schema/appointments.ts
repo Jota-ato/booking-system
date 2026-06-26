@@ -55,7 +55,6 @@ export const appointments = pgTable(
       .defaultNow()
       .$onUpdate(() => new Date()),
     adittionalPrice: numeric('adittional_price', { precision: 10, scale: 2 }).notNull().default('0'),
-    fullPrice: numeric('full_price', { precision: 10, scale: 2 }).notNull().default('0')
   },
   (table) => [
     index("idx_appointments_status").on(table.status),
