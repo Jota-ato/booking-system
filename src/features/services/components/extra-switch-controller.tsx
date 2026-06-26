@@ -1,33 +1,39 @@
-import { Control, Controller } from "react-hook-form";
-import { ServiceInput } from "../schemas/service-schema";
-import { Extra } from "@/db/schema";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { FieldSwitch } from "@/shared/components/form/field-switch";
 
-export function ExtraSwitchController({
+interface ArraySwitchControllerProps<T extends FieldValues> {
+    control: Control<T>;
+    name: Path<T>;
+    value: string | number;
+    label: string;
+}
+
+export function ArraySwitchController<T extends FieldValues>({
     control,
     name,
-    extra
-}: {
-    control: Control<ServiceInput>;
-    name: "includedExtras" | "availableExtras";
-    extra: Extra;
-}) {
+    value,
+    label
+}: ArraySwitchControllerProps<T>) {
     return (
         <Controller
             control={control}
             name={name}
             render={({ field }) => {
-                const isChecked = field.value?.includes(extra.id) || false;
+                const isChecked = field.value?.includes(value) || false;
 
                 return (
                     <FieldSwitch
-                        label={extra.name}
+                        label={label}
                         checked={isChecked} 
                         onCheckedChange={(checked) => {
                             if (checked) {
-                                field.onChange([...(field.value || []), extra.id]);
+                                // Agrega el valor al array
+                                field.onChange([...(field.value || []), value]);
                             } else {
-                                field.onChange((field.value || []).filter((id) => id !== extra.id));
+                                // Remueve el valor del array
+                                field.onChange(
+                                    (field.value || []).filter((item: string | number) => item !== value)
+                                );
                             }
                         }}
                     />

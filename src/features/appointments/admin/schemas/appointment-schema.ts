@@ -37,9 +37,10 @@ const timeRangeError = {
 const baseAppointmentSchema = z.object({
     serviceId: z.uuid({ error: 'Service is necessary' }),
     appointmentDate: z.date({ error: 'Invalid date' }),
+    extrasId: z.array(z.uuid().nullable().optional()),
     startTime: z.string(),
     endTime: z.string(),
-    extrasPrice: z.number()
+    adittionalPrice: z.number()
 })
 
 export const updateAppointmentSchema = baseAppointmentSchema.extend({
@@ -92,7 +93,7 @@ export const blockPeriodSchema = z.object({
     },
     {
         message: "The end date and time must be after the start date and time",
-        path: ["endTime"] // Resalta el input de hora final si falla
+        path: ["endTime"]
     }
 );
 

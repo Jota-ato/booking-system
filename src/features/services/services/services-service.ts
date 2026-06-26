@@ -38,7 +38,8 @@ class ServicesService {
         return activeServices.map(service => {
             return {
                 data: service,
-                extras: service.serviceExtras.map(pivot => pivot)
+                serviceExtras: service.serviceExtras.map(pivot => pivot),
+                extras: service.serviceExtras.map(pivot => pivot.extra)
             };
         });
     }
@@ -53,7 +54,8 @@ class ServicesService {
         return activeServices.map(service => {
             return {
                 data: service,
-                extras: service.serviceExtras.map(pivot => pivot)
+                serviceExtras: service.serviceExtras.map(pivot => pivot),
+                extras: service.serviceExtras.map(pivot => pivot.extra)
             };
         });
     }

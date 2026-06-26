@@ -12,7 +12,7 @@ import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/shared/co
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { ServiceInput, serviceSchema } from "../schemas/service-schema";
-import { ExtraSwitchController } from "./extra-switch-controller";
+import { ArraySwitchController } from "./extra-switch-controller";
 import { FormSubmit } from "@/shared/components/form/form-submit";
 import ImageUploader from "@/shared/components/upload/image-uploader";
 import { showResponse } from "@/shared/lib/client-actions";
@@ -33,7 +33,7 @@ export function ServiceForm({
 
     const isEditing = !!service
 
-    const serviceExtras = service ? service.extras : []
+    const serviceExtras = service ? service.serviceExtras : []
 
     const includedExtras = serviceExtras.map(extra => extra.included ? extra.extraId : null).filter(id => id !== null)
     const availableExtras = serviceExtras.map(extra => !extra.included ? extra.extraId : null).filter(id => id !== null)
@@ -171,23 +171,25 @@ export function ServiceForm({
                 <TabsContent value="availableExtras">
                     <FieldSet>
                         {extras.map(extra => (
-                            <ExtraSwitchController
+                            <ArraySwitchController
                                 key={extra.id}
                                 control={control}
                                 name="availableExtras"
-                                extra={extra}
+                                value={extra.id}
+                                label={extra.name}
                             />
                         ))}
                     </FieldSet>
                 </TabsContent>
-                <TabsContent value="includedExtras">
+                 <TabsContent value="includedExtras">
                     <FieldSet>
                         {extras.map(extra => (
-                            <ExtraSwitchController
+                            <ArraySwitchController
                                 key={extra.id}
                                 control={control}
                                 name="includedExtras"
-                                extra={extra}
+                                value={extra.id}
+                                label={extra.name}
                             />
                         ))}
                     </FieldSet>

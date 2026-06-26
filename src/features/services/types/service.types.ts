@@ -10,5 +10,6 @@ export type ServiceExtraWithExtra = ServiceExtra & {
 
 export type ServiceWithExtras = {
     data: Service
-    extras: ServiceExtra[]
+    serviceExtras: ServiceExtraWithExtra[]
+    extras: Extra[]
 }
