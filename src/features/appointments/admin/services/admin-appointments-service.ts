@@ -65,7 +65,7 @@ class AdminAppointmentsService {
      */
     async createManualAppointment(data: NewAppointmentManuallyInput) {
 
-        const { appointmentDate, clientPhone, endTime, extrasPrice, isRegisterClient, serviceId, startTime } = data
+        const { appointmentDate, clientPhone, endTime, adittionalPrice, isRegisterClient, serviceId, startTime } = data
 
         await appointmentsService.avoidCollision(startTime, endTime)
 
@@ -88,7 +88,7 @@ class AdminAppointmentsService {
             endTime,
             serviceId,
             startTime,
-            extrasPrice: extrasPrice.toString()
+            extrasPrice: adittionalPrice.toString()
         })
     }
 

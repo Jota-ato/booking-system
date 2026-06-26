@@ -80,7 +80,7 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
             .update(appointments)
             .set({
                 ...data,
-                extrasPrice: data.extrasPrice.toString(),
+                extrasPrice: data.adittionalPrice.toString(),
                 startTime: data.startTime,
                 endTime: data.endTime
             })
