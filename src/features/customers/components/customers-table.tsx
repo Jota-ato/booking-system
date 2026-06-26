@@ -10,15 +10,17 @@ export function CustomersTable({ customers }: { customers: CustomerWithAppointme
                 <CardTitle>Customers</CardTitle>
                 <CardDescription>List of all customers</CardDescription>
             </CardHeader>
-            <CardContent className="p-0">
-                <CustomerTableHeader />
-                {customers.length ? (
-                    customers.map(customer => (
-                        <CustomerRow key={customer.id} customer={customer} />
-                    ))
-                ) : (
-                    <p className="p-4 text-muted-foreground text-sm">No customers yet.</p>
-                )}
+            <CardContent className="p-0 overflow-x-auto">
+                <div className="min-w-2xl">
+                    <CustomerTableHeader />
+                    {customers.length ? (
+                        customers.map(customer => (
+                            <CustomerRow key={customer.id} customer={customer} />
+                        ))
+                    ) : (
+                        <p className="p-4 text-muted-foreground text-sm">No customers yet.</p>
+                    )}
+                </div>
             </CardContent>
         </Card>
     )
