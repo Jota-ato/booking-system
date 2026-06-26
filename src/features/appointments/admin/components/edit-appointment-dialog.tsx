@@ -20,7 +20,7 @@ export function EditAppointmentDialog({
 
     if (!activeAppointment) return <></>
 
-    const description = activeAppointment.status === "NO_SHOW" ?
+    const description = activeAppointment.status === "BLOCKED" ?
         "Editing block" :
         `Editing ${activeAppointment.customer.name}'s appointment`
 
@@ -43,7 +43,7 @@ export function EditAppointmentDialog({
 
                 <Separator />
 
-                {activeAppointment.status === "NO_SHOW" ? (
+                {activeAppointment.status === "BLOCKED" ? (
                     isPeriod ? (
                         <BlockPeriodForm
                             blockPeriod={{
