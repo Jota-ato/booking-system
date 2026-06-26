@@ -26,7 +26,7 @@ export function CustomersTable() {
                     <p>3</p>
                     <p>
                         <Badge
-                            variant="outline"
+                            variant="success"
                         >Frecuent</Badge>
                     </p>
                 </div>
