@@ -28,7 +28,7 @@ export interface ICustomersRepository {
      *          including any database-generated fields such as `id`.
      */
     createClient(data: NewCustomer): Promise<Customer>
-    getAll(page: number, limit: number): Promise<CustomerWithAppointmentCount[]>
+    getAll(page: number, limit: number): Promise<{ data: CustomerWithAppointmentCount[], totalPages: number }>
     getCount(): Promise<number>
     getCountByTimeRange(startRange: TZDate, endRange: TZDate): Promise<number>
 }
@@ -59,20 +59,32 @@ class CustomersRepository implements ICustomersRepository {
         )[0]
     }
 
-    async getAll(page: number, limit: number): Promise<CustomerWithAppointmentCount[]> {
-        return await db
-            .query
-            .customers
-            .findMany({
-                limit,
-                offset: (page - 1) * limit,
-                extras: {
-                    appointmentCount: sql<number>`
+    async getAll(page: number, limit: number): Promise<{ data: CustomerWithAppointmentCount[], totalPages: number }> {
+
+        const offset = (page - 1) * limit
+
+        const [data, total] = await Promise.all([
+            db
+                .query
+                .customers
+                .findMany({
+                    limit,
+                    offset: (page - 1) * limit,
+                    extras: {
+                        appointmentCount: sql<number>`
                     (SELECT COUNT(*) FROM "appointments" WHERE "appointments"."customer_id" = "customers"."id")
                 `.as("appointment_count")
-                },
-                where: (customer, { not, eq }) => not(eq(customer.id, "caefa19f-5766-4244-8213-b9c969da4e68"))
-            })
+                    },
+                    where: (customer, { not, eq }) => not(eq(customer.id, "caefa19f-5766-4244-8213-b9c969da4e68"))
+                }),
+            db
+                .$count(customers)
+        ])
+
+        return {
+            data,
+            totalPages: Math.ceil(total / limit)
+        }
     }
 
     async getCount(): Promise<number> {

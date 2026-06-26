@@ -27,7 +27,7 @@ export default async function CustomersPage({
         noShowRate
     ] =
         await Promise.all([
-            customersService.getCustomers(currentPage, 10),
+            customersService.getCustomers(currentPage, 5),
             customersService.getCustomerAmount(),
             customersService.getCustomersByTimeRange(startRange, endRange),
             adminAppointmentsService.getNoShowRate(startRange, endRange),
@@ -47,6 +47,7 @@ export default async function CustomersPage({
                 />
                 <CustomersTable
                     customers={customers}
+                    currentPage={currentPage}
                 />
             </Container>
         </section>
