@@ -66,7 +66,7 @@ class AdminAppointmentsService {
      */
     async createManualAppointment(data: NewAppointmentManuallyInput) {
 
-        const { appointmentDate, clientPhone, endTime, adittionalPrice, isRegisterClient, serviceId, startTime, extrasId } = data
+        const { clientPhone, endTime, adittionalPrice, isRegisterClient, serviceId, startTime, extrasId } = data
 
         await appointmentsService.avoidCollision(startTime, endTime)
 
@@ -86,11 +86,10 @@ class AdminAppointmentsService {
 
 
         const appointment = await this.adminAppointmentsRepository.createManually({
-            appointmentDate,
             customerId: customer.id,
-            endTime,
+            endTime: endTime.toISOString(),
             serviceId,
-            startTime,
+            startTime: startTime.toISOString(),
             adittionalPrice: adittionalPrice.toString()
         })
 

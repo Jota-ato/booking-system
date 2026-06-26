@@ -38,7 +38,7 @@ export interface IAppointmentsRepository {
      *                     (useful when updating an existing appointment).
      * @returns A promise that resolves to an array of overlapping appointments.
      */
-    getByRange(startRange: string, endRange: string, excludeId?: string, limit?: number): Promise<Appointment[]>
+    getByRange(startRange: string | Date, endRange: string | Date, excludeId?: string, limit?: number): Promise<Appointment[]>
     getHistory(page: number, dateFilter?: string): Promise<{ data: FullAppointment[], totalPages: number }>
     getFromDay(day: string, full?: boolean): Promise<(FullAppointment | Appointment)[]>
 }
@@ -69,19 +69,21 @@ class AppointmentsRepository implements IAppointmentsRepository {
 
     /** @inheritdoc */
     async getByRange(
-        startRange: string,
-        endRange: string,
+        startRange: string | Date,
+        endRange: string | Date,
         excludeId?: string,
         limit: number = 10
     ): Promise<Appointment[]> {
+        const safeStartRange = startRange instanceof Date ? startRange.toISOString() : startRange;
+        const safeEndRange = endRange instanceof Date ? endRange.toISOString() : endRange;
         return await db
             .query
             .appointments
             .findMany({
                 where: (appointment, { and, lt, gt, not }) => {
                     const conditions = [
-                        lt(appointment.startTime, endRange),
-                        gt(appointment.endTime, startRange)
+                        lt(appointment.startTime, safeEndRange),
+                        gt(appointment.endTime, safeStartRange)
                     ];
 
                     if (excludeId) {

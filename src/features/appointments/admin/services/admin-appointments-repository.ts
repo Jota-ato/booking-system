@@ -81,8 +81,8 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
             .set({
                 ...data,
                 adittionalPrice: data.adittionalPrice.toString(),
-                startTime: data.startTime,
-                endTime: data.endTime
+                startTime: data.startTime.toISOString(),
+                endTime: data.endTime.toISOString()
             })
             .where(eq(appointments.id, id))
     }
@@ -125,7 +125,8 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
             .insert(appointments)
             .values(
                 {
-                    ...data,
+                    startTime: data.startTime.toISOString(),
+                    endTime: data.endTime.toISOString(),
                     serviceId: "5a77e275-3ffa-4e21-834b-1f017fe10eae",
                     customerId: 'caefa19f-5766-4244-8213-b9c969da4e68',
                     status: 'BLOCKED',
@@ -137,7 +138,8 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
         await db
             .update(appointments)
             .set({
-                ...data
+                startTime: data.startTime.toISOString(),
+                endTime: data.endTime.toISOString()
             })
             .where(eq(appointments.id, id))
     }

@@ -36,11 +36,6 @@ export const appointments = pgTable(
 
     serviceNameSnapshot: varchar("service_name_snapshot", { length: 100 }),
     servicePriceSnapshot: numeric("service_price_snapshot", { precision: 10, scale: 2 }),
-    appointmentDate: timestamp("appointment_date", {
-      withTimezone: true,
-      mode: "date",
-    }).notNull(),
-
     startTime: timestamp("start_time", {
       withTimezone: true,
       mode: "string",
@@ -63,12 +58,10 @@ export const appointments = pgTable(
     fullPrice: numeric('full_price', { precision: 10, scale: 2 }).notNull().default('0')
   },
   (table) => [
-    index("idx_appointments_date").on(table.appointmentDate),
     index("idx_appointments_status").on(table.status),
     index("idx_appointments_customer_id").on(table.customerId),
     index("idx_appointments_service_id").on(table.serviceId),
     index("idx_appointments_date_status").on(
-      table.appointmentDate,
       table.status,
     ),
   ],

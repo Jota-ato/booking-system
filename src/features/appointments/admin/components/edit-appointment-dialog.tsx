@@ -21,7 +21,7 @@ export function EditAppointmentDialog({
     if (!activeAppointment) return <></>
 
     const description = activeAppointment.status === "NO_SHOW" ?
-        "Editing block" : 
+        "Editing block" :
         `Editing ${activeAppointment.customer.name}'s appointment`
 
     const isPeriod = !isSameDay(activeAppointment.startTime, activeAppointment.endTime)
@@ -47,26 +47,21 @@ export function EditAppointmentDialog({
                     isPeriod ? (
                         <BlockPeriodForm
                             blockPeriod={{
-                                dateRange: {
-                                    from: new Date(activeAppointment.startTime),
-                                    to: new Date(activeAppointment.endTime)
-                                },
-                                startTime: formatTime(activeAppointment.startTime),
-                                endTime: formatTime(activeAppointment.endTime)
+                                startTime: new Date(activeAppointment.startTime),
+                                endTime: new Date(activeAppointment.endTime)
                             }}
                             blockId={activeAppointment.id}
                         />
                     ) :
-                    (
-                        <BlockTimeForm
-                            initialData={{
-                                appointmentDate: activeAppointment.appointmentDate,
-                                startTime: activeAppointment.startTime,
-                                endTime: activeAppointment.endTime
-                            }}
-                            blockId={activeAppointment.id}
-                        />
-                    )
+                        (
+                            <BlockTimeForm
+                                initialData={{
+                                    startTime: new Date(activeAppointment.startTime),
+                                    endTime: new Date(activeAppointment.endTime)
+                                }}
+                                blockId={activeAppointment.id}
+                            />
+                        )
                 ) : (
                     <UpdateAppointmentForm
                         appointment={activeAppointment}

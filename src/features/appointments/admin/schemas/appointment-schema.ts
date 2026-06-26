@@ -5,41 +5,20 @@ import { z } from "zod"
 export const appointmentStatusSchema = z.enum(appointmentStatusEnum.enumValues);
 export type appointmentStatusEnum = z.infer<typeof appointmentStatusSchema>
 
-const validateTimeRange = (data: { startTime: string; endTime: string, appointmentDate: Date }) => {
-    const startTime = new Date(data.appointmentDate);
-    const endTime = new Date(data.appointmentDate);
-
-    if (data.startTime.includes('T') && data.endTime.includes('T')) {
-        const parsedStart = new Date(data.startTime);
-        const parsedEnd = new Date(data.endTime);
-
-        return parsedEnd.getTime() > parsedStart.getTime();
-    }
-
-    const [startHour, startMinutes] = data.startTime.split(':');
-    const [endHour, endMinutes] = data.endTime.split(':');
-
-    startTime.setHours(Number(startHour), Number(startMinutes), 0, 0);
-    endTime.setHours(Number(endHour), Number(endMinutes), 0, 0);
-
-    if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
-        return false;
-    }
-
-    return endTime > startTime;
-};
+const validateTimeRange = (data: { startTime: Date; endTime: Date }) => {
+    return data.endTime > data.startTime;
+}
 
 const timeRangeError = {
     message: "Start hour must be less than the end hour",
-    path: ["appointmentDate"],
+    path: ["endTime"],
 };
 
 const baseAppointmentSchema = z.object({
     serviceId: z.uuid({ error: 'Service is necessary' }),
-    appointmentDate: z.date({ error: 'Invalid date' }),
     extrasId: z.array(z.uuid().nullable().optional()),
-    startTime: z.string(),
-    endTime: z.string(),
+    startTime: z.date(),
+    endTime: z.date(),
     adittionalPrice: z.number()
 })
 
@@ -64,7 +43,6 @@ export const newAppointmentManuallySchema = z.discriminatedUnion("isRegisterClie
 )
 
 export const blockTimeSchema = baseAppointmentSchema.pick({
-    appointmentDate: true,
     startTime: true,
     endTime: true
 }).refine(
@@ -72,30 +50,11 @@ export const blockTimeSchema = baseAppointmentSchema.pick({
 )
 
 export const blockPeriodSchema = z.object({
-    dateRange: z.object({
-        from: z.date({ error: "Start date is required" }),
-        to: z.date({ error: "End date is required" })
-    }, { error: "Please select a date range" }),
-    startTime: z.string({ error: "Start time is required" }),
-    endTime: z.string({ error: "End time is required" })
+    startTime: z.date({ error: "Start time is required" }),
+    endTime: z.date({ error: "End time is required" })
 }).refine(
-    (data) => {
-        const [startHour, startMin] = data.startTime.split(':');
-        const [endHour, endMin] = data.endTime.split(':');
-
-        const fullStart = new Date(data.dateRange.from);
-        fullStart.setHours(Number(startHour), Number(startMin), 0, 0);
-
-        const fullEnd = new Date(data.dateRange.to);
-        fullEnd.setHours(Number(endHour), Number(endMin), 0, 0);
-
-        return fullEnd > fullStart;
-    },
-    {
-        message: "The end date and time must be after the start date and time",
-        path: ["endTime"]
-    }
-);
+    validateTimeRange, timeRangeError
+)
 
 export type NewAppointmentManuallyInput = z.infer<typeof newAppointmentManuallySchema>;
 export type UpdateApointmentInput = z.infer<typeof updateAppointmentSchema>

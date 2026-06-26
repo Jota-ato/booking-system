@@ -61,7 +61,7 @@ class AppointmentsService {
      * @throws {AppError} If one or more overlapping appointments are found.
      * @returns A promise that resolves if no collision is detected.
      */
-    async avoidCollision(startRange: string, endRange: string, exludeId?: string) {
+    async avoidCollision(startRange: string | Date, endRange: string | Date, exludeId?: string) {
         const appointments = await this.appointmentsRepository.getByRange(startRange, endRange, exludeId)
 
         if (appointments?.length) throw new AppError('There is already an appointment  in this range')

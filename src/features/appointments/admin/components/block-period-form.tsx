@@ -26,36 +26,27 @@ export function BlockPeriodForm({
     const isEditing = !!blockPeriod;
     const {
         handleSubmit,
+        setValue,
         control,
         formState: { errors, isSubmitting }
     } = useForm<BlockPeriodInput>({
         resolver: zodResolver(blockPeriodSchema),
         defaultValues: blockPeriod ?? {
-            dateRange: { from: new Date(), to: undefined },
-            startTime: "10:00",
-            endTime: "20:00"
+            startTime: new Date(),
+            endTime: new Date()
         }
     })
 
     const onSubmit = async (data: BlockPeriodInput) => {
-        const [startHour, startMinutes] = data.startTime.split(':');
-        const startDateTime = new Date(data.dateRange.from);
-        startDateTime.setHours(Number(startHour), Number(startMinutes), 0, 0);
-
-        const [endHour, endMinutes] = data.endTime.split(':');
-        const endDateTime = new Date(data.dateRange.to);
-        endDateTime.setHours(Number(endHour), Number(endMinutes), 0, 0);
-
+        
         const response = isEditing ?
             await updateBlockAction({
-                appointmentDate: startDateTime,
-                startTime: startDateTime.toISOString(),
-                endTime: endDateTime.toISOString()
+                startTime: data.startTime,
+                endTime: data.endTime
             }, blockId!) :
             await createBlockAction({
-                appointmentDate: startDateTime,
-                startTime: startDateTime.toISOString(),
-                endTime: endDateTime.toISOString()
+                startTime: data.startTime,
+                endTime: data.endTime
             });
 
         showResponse(response);
@@ -70,10 +61,10 @@ export function BlockPeriodForm({
                 <FieldGroup>
                     <DatePickerRange
                         control={control}
-                        dateRangeName="dateRange"
                         startTimeName="startTime"
                         endTimeName="endTime"
                         label="Custom Blocking Period"
+                        setValue={setValue}
                     />
                 </FieldGroup>
 
@@ -82,8 +73,8 @@ export function BlockPeriodForm({
                 {errors.endTime && (
                     <FieldError>{errors.endTime.message}</FieldError>
                 )}
-                {errors.dateRange && (
-                    <FieldError>{errors.dateRange.message}</FieldError>
+                {errors.endTime && (
+                    <FieldError>{errors.endTime.message}</FieldError>
                 )}
 
                 <Button

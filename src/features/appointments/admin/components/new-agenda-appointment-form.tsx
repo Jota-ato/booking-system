@@ -52,9 +52,8 @@ export function NewAgendaAppointmentForm({
             isRegisterClient: true,
             adittionalPrice: 0,
             clientPhone: "",
-            appointmentDate: startTime,
-            startTime: formatTime(startTime),
-            endTime: formatTime(endTime),
+            startTime: new Date(startTime),
+            endTime: new Date(endTime),
         }
     })
 
@@ -72,8 +71,6 @@ export function NewAgendaAppointmentForm({
     const create = async (data: NewAppointmentManuallyInput) => {
         const success = showResponse(await createManualAppointmentAction({
             ...data,
-            startTime: startTime.toISOString(),
-            endTime: endTime.toISOString()
         }))
 
         if (success) {

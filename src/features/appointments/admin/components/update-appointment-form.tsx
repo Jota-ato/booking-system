@@ -32,43 +32,32 @@ export function UpdateAppointmentForm({
 
 
     const {
-        getValues,
         handleSubmit,
         register,
         watch,
         control,
         reset,
+        setValue,
         formState: { errors, isSubmitting }
     } = useForm<UpdateApointmentInput>({
         resolver: zodResolver(updateAppointmentSchema),
         defaultValues: {
             status: appointment.status,
-            appointmentDate: appointment.appointmentDate,
-            startTime: formatTime(appointment.startTime),
-            endTime: formatTime(appointment.endTime),
+            startTime: new Date(appointment.startTime),
+            endTime: new Date(appointment.endTime),
             serviceId: appointment.serviceId,
             adittionalPrice: +appointment.adittionalPrice
         }
     })
 
     const update = async (data: UpdateApointmentInput) => {
-        const [startHour, startMinutes] = data.startTime.split(':')
-        const [endHour, endMinutes] = data.endTime.split(':')
-
-        const startTime = new Date(data.appointmentDate)
-        startTime.setHours(+startHour, +startMinutes, 0, 0)
-        const endTime = new Date(data.appointmentDate)
-        endTime.setHours(+endHour, +endMinutes, 0, 0)
-
         const success = showResponse(await updateAppointmentAction(
             {
                 ...data,
-                startTime: startTime.toISOString(),
-                endTime: endTime.toISOString()
-            }
-            , appointment.id
-        )
-        )
+            },
+            appointment.id
+        ));
+
         if (success) {
             reset(data)
             setActiveAppointment(undefined)
@@ -97,13 +86,12 @@ export function UpdateAppointmentForm({
                 <FieldGroup>
                     <DatePickerTime
                         control={control}
-                        appointmentDateName="appointmentDate"
+                        setValue={setValue}
                         startTimeName="startTime"
                         endTimeName="endTime"
                     />
-                    {errors.appointmentDate && (
-                        <FieldError>{errors.appointmentDate.message}</FieldError>
-                    )}
+                    {errors.startTime && <FieldError>{errors.startTime.message}</FieldError>}
+                    {errors.endTime && <FieldError>{errors.endTime.message}</FieldError>}
                 </FieldGroup>
                 <FieldSeparator />
 

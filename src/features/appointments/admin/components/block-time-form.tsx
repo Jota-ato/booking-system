@@ -28,36 +28,26 @@ export function BlockTimeForm({
 
     const {
         handleSubmit,
+        setValue,
         control,
         formState: { errors, isSubmitting }
     } = useForm<BlockTimeInput>({
         resolver: zodResolver(blockTimeSchema),
         defaultValues: initialData ?? {
-            appointmentDate: new Date(),
-            startTime: "10:00",
-            endTime: "12:30",
+            startTime: new Date(),
+            endTime: new Date(),
         }
     })
 
     const onSubmit = async (data: BlockTimeInput) => {
-        const [startHour, startMinutes] = data.startTime.split(':')
-        const [endHour, endMinutes] = data.endTime.split(':')
-
-        const startTime = new Date(data.appointmentDate)
-        startTime.setHours(+startHour, +startMinutes, 0, 0)
-        const endTime = new Date(data.appointmentDate)
-        endTime.setHours(+endHour, +endMinutes, 0, 0)
+        
 
         showResponse(isEditing ?
             await updateBlockAction({
                 ...data,
-                startTime: startTime.toISOString(),
-                endTime: endTime.toISOString()
             }, blockId!) :
             await createBlockAction({
                 ...data,
-                startTime: startTime.toISOString(),
-                endTime: endTime.toISOString()
             })
         )
     }
@@ -68,15 +58,15 @@ export function BlockTimeForm({
 
                 <FieldGroup>
                     <DatePickerTime
+                        setValue={setValue}
                         control={control}
-                        appointmentDateName="appointmentDate"
                         startTimeName="startTime"
                         endTimeName="endTime"
                     />
                 </FieldGroup>
                 <FieldSeparator />
-                {errors.appointmentDate && (
-                    <FieldError>{errors.appointmentDate.message}</FieldError>
+                {errors.endTime && (
+                    <FieldError>{errors.endTime.message}</FieldError>
                 )}
 
                 <Button

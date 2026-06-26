@@ -41,6 +41,7 @@ export function NewAppointmentManuallyForm({
         register,
         reset,
         control,
+        setValue,
         formState: { errors, isSubmitting }
     } = useForm<NewAppointmentManuallyInput>({
         resolver: zodResolver(newAppointmentManuallySchema),
@@ -48,9 +49,8 @@ export function NewAppointmentManuallyForm({
             isRegisterClient: true,
             adittionalPrice: 0,
             clientPhone: "",
-            appointmentDate: new Date(),
-            startTime: '10:00',
-            endTime: "12:30",
+            startTime: new Date(),
+            endTime: new Date(),
             extrasId: []
         }
     })
@@ -80,17 +80,8 @@ export function NewAppointmentManuallyForm({
     }, [availableExtras, extrasId])
 
     const create = async (data: NewAppointmentManuallyInput) => {
-        const [startHour, startMinutes] = data.startTime.split(':')
-        const [endHour, endMinutes] = data.endTime.split(':')
-
-        const startTime = new Date(data.appointmentDate)
-        startTime.setHours(+startHour, +startMinutes, 0, 0)
-        const endTime = new Date(data.appointmentDate)
-        endTime.setHours(+endHour, +endMinutes, 0, 0)
         const success = showResponse(await createManualAppointmentAction({
             ...data,
-            startTime: startTime.toISOString(),
-            endTime: endTime.toISOString()
         }))
 
         if (success) {
@@ -117,12 +108,8 @@ export function NewAppointmentManuallyForm({
                             />
 
                             <FieldGroup>
-                                <DatePickerTime
-                                    control={control}
-                                    appointmentDateName="appointmentDate"
-                                    startTimeName="startTime"
-                                    endTimeName="endTime"
-                                />
+                                <DatePickerTime control={control} setValue={setValue} startTimeName="startTime" endTimeName="endTime" />
+                                {errors.endTime && <FieldError>{errors.endTime.message}</FieldError>}
                             </FieldGroup>
                             <FieldSeparator />
 
