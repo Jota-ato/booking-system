@@ -50,7 +50,7 @@ export function NewAgendaAppointmentForm({
         resolver: zodResolver(newAppointmentManuallySchema),
         defaultValues: {
             isRegisterClient: true,
-            extrasPrice: 0,
+            adittionalPrice: 0,
             clientPhone: "",
             appointmentDate: startTime,
             startTime: formatTime(startTime),
@@ -159,12 +159,12 @@ export function NewAgendaAppointmentForm({
                             id="extraPrice"
                             step={0.01}
                             type="number"
-                            {...register('extrasPrice', {
+                            {...register('adittionalPrice', {
                                 setValueAs: (value) => value === "" ? 0 : +value,
                             })}
                         />
-                        {errors.extrasPrice && (
-                            <FieldError>{errors.extrasPrice.message}</FieldError>
+                        {errors.adittionalPrice && (
+                            <FieldError>{errors.adittionalPrice.message}</FieldError>
                         )}
                     </Field>
                 </div>

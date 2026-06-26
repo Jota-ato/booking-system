@@ -47,7 +47,7 @@ export function UpdateAppointmentForm({
             startTime: formatTime(appointment.startTime),
             endTime: formatTime(appointment.endTime),
             serviceId: appointment.serviceId,
-            extrasPrice: +appointment.extrasPrice
+            adittionalPrice: +appointment.adittionalPrice
         }
     })
 
@@ -141,15 +141,15 @@ export function UpdateAppointmentForm({
                             id="extraPrice"
                             type="number"
                             step={0.01}
-                            {...register('extrasPrice', {
+                            {...register('adittionalPrice', {
                                 setValueAs(value) {
                                     return +value
                                 },
                             })}
                         />
-                        {errors.extrasPrice && (
+                        {errors.adittionalPrice && (
                             <FieldError>
-                                {errors.extrasPrice.message}
+                                {errors.adittionalPrice.message}
                             </FieldError>
                         )}
                     </Field>
