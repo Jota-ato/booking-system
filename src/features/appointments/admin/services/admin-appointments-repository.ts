@@ -125,7 +125,7 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
                     ...data,
                     serviceId: "5a77e275-3ffa-4e21-834b-1f017fe10eae",
                     customerId: 'caefa19f-5766-4244-8213-b9c969da4e68',
-                    status: 'NO_SHOW',
+                    status: 'BLOCKED',
                 }
             )
     }

@@ -18,6 +18,7 @@ export const appointmentStatusEnum = pgEnum("appointment_status", [
   "PAID",       // Payment received (can be after COMPLETED)
   "CANCELLED",  // Cancelled by admin or customer,
   "NO_SHOW",    // No show for this customer
+  "BLOCKED",    // Blocked by admin
 ]);
 
 export const appointments = pgTable(

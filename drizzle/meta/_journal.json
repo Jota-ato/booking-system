@@ -127,6 +127,13 @@
       "when": 1782409957134,
       "tag": "0017_light_wiccan",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1782432650608,
+      "tag": "0018_lonely_risque",
+      "breakpoints": true
     }
   ]
 }
