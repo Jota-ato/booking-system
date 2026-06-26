@@ -53,7 +53,6 @@ export function DatePickerRange<T extends FieldValues>({
       const newEnd = endTime ? new Date(endTime) : new Date();
       newEnd.setFullYear(range.to.getFullYear(), range.to.getMonth(), range.to.getDate());
       setValue(endTimeName, newEnd as any, { shouldValidate: true, shouldDirty: true });
-      setOpen(false);
     } else {
       setValue(endTimeName, undefined as any, { shouldValidate: true, shouldDirty: true });
     }

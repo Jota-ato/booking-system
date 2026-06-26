@@ -6,7 +6,7 @@ export const appointmentExtras = pgTable("appointment_extras", {
     id: uuid("id").primaryKey().defaultRandom().notNull(),
     appointmentId: uuid("appointment_id")
         .notNull()
-        .references(() => appointments.id, { onDelete: "restrict" }),
+        .references(() => appointments.id, { onDelete: "cascade" }),
     extraId: uuid("extra_id")
         .notNull()
         .references(() => extras.id, { onDelete: "restrict" }),

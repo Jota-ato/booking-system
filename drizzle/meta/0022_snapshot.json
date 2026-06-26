@@ -1,6 +1,6 @@
 {
-  "id": "89d2d121-7fb9-4085-800b-31be1fecd6e0",
-  "prevId": "3743f4b3-d593-46a9-b675-39c3c09d0c16",
+  "id": "047e7bc3-d67c-4374-9d18-0c65c35dce91",
+  "prevId": "a0eb5ea5-3a46-4c86-9efe-e1f81ecf7dec",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -46,7 +46,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "restrict",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "appointment_extras_extra_id_extras_id_fk": {
@@ -146,13 +146,6 @@
         },
         "adittional_price": {
           "name": "adittional_price",
-          "type": "numeric(10, 2)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'0'"
-        },
-        "full_price": {
-          "name": "full_price",
           "type": "numeric(10, 2)",
           "primaryKey": false,
           "notNull": true,
