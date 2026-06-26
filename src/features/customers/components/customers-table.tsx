@@ -1,7 +1,12 @@
 import { Badge } from "@/shared/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { CustomerWithAppointmentCount } from "../types/customer.types";
 
-export function CustomersTable() {
+export function CustomersTable({
+    customers,
+}: {
+    customers: CustomerWithAppointmentCount[];
+}) {
     return (
         <Card>
             <CardHeader>
@@ -13,23 +18,25 @@ export function CustomersTable() {
                     <p>Name</p>
                     <p>Phone</p>
                     <p>Appointments</p>
-                    <p>Activity</p>
+                    <p>Recent activity</p>
                 </div>
-                <div className="p-4 rounded-md grid grid-cols-4 gap-4 items-center">
-                    <div className="flex items-center gap-2">
-                        <a className="bg-purple-400/10 p-2 rounded-full">
-                            JC
-                        </a>
-                        <p>Julio César</p>
-                    </div>
-                    <p>+52 56 2761 1099</p>
-                    <p>3</p>
-                    <p>
-                        <Badge
-                            variant="success"
-                        >Frecuent</Badge>
-                    </p>
-                </div>
+                <>
+                    {customers.map(customer => (
+                        <div className="p-4 rounded-md grid grid-cols-4 gap-4 items-center">
+                            <div className="flex items-center gap-2">
+                                <a className="bg-purple-400/10 p-2 rounded-full">
+                                    {`${customer.name[0]}${customer.lastName[0]}`}
+                                </a>
+                                <p>{`${customer.name} ${customer.lastName}`}</p>
+                            </div>
+                            <p>{customer.phone}</p>
+                            <p>{customer.appointmentCount}</p>
+                            <Badge
+                                variant="outline"
+                            >{`Frecuent`}</Badge>
+                        </div>
+                    ))}
+                </>
 
             </CardContent>
         </Card>

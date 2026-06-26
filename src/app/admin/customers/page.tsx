@@ -20,8 +20,14 @@ export default async function CustomersPage({
     const startRange = new TZDate(startOfMonth(today), TIMEZONE);
     const endRange = new TZDate(endOfMonth(today), TIMEZONE);
 
-    const [customerAmount, newCustomersThisMonth, noShowRate] =
+    const [
+        customers,
+        customerAmount,
+        newCustomersThisMonth,
+        noShowRate
+    ] =
         await Promise.all([
+            customersService.getCustomers(currentPage, 10),
             customersService.getCustomerAmount(),
             customersService.getCustomersByTimeRange(startRange, endRange),
             adminAppointmentsService.getNoShowRate(startRange, endRange),
@@ -39,7 +45,9 @@ export default async function CustomersPage({
                     newCustomersThisMonth={newCustomersThisMonth}
                     noShowRate={noShowRate}
                 />
-                <CustomersTable />
+                <CustomersTable
+                    customers={customers}
+                />
             </Container>
         </section>
     );
