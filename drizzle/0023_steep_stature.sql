@@ -1,0 +1,1 @@
+ALTER TABLE "appointments" DROP COLUMN "full_price";
