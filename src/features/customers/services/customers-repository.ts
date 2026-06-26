@@ -69,7 +69,7 @@ class CustomersRepository implements ICustomersRepository {
                 .customers
                 .findMany({
                     limit,
-                    offset: (page - 1) * limit,
+                    offset,
                     extras: {
                         appointmentCount: sql<number>`
                     (SELECT COUNT(*) FROM "appointments" WHERE "appointments"."customer_id" = "customers"."id")
@@ -89,7 +89,7 @@ class CustomersRepository implements ICustomersRepository {
 
     async getCount(): Promise<number> {
         return await db
-            .$count(customers)
+            .$count(customers) - 1
     }
 
     async getCountByTimeRange(startRange: TZDate, endRange: TZDate): Promise<number> {
