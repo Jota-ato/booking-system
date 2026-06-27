@@ -1,6 +1,6 @@
 import { db } from "@/db"
 import { Customer, customers, NewCustomer } from "@/db/schema"
-import { CustomerWithAppointmentCount } from "../types/customer.types"
+import { CustomerWithAppointmentCount, FullCustomer } from "../types/customer.types"
 import { and, eq, gte, lte, sql } from "drizzle-orm"
 import { TZDate } from "@date-fns/tz"
 
@@ -18,7 +18,8 @@ export interface ICustomersRepository {
      * @returns A promise that resolves to the matching customer record,
      *          or `undefined` if no customer is found.
      */
-    getByPhone(phone: string): Promise<Customer | undefined>
+    getByPhone(phone: string, full?: boolean): Promise<Customer | FullCustomer | undefined>
+    getById(id: string, full?: boolean): Promise<Customer | FullCustomer | undefined>
 
     /**
      * Inserts a new customer record and returns the persisted entity.
@@ -40,12 +41,37 @@ export interface ICustomersRepository {
  */
 class CustomersRepository implements ICustomersRepository {
     /** @inheritdoc */
-    async getByPhone(phone: string): Promise<Customer | undefined> {
+    async getByPhone(phone: string, full: boolean = false): Promise<Customer | FullCustomer | undefined> {
         return await db
             .query
             .customers
             .findFirst({
-                where: (customer, { eq }) => eq(customer.phone, phone)
+                where: (customer, { eq }) => eq(customer.phone, phone),
+                with: {
+                    appointments: full ? {
+                        with: {
+                            service: true,
+                            appoinmentExtras: true
+                        }
+                    } : undefined
+                }
+            })
+    }
+
+    async getById(id: string, full: boolean = false): Promise<Customer | FullCustomer | undefined> {
+        return await db
+            .query
+            .customers
+            .findFirst({
+                where: (customer, { eq }) => eq(customer.id, id),
+                with: {
+                    appointments: full ? {
+                        with: {
+                            service: true,
+                            appoinmentExtras: true
+                        }
+                    } : undefined
+                }
             })
     }
 

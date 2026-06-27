@@ -27,8 +27,12 @@ export class CustomersService {
      * @returns A promise that resolves to the matching `Customer` record,
      *          or `undefined` if no customer is found.
      */
-    async getClientByPhone(phone: string) {
-        return await this.customersRepository.getByPhone(phone)
+    async getClientByPhone(phone: string, full: boolean = false) {
+        return await this.customersRepository.getByPhone(phone, full)
+    }
+
+    async getClientById(id: string, full: boolean = false) {
+        return await this.customersRepository.getById(id, full)
     }
 
     /**
