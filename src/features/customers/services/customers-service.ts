@@ -2,6 +2,7 @@ import { NewCustomer } from "@/db/schema";
 import { customersRepository, ICustomersRepository } from "./customers-repository";
 import { AppError } from "@/shared/lib/errors";
 import { TZDate } from "@date-fns/tz"
+import { adminAppointmentsRepository, IAdminAppointmentsRepository } from "@/features/appointments/admin/services/admin-appointments-repository";
 
 /**
  * Application-layer service responsible for customer business logic.
@@ -17,7 +18,8 @@ export class CustomersService {
      * @param customersRepository - Data access layer for customer records.
      */
     constructor(
-        private customersRepository: ICustomersRepository
+        private customersRepository: ICustomersRepository,
+        private adminAppointmentsRepository: IAdminAppointmentsRepository
     ) { }
 
     /**
@@ -61,8 +63,13 @@ export class CustomersService {
     async getCustomersByTimeRange(startRange: TZDate, endRange: TZDate) {
         return await this.customersRepository.getCountByTimeRange(startRange, endRange)
     }
+
+    async getCustomerAppointments(customerId: string, page: number, limit: number) {
+        return await this.adminAppointmentsRepository.getByClient(customerId, page, limit)
+    }
 }
 
 export const customersService = new CustomersService(
-    customersRepository
+    customersRepository,
+    adminAppointmentsRepository
 )

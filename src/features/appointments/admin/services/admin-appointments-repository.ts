@@ -3,6 +3,7 @@ import { BlockTimeInput, UpdateApointmentInput } from "../schemas/appointment-sc
 import { TZDate } from "@date-fns/tz"
 import { db } from "@/db"
 import { and, count, eq, gte, lte, not, sql } from "drizzle-orm"
+import { FullAppointment } from "../../core/types/appointments.types"
 
 export interface IAdminAppointmentsRepository {
     /*
@@ -61,6 +62,7 @@ export interface IAdminAppointmentsRepository {
     createManually(data: NewAppointment): Promise<Appointment>
     updateBlock(data: BlockTimeInput, id: string): Promise<void>
     getNoShowRate(startRange?: string, endRange?: string): Promise<number>
+    getByClient(clientId: string, currentPage: number, limit: number): Promise<FullAppointment[]>
 }
 
 class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
@@ -166,6 +168,26 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
                 lte(appointments.startTime, endRange)
             ))
         return (result.noShows / result.total) * 100
+    }
+
+    async getByClient(clientId: string, currentPage: number = 1, limit: number = 5): Promise<FullAppointment[]> {
+
+        const offset = (currentPage - 1) * limit;
+
+        return await db
+            .query
+            .appointments
+            .findMany({
+                where: (appointment, { eq }) => eq(appointment.customerId, clientId),
+                with: {
+                    customer: true,
+                    service: true,
+                    appoinmentExtras: true
+                },
+                offset,
+                limit,
+                orderBy: (apt, { desc }) => desc(apt.startTime)
+            })
     }
 }
 

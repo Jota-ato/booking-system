@@ -1,3 +1,5 @@
+import { RecordCard } from "@/features/appointments/admin/components/record-card"
+import { CustomerStatsGrid } from "@/features/customers/components/customer-stats-grid"
 import { customersService } from "@/features/customers/services/customers-service"
 import { Container } from "@/shared/components/ui/container"
 import { formatPhone } from "@/shared/utils/phone"
@@ -13,20 +15,7 @@ export default async function CustomerPage({
 
     if (!customer || !("appointments" in customer)) return notFound()
     
-    const appointments = customer.appointments;
-    const totalAppointments = appointments.length;
-
-    const completedVisits = appointments.filter(
-        (app: any) => app.status === 'COMPLETED' || app.status === 'PAID' 
-    ).length;
-
-    const noShows = appointments.filter(
-        (app: any) => app.status === 'NO_SHOW'
-    ).length;
-
-    const noShowRate = totalAppointments > 0 
-        ? ((noShows / totalAppointments) * 100).toFixed(1) 
-        : "0.0";
+    const customerAppointments = await customersService.getCustomerAppointments(customerId, 1, 5);
 
     return (
         <section className="h-full w-full flex flex-col items-center py-8 md:p-12 space-y-8">
@@ -41,32 +30,13 @@ export default async function CustomerPage({
                     </p>
                 </header>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    
-                    <div className="p-6 border rounded-lg shadow-sm bg-card flex flex-col justify-center">
-                        <span className="text-sm font-medium text-muted-foreground">Total appoinments</span>
-                        <span className="text-4xl font-bold mt-2 text-primary">{totalAppointments}</span>
-                    </div>
+                <CustomerStatsGrid customerAppointments={customer.appointments} />
 
-                    <div className="p-6 border rounded-lg shadow-sm bg-card flex flex-col justify-center">
-                        <span className="text-sm font-medium text-muted-foreground">Appointments completed</span>
-                        <span className="text-4xl font-bold mt-2 text-success">{completedVisits}</span>
-                    </div>
-
-                    <div className="p-6 border rounded-lg shadow-sm bg-card flex flex-col justify-center">
-                        <span className="text-sm font-medium text-muted-foreground">No show rate</span>
-                        <div className="flex items-baseline gap-1 mt-2">
-                            <span className="text-4xl font-bold text-destructive">{noShowRate}</span>
-                            <span className="text-xl text-muted-foreground">%</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground mt-1">
-                            <strong className="text-accent-foreground">{noShows}</strong> no show in <strong className="text-accent-foreground">{totalAppointments}</strong>
-                        </span>
-                    </div>
-                    
-                </div>
-
-
+                <RecordCard 
+                    appointments={customerAppointments}
+                    currentPage={1}
+                    totalPages={Math.ceil(customerAppointments.length / 5)}
+                />
             </Container>
         </section>
     )
