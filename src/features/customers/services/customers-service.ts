@@ -64,8 +64,13 @@ export class CustomersService {
         return await this.customersRepository.getCountByTimeRange(startRange, endRange)
     }
 
-    async getCustomerAppointments(customerId: string, page: number, limit: number) {
-        return await this.adminAppointmentsRepository.getByClient(customerId, page, limit)
+    async getCustomerAppointments(
+        customerId: string,
+        page: number,
+        limit: number,
+        dateFilter?: string
+    ) {
+        return await this.adminAppointmentsRepository.getByClient(customerId, page, limit, dateFilter)
     }
 }
 

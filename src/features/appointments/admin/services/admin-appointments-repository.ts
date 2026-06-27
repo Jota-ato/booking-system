@@ -62,7 +62,10 @@ export interface IAdminAppointmentsRepository {
     createManually(data: NewAppointment): Promise<Appointment>
     updateBlock(data: BlockTimeInput, id: string): Promise<void>
     getNoShowRate(startRange?: string, endRange?: string): Promise<number>
-    getByClient(clientId: string, currentPage: number, limit: number): Promise<FullAppointment[]>
+    getByClient(clientId: string, currentPage: number, limit: number, dateFilter?: string): Promise<{
+        data: FullAppointment[],
+        totalPages: number
+    }>
 }
 
 class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
@@ -170,24 +173,49 @@ class AdminAppointmentsRepository implements IAdminAppointmentsRepository {
         return (result.noShows / result.total) * 100
     }
 
-    async getByClient(clientId: string, currentPage: number = 1, limit: number = 5): Promise<FullAppointment[]> {
+    async getByClient(
+        clientId: string,
+        currentPage: number = 1,
+        limit: number = 5,
+        dateFilter?: string
+    ): Promise<{
+        data: FullAppointment[],
+        totalPages: number
+    }> {
 
         const offset = (currentPage - 1) * limit;
+        let cutoff = new Date()
+        if (dateFilter) {
+            const [year, month, day] = dateFilter.split('-')
+            cutoff = new Date(+year, +month - 1, +day)
+        }
+        cutoff.setHours(23, 59, 59, 999)
 
-        return await db
-            .query
-            .appointments
-            .findMany({
-                where: (appointment, { eq }) => eq(appointment.customerId, clientId),
-                with: {
-                    customer: true,
-                    service: true,
-                    appoinmentExtras: true
-                },
-                offset,
-                limit,
-                orderBy: (apt, { desc }) => desc(apt.startTime)
-            })
+        const [customerAppointments, total] = await Promise.all([
+            db
+                .query
+                .appointments
+                .findMany({
+                    where: (appointment, { eq, lte, and }) => and(
+                        eq(appointment.customerId, clientId),
+                        lte(appointment.startTime, cutoff.toISOString())
+                    ),
+                    with: {
+                        customer: true,
+                        service: true,
+                        appoinmentExtras: true
+                    },
+                    offset,
+                    limit,
+                    orderBy: (apt, { desc }) => desc(apt.startTime)
+                }),
+            db.$count(appointments, eq(appointments.customerId, clientId))
+        ])
+
+        return {
+            data: customerAppointments,
+            totalPages: Math.ceil(total / limit)
+        }
     }
 }
 
