@@ -5,7 +5,6 @@ import { CustomerStatsGrid } from "@/features/customers/components/customer-stat
 import { customersService } from "@/features/customers/services/customers-service"
 import { servicesService } from "@/features/services/services/services-service"
 import { Container } from "@/shared/components/ui/container"
-import { formatPhone } from "@/shared/utils/phone"
 import { notFound } from "next/navigation"
 
 export default async function CustomerPage({

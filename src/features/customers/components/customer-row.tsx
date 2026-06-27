@@ -18,7 +18,7 @@ export function CustomerRow({ customer }: { customer: CustomerWithAppointmentCou
                 {formatPhone(customer.phone)}
             </span>
             <span>{customer.appointmentCount}</span>
-            <ActivityBadge appointmentCount={customer.appointmentCount} />
+            <ActivityBadge appointmentCount={customer.thisMonthAppointments} />
         </Link>
     )
 }

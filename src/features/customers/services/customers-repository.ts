@@ -3,6 +3,8 @@ import { Customer, customers, NewCustomer } from "@/db/schema"
 import { CustomerWithAppointmentCount, FullCustomer } from "../types/customer.types"
 import { and, eq, gte, lte, sql } from "drizzle-orm"
 import { TZDate } from "@date-fns/tz"
+import { endOfMonth, startOfMonth } from "date-fns"
+import { TIMEZONE } from "@/shared/lib/date"
 
 /**
  * Contract for all customer persistence operations.
@@ -88,6 +90,7 @@ class CustomersRepository implements ICustomersRepository {
     async getAll(page: number, limit: number): Promise<{ data: CustomerWithAppointmentCount[], totalPages: number }> {
 
         const offset = (page - 1) * limit
+        const startOfMonthDate = new TZDate(startOfMonth(new Date()), TIMEZONE)
 
         const [data, total] = await Promise.all([
             db
@@ -97,9 +100,10 @@ class CustomersRepository implements ICustomersRepository {
                     limit,
                     offset,
                     extras: {
-                        appointmentCount: sql<number>`
-                    (SELECT COUNT(*) FROM "appointments" WHERE "appointments"."customer_id" = "customers"."id")
-                `.as("appointment_count")
+                        appointmentCount: sql<number>`(SELECT COUNT(*) FROM "appointments" WHERE "appointments"."customer_id" = "customers"."id")
+                `.as("appointment_count"),
+                        thisMonthAppointments: sql<number>`(SELECT COUNT(*) FROM "appointments" WHERE "appointments"."customer_id" = "customers"."id" AND "appointments"."start_time" >= date_trunc('month', NOW() AT TIME ZONE ${TIMEZONE}))
+                `.as("this_month_appointments")
                     },
                     where: (customer, { not, eq }) => not(eq(customer.id, "caefa19f-5766-4244-8213-b9c969da4e68"))
                 }),

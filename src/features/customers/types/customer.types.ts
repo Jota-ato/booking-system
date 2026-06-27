@@ -6,7 +6,8 @@ export type CustomerWithAppointments = Customer & {
 }
 
 export type CustomerWithAppointmentCount = Customer & {
-    appointmentCount: number
+    appointmentCount: number,
+    thisMonthAppointments: number
 }
 
 export type FullCustomer = Customer & {
