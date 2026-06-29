@@ -44,7 +44,7 @@ export function HeroLeftColumn() {
                     </motion.p>
                 </motion.div>
 
-                <div className="flex flex-col sm:flex-row sm:gap-4 gap-2">
+                <div className="flex gap-2">
                     <motion.button
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
