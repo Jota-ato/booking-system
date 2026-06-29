@@ -8,7 +8,7 @@ export function ServiceImage({
     service: ServiceWithExtras
 }) {
     return (
-        <div className="relative aspect-square">
+        <div className="relative aspect-square overflow-hidden">
             <Image
                 src={service.data.image!}
                 alt={`Image of ${service.data.name}`}
@@ -17,7 +17,7 @@ export function ServiceImage({
                 className="rounded-md object-cover w-full h-full"
             />
             <div className="absolute inset-0 bg-black/25 flex flex-col items-center justify-end">
-                <div className="bg-black/80 w-full p-4 min-h-30 rounded-b-md">
+                <div className="bg-black/80 w-full p-4 min-h-30">
                     <Heading
                         level={3}
                         className="text-left capitalize"
