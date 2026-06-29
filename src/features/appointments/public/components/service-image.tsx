@@ -8,7 +8,7 @@ export function ServiceImage({
     service: ServiceWithExtras
 }) {
     return (
-        <div className="relative aspect-square overflow-hidden">
+        <div className="relative aspect-square rounded-md overflow-hidden">
             <Image
                 src={service.data.image!}
                 alt={`Image of ${service.data.name}`}
@@ -20,11 +20,11 @@ export function ServiceImage({
                 <div className="bg-black/80 w-full p-4 min-h-30">
                     <Heading
                         level={3}
-                        className="text-left capitalize"
+                        className="text-left capitalize text-accent dark:text-accent-foreground"
                     >
                         {service.data.name}
                     </Heading>
-                    <p className="text-sm text-muted-foreground line-clamp-3">
+                    <p className="text-sm text-muted dark:text-muted-foreground line-clamp-3">
                         {service.data.description}.
                     </p>
                 </div>
