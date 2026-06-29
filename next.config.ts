@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "3znc0tm3cy.ufs.sh",
       },
     ],
-  },
+  }
 };
 
 export default nextConfig;

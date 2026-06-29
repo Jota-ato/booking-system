@@ -1,5 +1,5 @@
 import { AppError } from "./errors"
-import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidateTag } from "next/cache"
 
 export type ActionResponse = Promise<NonPromiseActionResponse>
 
@@ -25,7 +25,7 @@ export function adminAction<T extends any[], R>(
 
             const result = await callback(...args);
             if (tag) {
-                revalidateTag(tag, "default");
+                revalidateTag(tag, "max");
             }
 
             return {
