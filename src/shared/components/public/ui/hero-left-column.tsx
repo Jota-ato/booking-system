@@ -12,7 +12,7 @@ export function HeroLeftColumn() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
+                    transition={{ duration: 0.8, delay: 0.8 }}
                     className="space-y-4"
                 >
                     <Heading className="text-left">
@@ -37,7 +37,7 @@ export function HeroLeftColumn() {
                         className="text-muted-foreground max-w-md"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
+                        transition={{ duration: 0.8, delay: 1.4 }}
                     >
                         Exclusive designs, professional care, and a moment of total relaxation just for you.
                         Specialists in acrylic nails, gel polish, and hand spa treatments.
@@ -48,7 +48,7 @@ export function HeroLeftColumn() {
                     <motion.button
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 1.5 }}
+                        transition={{ duration: 0.8, delay: 2 }}
                     >
                         <Button
                             className="rounded-full text-base shadow-lg shadow-primary/20 transition-all hover:scale-105"
@@ -65,7 +65,7 @@ export function HeroLeftColumn() {
                     <motion.button
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 1 }}
+                        transition={{ duration: 0.8, delay: 1.6 }}
                     >
                         <Button
                             size="lg"

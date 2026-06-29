@@ -1,10 +1,16 @@
+"use client"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { motion } from "motion/react";
 
 export function HeroRightColumn() {
     return (
-        <div>
+        <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+        >
             <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-border">
                 <Image
                     src="https://3znc0tm3cy.ufs.sh/f/DWXg3fIaM0N2UCpIwRcOcLaPYky3q4zXUHSr8utQWf79lohC"
@@ -28,6 +34,6 @@ export function HeroRightColumn() {
                     </CardHeader>
                 </Card>
             </div>
-        </div>
+        </motion.div>
     )
 }
