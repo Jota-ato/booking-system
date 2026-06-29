@@ -65,9 +65,9 @@ export function ServiceImage({ service }: { service: ServiceWithExtras }) {
                                         </p>
                                         <ul className="space-y-0.5">
                                             {included.map(e => (
-                                                <li key={e.extra.id} className="flex justify-between text-xs text-white/80">
-                                                    <span>{e.extra.name}</span>
-                                                    <span className="text-white/50">{formatMXN(+e.extra.price)}</span>
+                                                <li key={e.extra.id} className="flex justify-between text-xs text-muted dark:text-muted-foreground">
+                                                    <span className="text-accent dark:text-accent-foreground">{e.extra.name}</span>
+                                                    <span>{formatMXN(+e.extra.price)}</span>
                                                 </li>
                                             ))}
                                         </ul>
@@ -81,9 +81,9 @@ export function ServiceImage({ service }: { service: ServiceWithExtras }) {
                                         </p>
                                         <ul className="space-y-0.5">
                                             {optional.map(e => (
-                                                <li key={e.extra.id} className="flex justify-between text-xs text-white/80">
-                                                    <span>{e.extra.name}</span>
-                                                    <span className="text-white/50">{formatMXN(+e.extra.price)}</span>
+                                                <li key={e.extra.id} className="flex justify-between text-xs text-muted dark:text-muted-foreground">
+                                                    <span className="text-accent dark:text-accent-foreground">{e.extra.name}</span>
+                                                    <span>{formatMXN(+e.extra.price)}</span>
                                                 </li>
                                             ))}
                                         </ul>
