@@ -19,7 +19,7 @@ export function ServiceSelection({
                   onClick={e => {
                     // handler aquí
                   }}
-                  className="w-full mt-4"
+                  className="w-full"
                   variant={'outline'}
                 >
                   Select
