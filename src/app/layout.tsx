@@ -11,7 +11,7 @@ import { Analytics } from "@vercel/analytics/next"
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Booking System",
+  title: "%s | Booking System",
   description:
     "Booking system for beauty salon, clinics  and other service-based businesses.",
 };

@@ -6,6 +6,14 @@ import { Separator } from "@/shared/components/ui/separator"
 import {
     AnimatePresence
 } from "motion/react"
+import { Metadata } from "next"
+
+const title = "Book online"
+
+export const metadata: Metadata = {
+    title,
+    description: "Book online for beauty salon, clinics and other service-based businesses.",
+}
 
 export default async function PublicAgendaPage() {
 
@@ -16,7 +24,7 @@ export default async function PublicAgendaPage() {
             className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12"
         >
             <Container className="space-y-8">
-                <Heading>Book online</Heading>
+                <Heading>{title}</Heading>
                 <Separator />
                 <AnimatePresence>
                     <Booking 
