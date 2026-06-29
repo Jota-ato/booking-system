@@ -4,11 +4,17 @@ import { Heading } from "@/shared/components/typography/heading"
 import { formatMXN } from "@/shared/lib/currency"
 import Image from "next/image"
 import { motion, AnimatePresence } from "motion/react"
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/shared/components/ui/button"
 
-export function ServiceImage({ service }: { service: ServiceWithExtras }) {
+export function ServiceImage({
+    service,
+    trigger = false
+}: {
+    service: ServiceWithExtras
+    trigger?: ReactNode
+}) {
     const [hovered, setHovered] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
@@ -25,7 +31,6 @@ export function ServiceImage({ service }: { service: ServiceWithExtras }) {
             onMouseLeave={() => setHovered(false)}
             onClick={() => setExpanded(prev => !prev)}
         >
-            {/* Imagen */}
             <Image
                 src={service.data.image!}
                 alt={`Image of ${service.data.name}`}
@@ -36,7 +41,6 @@ export function ServiceImage({ service }: { service: ServiceWithExtras }) {
 
             <div className="absolute inset-0 bg-linear-to-t bg-black/25" />
 
-            {/* Indicador tap — solo móvil */}
             {hasExtras && (
                 <div className="absolute top-2 right-2 sm:hidden">
                     <motion.div
@@ -123,16 +127,14 @@ export function ServiceImage({ service }: { service: ServiceWithExtras }) {
                             transition={{ duration: 0.25, ease: "easeOut" }}
                             className="overflow-hidden"
                         >
-                            <Button
-                                onClick={e => {
-                                    e.stopPropagation()
-                                    // handler aquí
-                                }}
-                                className="w-full mt-4"
-                                variant={'outline'}
-                            >
-                                Select
-                            </Button>
+                            {trigger && (
+                                <div
+                                    className="pt-3"
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    {trigger}
+                                </div>
+                            )}
                         </motion.div>
                     )}
                 </AnimatePresence>

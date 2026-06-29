@@ -1,11 +1,7 @@
 "use client"
 import { ServiceWithExtras } from "@/features/services/types/service.types"
-import { ScrollAnimateItem } from "@/shared/components/animate/scroll-animate-item"
-import { Heading } from "@/shared/components/typography/heading"
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { motion } from "motion/react"
-import Image from "next/image"
-import { ServiceImage } from "./service-image"
 import { ServiceSelection } from "./service-selection"
 
 export function Booking({

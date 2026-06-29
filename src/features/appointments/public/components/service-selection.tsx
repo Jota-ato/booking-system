@@ -1,6 +1,7 @@
 import { ServiceWithExtras } from "@/features/services/types/service.types"
 import { ScrollAnimateItem } from "@/shared/components/animate/scroll-animate-item"
 import { ServiceImage } from "./service-image"
+import { Button } from "@/shared/components/ui/button"
 
 export function ServiceSelection({
   services
@@ -14,6 +15,15 @@ export function ServiceSelection({
           <ScrollAnimateItem key={service.data.id} delay={Math.min(idx * 0.1, 0.4)}>
             <li key={service.data.id}>
               <ServiceImage
+                trigger={<Button
+                  onClick={e => {
+                    // handler aquí
+                  }}
+                  className="w-full mt-4"
+                  variant={'outline'}
+                >
+                  Select
+                </Button>}
                 service={service}
               />
             </li>
