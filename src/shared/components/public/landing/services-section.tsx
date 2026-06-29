@@ -17,9 +17,9 @@ export function ServicesSection({
             <section className="space-y-4 py-8">
                 <ScrollAnimateItem>
                     <Heading className="text-left" level={2}>Our services</Heading>
-                    <p className="text-muted-foreground">Here are the services we offer at our salon.</p>
+                    <p className="text-muted-foreground">Certified technician with over 10 years of experience.</p>
                 </ScrollAnimateItem>
-                <Separator/>
+                <Separator />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {services.map((service, idx) => (
                         <ScrollAnimateItem
