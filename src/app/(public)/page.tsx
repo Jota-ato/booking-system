@@ -1,4 +1,6 @@
+import { Header } from "@/shared/components/public/header";
 import { Heading } from "@/shared/components/typography/heading";
+import { Container } from "@/shared/components/ui/container";
 import { ThemeToggle } from "@/shared/components/ui/toggle-theme";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -12,13 +14,14 @@ export const metadata: Metadata = {
 
 export default function Home() {
     return (
-        <>
-            <Heading>{title}</Heading>
-            <nav>
-                <Link href="/agenda" className="text-blue-500 hover:underline">
-                    Go to agenda
-                </Link>
-            </nav>
-        </>
+        <section
+            className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12"
+        >
+            <Container>
+                <Header 
+                    title={title}
+                />
+            </Container>
+        </section>
     );
 }
