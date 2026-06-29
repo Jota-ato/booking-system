@@ -2,6 +2,7 @@ import { Booking } from "@/features/appointments/public/components/booking"
 import { servicesService } from "@/features/services/services/services-service"
 import { Heading } from "@/shared/components/typography/heading"
 import { Separator } from "@/shared/components/ui/separator"
+import { getSharedPublicServices } from "@/shared/lib/cache"
 import {
     AnimatePresence
 } from "motion/react"
@@ -10,10 +11,6 @@ import { cache } from "react"
 
 const title = "Book online"
 
-const getCachedServices = cache(async () => {
-    return await servicesService.getActiveServices()
-})
-
 export const metadata: Metadata = {
     title,
     description: "Book online for beauty salon, clinics and other service-based businesses.",
@@ -21,7 +18,7 @@ export const metadata: Metadata = {
 
 export default async function PublicAgendaPage() {
 
-    const services = await getCachedServices()
+    const services = await getSharedPublicServices()
 
     return (
         <section
