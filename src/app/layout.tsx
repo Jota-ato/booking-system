@@ -5,7 +5,8 @@ import { cn } from "@/shared/lib/utils";
 import { ThemeProvider } from "@/shared/components/ui/theme-provider";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import { Toaster } from "sonner";
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -53,6 +54,8 @@ export default function RootLayout({
             />
           </TooltipProvider>
         </ThemeProvider>
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
