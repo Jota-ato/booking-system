@@ -16,6 +16,7 @@ import { Button } from "../ui/button"
 import { ThemeToggle } from "../ui/toggle-theme"
 import { useTheme } from "next-themes"
 import { cn } from "@/shared/lib/utils"
+import { usePathname } from "next/navigation"
 
 const links = [
     {
@@ -74,6 +75,7 @@ export function HeaderNavigation() {
 function MobileHeaderNavigation() {
 
     const { setTheme, theme: currentTheme } = useTheme()
+    const pathname = usePathname()
 
     return (
         <DropdownMenu>
@@ -95,7 +97,9 @@ function MobileHeaderNavigation() {
                         >
                             <Link
                                 href={link.href}
-                                className="text-sm cursor-pointer"
+                                className={cn("text-sm cursor-pointer",
+                                    pathname === link.href ? "text-info" : ""
+                                )}
                             >
                                 <link.icon className="h-4 w-4" />
                                 {link.label}
@@ -123,13 +127,17 @@ function MobileHeaderNavigation() {
 }
 
 function DesktopHeaderNavigation() {
+    const pathname = usePathname()
+
     return (
         <div className="flex gap-4 items-center justify-between">
             {links.map((link) => (
                 <Link
                     key={link.href}
                     href={link.href}
-                    className="text-sm cursor-pointer flex gap-2 items-center hover:border-b hover:text-info hover:pb-1 border-info transition-all duration-150"
+                    className={cn("text-sm cursor-pointer flex gap-2 items-center hover:border-b hover:text-info hover:pb-1 border-info transition-all duration-150", 
+                        pathname === link.href ? "text-info border-b pb-1" : ""
+                    )}
                 >
                     <link.icon className="h-4 w-4" />
                     {link.label}
