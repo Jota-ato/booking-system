@@ -1,5 +1,5 @@
 import { AppError } from "./errors"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 export type ActionResponse = Promise<NonPromiseActionResponse>
 
@@ -23,7 +23,7 @@ export function adminAction<T extends any[], R>(
             }
 
             const result = await callback(...args);
-            revalidatePath('/')
+            revalidateTag("services-tag", "default");
 
             return {
                 success: true,
