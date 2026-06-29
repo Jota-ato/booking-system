@@ -1,9 +1,5 @@
-import { Header } from "@/shared/components/public/header";
-import { Heading } from "@/shared/components/typography/heading";
-import { Container } from "@/shared/components/ui/container";
-import { ThemeToggle } from "@/shared/components/ui/toggle-theme";
+import { Hero } from "@/shared/components/public/ui/hero";
 import { Metadata } from "next";
-import Link from "next/link";
 
 const title = "Booking System"
 
@@ -16,7 +12,7 @@ export default function Home() {
     return (
         <section
         >
-            
+            <Hero />
         </section>
     );
 }

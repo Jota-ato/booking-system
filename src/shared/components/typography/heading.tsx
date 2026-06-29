@@ -22,7 +22,7 @@ export function Heading({ children, level = 1, className }: Props) {
     
     return (
         <Tag className={cn(
-            "font-bold uppercase text-center",
+            "font-bold text-center",
             sizeMap[level], className
         )}>
             {children}

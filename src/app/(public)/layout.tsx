@@ -1,4 +1,4 @@
-import { Header } from "@/shared/components/public/header"
+import { Header } from "@/shared/components/public/ui/header"
 import { Container } from "@/shared/components/ui/container"
 import { ReactNode } from "react"
 

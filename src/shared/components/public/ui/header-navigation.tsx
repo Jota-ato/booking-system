@@ -1,7 +1,7 @@
 "use client"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Link from "next/link"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui/dropdown-menu"
 import {
     Calendar,
     Computer,
@@ -12,8 +12,8 @@ import {
     Mail,
     User
 } from "lucide-react"
-import { Button } from "../ui/button"
-import { ThemeToggle } from "../ui/toggle-theme"
+import { Button } from "../../ui/button"
+import { ThemeToggle } from "../../ui/toggle-theme"
 import { useTheme } from "next-themes"
 import { cn } from "@/shared/lib/utils"
 import { usePathname } from "next/navigation"
@@ -25,7 +25,7 @@ const links = [
         icon: Home
     },
     {
-        href: "/book",
+        href: "/booking",
         label: "Book",
         icon: Calendar
     },

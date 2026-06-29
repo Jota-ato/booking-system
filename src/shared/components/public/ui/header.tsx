@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { Heading } from "../typography/heading"
 import { HeaderNavigation } from "./header-navigation"
+import { Heading } from "../../typography/heading"
 
 export function Header() {
     return (
