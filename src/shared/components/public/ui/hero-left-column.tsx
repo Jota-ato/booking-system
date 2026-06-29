@@ -18,7 +18,7 @@ export function HeroLeftColumn() {
                     <Heading className="text-left">
                         Tus manos merecen una <br />
                         <span className="relative inline-block">
-                            <span className="text-primary text-4xl md:text-6xl font-cavalier tracking-wider">Manita de Gato</span>
+                            <span className="text-primary font-cavalier tracking-wider">Manita de Gato</span>
                             <svg
                                 className="absolute -bottom-2 left-0 w-full h-2 text-primary/30"
                                 viewBox="0 0 100 10"
@@ -34,7 +34,7 @@ export function HeroLeftColumn() {
                         </span>
                     </Heading>
                     <motion.p
-                        className="text-muted-foreground max-w-md leading-relaxed"
+                        className="text-muted-foreground max-w-md"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
@@ -48,7 +48,7 @@ export function HeroLeftColumn() {
                     <motion.button
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 2 }}
+                        transition={{ duration: 0.8, delay: 1.5 }}
                     >
                         <Button
                             className="rounded-full text-base shadow-lg shadow-primary/20 transition-all hover:scale-105"

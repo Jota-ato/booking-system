@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { HeaderNavigation } from "./header-navigation"
 import { Heading } from "../../typography/heading"
+import { PawPrint } from "lucide-react"
+import { Logo } from "../../ui/logo"
 
 export function Header() {
     return (
@@ -8,8 +10,10 @@ export function Header() {
             <Heading className="text-xl! font-bold">
                 <Link
                     href="/"
+                    className="flex items-center gap-2"
                 >
-                    Booking System
+                    Manita de gato
+                    <Logo />
                 </Link>
             </Heading>
 
