@@ -2,13 +2,27 @@
 import { useIsMobile } from "@/hooks/use-mobile"
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Calendar, Computer, Menu, Moon, PersonStanding, Sun } from "lucide-react"
+import {
+    Calendar,
+    Computer,
+    Menu,
+    Moon,
+    Home,
+    Sun,
+    Mail,
+    User
+} from "lucide-react"
 import { Button } from "../ui/button"
 import { ThemeToggle } from "../ui/toggle-theme"
 import { useTheme } from "next-themes"
 import { cn } from "@/shared/lib/utils"
 
 const links = [
+    {
+        href: "/",
+        label: "Home",
+        icon: Home
+    },
     {
         href: "/book",
         label: "Book",
@@ -17,7 +31,12 @@ const links = [
     {
         href: "/about-us",
         label: "About Us",
-        icon: PersonStanding
+        icon: User
+    },
+    {
+        href: "/contact",
+        label: "Contact us",
+        icon: Mail
     }
 ]
 const themes = [
@@ -71,10 +90,10 @@ function MobileHeaderNavigation() {
                     <DropdownMenuLabel>Navigation</DropdownMenuLabel>
                     {links.map((link) => (
                         <DropdownMenuItem
+                            key={link.href}
                             asChild
                         >
                             <Link
-                                key={link.href}
                                 href={link.href}
                                 className="text-sm cursor-pointer"
                             >
