@@ -1,7 +1,7 @@
 import { Appointment } from '@/db/schema';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+export const resend = new Resend(process.env.RESEND_API_KEY!);
 const from = 'Manita de Gato <hola@julio-zavala.me>'; // Branded sender
 
 /**

@@ -15,7 +15,9 @@ export const createExtraAction = adminAction(async (input: ExtraInput) => {
     const extra = await extrasService.createExtra(input)
 
     return `${extra.name} created successfully`
-})
+},
+    "extras-tag"
+)
 
 export const editExtraAction = adminAction(async (input: ExtraInput, id: string, isActive: boolean) => {
     const zodResponse = extraSchema.safeParse(input)
@@ -27,14 +29,18 @@ export const editExtraAction = adminAction(async (input: ExtraInput, id: string,
     const extra = await extrasService.editExtra(input, id, isActive)
 
     return `${extra.name} updated successfully`
-})
+},
+    "extras-tag"
+)
 
 export const deleteExtraAction = adminAction(async (id: string) => {
     await extrasService.deleteExtra(id)
     return "Extra deleted successfully"
-})
+},
+    "extras-tag"
+)
 
 export const reactivateExtraAction = adminAction(async (id: string) => {
     const extra = await extrasService.reactivateExtra(id)
     return `${extra.name} reactivated successfully`
-})
+}, "extras-tag")

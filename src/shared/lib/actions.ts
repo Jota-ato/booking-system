@@ -9,7 +9,8 @@ export type NonPromiseActionResponse = {
 }
 
 export function adminAction<T extends any[], R>(
-    callback: (...args: T) => Promise<R>
+    callback: (...args: T) => Promise<R>,
+    tag?: string
 ) {
     return async (...args: T) => {
         try {
@@ -23,7 +24,40 @@ export function adminAction<T extends any[], R>(
             }
 
             const result = await callback(...args);
-            revalidateTag("services-tag", "default");
+            if (tag) {
+                revalidateTag(tag, "default");
+            }
+
+            return {
+                success: true,
+                message: typeof result === 'string' ? result : "Operation successful.",
+                data: result ? result : undefined
+            };
+
+        } catch (error) {
+            if (error instanceof AppError) {
+                return {
+                    success: false,
+                    message: error.message
+                };
+            }
+
+            console.error('[SERVER_ACTION_ERROR]:', error);
+            return {
+                success: false,
+                message: "An unexpected internal error occurred. Please try again later."
+            };
+        }
+    };
+}
+
+export function customerAction<T extends any[], R>(
+    callback: (...args: T) => Promise<R>,
+) {
+    return async (...args: T) => {
+        try {
+
+            const result = await callback(...args);
 
             return {
                 success: true,

@@ -15,7 +15,7 @@ export const createServiceAction = adminAction(async (input: ServiceInput) => {
     const service = await servicesService.createService(input);
 
     return `Service ${service.name} created successfully`
-})
+}, "services-tag")
 
 export const updateServiceAction = adminAction(async (input: ServiceInput, id: string) => {
     const zodResponse = serviceSchema.safeParse(input);
@@ -27,14 +27,14 @@ export const updateServiceAction = adminAction(async (input: ServiceInput, id: s
     const service = await servicesService.updateService(input, id);
 
     return "Service updated successfully"
-})
+}, "services-tag")
 
 export const deleteServiceAction = adminAction(async (id: string) => {
     await servicesService.deteleService(id);
     return "Service deleted successfully"
-})
+}, "services-tag")
 
 export const reactiveServiceAction = adminAction(async (id: string) => {
     await servicesService.reactiveService(id);
     return "Service reactivated successfully"
-})
+}, "services-tag")
