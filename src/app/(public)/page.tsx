@@ -15,13 +15,8 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <section
-            className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12"
         >
-            <Container>
-                <Header 
-                    title={title}
-                />
-            </Container>
+            
         </section>
     );
 }

@@ -1,14 +1,18 @@
 import { Booking } from "@/features/appointments/public/components/booking"
 import { servicesService } from "@/features/services/services/services-service"
 import { Heading } from "@/shared/components/typography/heading"
-import { Container } from "@/shared/components/ui/container"
 import { Separator } from "@/shared/components/ui/separator"
 import {
     AnimatePresence
 } from "motion/react"
 import { Metadata } from "next"
+import { cache } from "react"
 
 const title = "Book online"
+
+const getCachedServices = cache(async () => {
+    return await servicesService.getActiveServices()
+})
 
 export const metadata: Metadata = {
     title,
@@ -17,21 +21,19 @@ export const metadata: Metadata = {
 
 export default async function PublicAgendaPage() {
 
-    const services = await servicesService.getActiveServices()
+    const services = await getCachedServices()
 
     return (
         <section
-            className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12"
+            className="space-y-8 my-8"
         >
-            <Container className="space-y-8">
-                <Heading>{title}</Heading>
-                <Separator />
-                <AnimatePresence>
-                    <Booking 
-                        services={services}
-                    />
-                </AnimatePresence>
-            </Container>
+            <Heading>{title}</Heading>
+            <Separator />
+            <AnimatePresence>
+                <Booking
+                    services={services}
+                />
+            </AnimatePresence>
         </section>
     )
 }

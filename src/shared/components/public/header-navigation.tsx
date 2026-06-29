@@ -2,7 +2,7 @@
 import { useIsMobile } from "@/hooks/use-mobile"
 import Link from "next/link"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
-import { Calendar, Computer, Menu, Moon, PersonStanding, Sparkles, Sun } from "lucide-react"
+import { Calendar, Computer, Menu, Moon, PersonStanding, Sun } from "lucide-react"
 import { Button } from "../ui/button"
 import { ThemeToggle } from "../ui/toggle-theme"
 import { useTheme } from "next-themes"
@@ -13,11 +13,6 @@ const links = [
         href: "/book",
         label: "Book",
         icon: Calendar
-    },
-    {
-        href: "/services",
-        label: "Services",
-        icon: Sparkles
     },
     {
         href: "/about-us",
