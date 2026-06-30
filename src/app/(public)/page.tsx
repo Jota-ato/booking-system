@@ -1,3 +1,4 @@
+import { ReviewsSection } from "@/shared/components/public/landing/reviews-section";
 import { ServicesSection } from "@/shared/components/public/landing/services-section";
 import { Hero } from "@/shared/components/public/ui/hero";
 import { getSharedPublicServices } from "@/shared/lib/cache";
@@ -20,6 +21,7 @@ export default async function Home() {
             <ServicesSection
                 services={services}
             />
+            <ReviewsSection />
         </section>
     );
 }
