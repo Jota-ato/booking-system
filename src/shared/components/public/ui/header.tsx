@@ -6,7 +6,7 @@ import { Logo } from "../../ui/logo"
 
 export function Header() {
     return (
-        <header className="flex gap-4 items-center justify-between">
+        <header className="flex gap-4 items-center justify-between py-8">
             <Heading className="text-xl! font-bold">
                 <Link
                     href="/"

@@ -1,4 +1,5 @@
 import { type ClassValue } from "clsx";
+import Link from "next/link";
 import { IconType } from "react-icons";
 
 interface FooterSocialMediaButtonProps {

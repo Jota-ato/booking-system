@@ -1,3 +1,4 @@
+import { Footer } from "@/shared/components/public/ui/footer"
 import { Header } from "@/shared/components/public/ui/header"
 import { Container } from "@/shared/components/ui/container"
 import { ReactNode } from "react"
@@ -9,7 +10,6 @@ export default function PublicLayout({
 }) {
     return (
         <div
-            className="h-full w-full flex flex-col items-center justify-center py-8 md:p-12"
         >
             <Container>
                 <Header
@@ -18,6 +18,7 @@ export default function PublicLayout({
                     {children}
                 </main>
             </Container>
+            <Footer />
         </div>
     )
 }

@@ -14,7 +14,7 @@ export function ServicesSection({
 }) {
     return (
         <AnimatePresence>
-            <section className="space-y-4 py-8">
+            <section className="space-y-4 py-8" id="services">
                 <ScrollAnimateItem>
                     <Heading className="text-left" level={2}>Our services</Heading>
                     <p className="text-muted-foreground">Certified technician with over 10 years of experience.</p>

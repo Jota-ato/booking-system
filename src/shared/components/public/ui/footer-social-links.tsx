@@ -1,6 +1,7 @@
 import { BsFacebook, BsInstagram } from "react-icons/bs";
 import { FaWhatsapp } from "react-icons/fa";
 import { FooterSocialMediaButton } from "./footer-social-media-button";
+import { Heading } from "../../typography/heading";
 
 const socialMediaLinks = [
     {
@@ -27,7 +28,9 @@ const socialMediaLinks = [
 export function FooterSocialLinks() {
     return (
         <div className="space-y-4">
-            <h4 className="text-2xl font-bold text-accent">Contáctanos</h4>
+            <Heading level={4} className="text-left text-2xl font-bold text-accent-foreground">
+                More about us
+            </Heading>
             <div className="space-y-4">
                 {socialMediaLinks.map(socialMediaLink => (
                     <FooterSocialMediaButton

@@ -1,24 +1,25 @@
 import Link from "next/link";
+import { Heading } from "../../typography/heading";
 
 const navItems: Record<string, string> = {
-    '/#servicios': 'Servicios',
-    '/#resenas': 'Reseñas',
-    '/#ubicacion': 'Ubicación'
+    '/#services': 'Services',
+    '/#reviews': 'Reviews',
+    '/#location': 'Location'
 };
 
 export function FooterNav() {
     return (
         <div className="space-y-4">
-            <h4 className="text-2xl font-bold text-accent">Servicios</h4>
+            <Heading level={4} className="text-left text-2xl font-bold text-accent-foreground">Services</Heading>
             <nav className="flex flex-col gap-2">
                 {Object.keys(navItems).map((item) => (
-                    <a
+                    <Link
                         key={item}
-                        className="text-sm md:text-md hover:text-accent transition-colors duration-300"
+                        className="text-sm md:text-md hover:text-accent-foreground hover:font-bold transition-all duration-300"
                         href={item}
                     >
                         {navItems[item]}
-                    </a>
+                    </Link>
                 ))}
             </nav>
         </div>
