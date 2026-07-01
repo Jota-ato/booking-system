@@ -10,6 +10,7 @@ import { TZDate } from "@date-fns/tz"
 import { Progress } from "@/shared/components/ui/progress"
 import { useEffect, useState } from "react"
 import { BackLinkBooking } from "./back-link-booking"
+import { CustomerForm } from "./customer-form"
 
 export function Booking({
     services,
@@ -38,7 +39,7 @@ export function Booking({
     }, [step])
 
     return (
-        <Card>
+        <Card className="min-h-100">
             <CardHeader>
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -54,7 +55,7 @@ export function Booking({
                         {step === 1 ? "Select a service"
                             : step == 2 ?
                                 "Select a time slot"
-                                : ""
+                                : "How can we contact you?"
                         }
                     </CardTitle>
                     <Progress
@@ -70,7 +71,7 @@ export function Booking({
                     />
                 )}
                 {step === 2 && (
-                    <div className="flex items-center justify-center min-h-100">
+                    <div className="flex items-center justify-center">
                         <AnimatePresence mode="wait">
                             {(showIntro && !introHasAppeared) ? (
                                 <motion.p
@@ -96,6 +97,9 @@ export function Booking({
                             )}
                         </AnimatePresence>
                     </div>
+                )}
+                {step === 3 && (
+                    <CustomerForm />
                 )}
             </CardContent>
         </Card>

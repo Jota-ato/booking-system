@@ -16,5 +16,11 @@ export const notRegisterUserSchema = baseUserSchema.pick({
     phone: true
 })
 
-export type RegisterUserSchema = z.infer<typeof registerUserSchema>
-export type NotRegisterUserSchema = z.infer<typeof notRegisterUserSchema>
+export const userSchema = z.discriminatedUnion("isFirstTime", [
+    notRegisterUserSchema.extend({ isFirstTime: z.literal(true) }),
+    registerUserSchema.extend({ isFirstTime: z.literal(false) })
+])
+
+export type RegisterUserInput = z.infer<typeof registerUserSchema>
+export type NotRegisterUserInput = z.infer<typeof notRegisterUserSchema>
+export type UserInput = z.infer<typeof userSchema>
