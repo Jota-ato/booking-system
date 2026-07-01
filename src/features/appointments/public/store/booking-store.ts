@@ -3,6 +3,8 @@ import { create } from "zustand"
 import { NotRegisterUserSchema, RegisterUserSchema } from "../schemas/booking-schema"
 
 interface BookingStore {
+    step: number
+    setStep: (step: number) => void
     selectedService: ServiceWithExtras | null
     setSelectedService: (service: ServiceWithExtras | null) => void
     selectedExtras: string[]
@@ -15,6 +17,8 @@ interface BookingStore {
 }
 
 export const useBookingStore = create<BookingStore>((set) => ({
+    step: 1,
+    setStep: (step) => set({ step }),
     selectedService: null,
     setSelectedService: (service) => set({ selectedService: service }),
     selectedExtras: [],

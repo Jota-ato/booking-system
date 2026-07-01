@@ -1,13 +1,23 @@
+"use client"
 import { ServiceWithExtras } from "@/features/services/types/service.types"
 import { ScrollAnimateItem } from "@/shared/components/animate/scroll-animate-item"
 import { ServiceImage } from "./service-image"
 import { Button } from "@/shared/components/ui/button"
+import { useBookingStore } from "../store/booking-store"
 
 export function ServiceSelection({
   services
 }: {
   services: ServiceWithExtras[]
 }) {
+
+  const { setSelectedService, setStep } = useBookingStore()
+
+  const handleServiceSelect = (service : ServiceWithExtras) => {
+    setSelectedService(service)
+    setStep(2)
+  }
+
   return (
     <ul className="space-y-6 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:grid-cols-3">
       {services.length ?
@@ -17,7 +27,7 @@ export function ServiceSelection({
               <ServiceImage
                 trigger={<Button
                   onClick={e => {
-                    // handler aquí
+                    handleServiceSelect(service)
                   }}
                   className="w-full"
                   variant={'outline'}
