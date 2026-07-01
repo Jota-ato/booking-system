@@ -104,8 +104,8 @@ export function CustomerForm() {
                 </FieldGroup>
                 <FormSubmit
                     isSubmitting={isSubmitting}
-                    label="Submit"
-                    submittingLabel="Submitting..."
+                    label="Check"
+                    submittingLabel="Checking..."
                 />
             </FieldSet>
         </form>

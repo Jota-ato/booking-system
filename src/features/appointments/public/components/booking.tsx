@@ -47,11 +47,11 @@ export function Booking({
                     transition={{ duration: 1, ease: "easeOut" }}
                 >
                     <CardTitle className="text-center text-2xl flex items-center justify-center gap-4">
-                        <BackLinkBooking
-                            callBack={() => {
-                                setStep(step - 1)
-                            }}
-                        />
+                        {step > 1 && (
+                            <BackLinkBooking
+                                callBack={() => setStep(step - 1)}
+                            />
+                        )}
                         {step === 1 ? "Select a service"
                             : step == 2 ?
                                 "Select a time slot"
