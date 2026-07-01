@@ -3,8 +3,6 @@ import { Appointment } from "@/db/schema";
 import { isSameDay } from "date-fns";
 import { FullAppointment } from "../types/appointments.types";
 import { HoursColumn } from "./hours-column";
-import { HourCell } from "./hour-cell";
-import { AdminAgendaDialog } from "../../admin/components/admin-agenda-dialog";
 import { AdminHourCell } from "../../admin/components/admin-hour-cell";
 import { AdminEvent } from "../../admin/components/admin-event";
 import { AdminBlockPeriod } from "../../admin/components/admin-block-period";

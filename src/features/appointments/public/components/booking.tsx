@@ -9,6 +9,7 @@ import { Appointment } from "@/db/schema"
 import { TZDate } from "@date-fns/tz"
 import { Progress } from "@/shared/components/ui/progress"
 import { useEffect, useState } from "react"
+import { BackLinkBooking } from "./back-link-booking"
 
 export function Booking({
     services,
@@ -20,16 +21,19 @@ export function Booking({
     today: TZDate
 }) {
 
-    const { step } = useBookingStore()
+    const { step, setStep } = useBookingStore()
+    const [introHasAppeared, setIntroHasAppeared] = useState(false)
     const [showIntro, setShowIntro] = useState(true)
 
     useEffect(() => {
         if (step !== 2) {
-            // reinicia para la próxima vez que se entre al paso 2
             setShowIntro(true)
             return
         }
-        const timer = setTimeout(() => setShowIntro(false), 1500)
+        const timer = setTimeout(() => {
+            setShowIntro(false)
+            setIntroHasAppeared(true)
+        }, 1500)
         return () => clearTimeout(timer)
     }, [step])
 
@@ -41,7 +45,12 @@ export function Booking({
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 1, ease: "easeOut" }}
                 >
-                    <CardTitle className="text-center text-2xl">
+                    <CardTitle className="text-center text-2xl flex items-center justify-center gap-4">
+                        <BackLinkBooking
+                            callBack={() => {
+                                setStep(step - 1)
+                            }}
+                        />
                         {step === 1 ? "Select a service"
                             : step == 2 ?
                                 "Select a time slot"
@@ -63,7 +72,7 @@ export function Booking({
                 {step === 2 && (
                     <div className="flex items-center justify-center min-h-100">
                         <AnimatePresence mode="wait">
-                            {showIntro ? (
+                            {(showIntro && !introHasAppeared) ? (
                                 <motion.p
                                     key="intro-text"
                                     initial={{ opacity: 0, x: -20 }}
