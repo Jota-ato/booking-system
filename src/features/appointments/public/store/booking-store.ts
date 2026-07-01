@@ -11,8 +11,8 @@ interface BookingStore {
     removeExtra: (extra: string) => void
     time: { startTime: Date; endTime: Date } | null
     setTime: (time: { startTime: Date; endTime: Date } | null) => void
-    user: string | null
-    setUser: (userId: string | null) => void
+    customerId: string | null
+    setCustomerId: (userId: string | null) => void
 }
 
 export const useBookingStore = create<BookingStore>((set) => ({
@@ -25,6 +25,6 @@ export const useBookingStore = create<BookingStore>((set) => ({
     removeExtra: (extra) => set((state) => ({ selectedExtras: state.selectedExtras.filter(e => e !== extra) })),
     time: null,
     setTime: (time) => set({ time }),
-    user: null,
-    setUser: (user) => set({ user }),
+    customerId: null,
+    setCustomerId: (user) => set({ customerId: user }),
 }))

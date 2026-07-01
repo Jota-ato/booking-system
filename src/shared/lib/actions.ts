@@ -1,18 +1,33 @@
-import { AppError } from "./errors"
-import { revalidateTag } from "next/cache"
+import { AppError } from "./errors";
+import { revalidateTag } from "next/cache";
 
-export type ActionResponse = Promise<NonPromiseActionResponse>
+export type NonPromiseActionResponse<T = any> = {
+    success: boolean;
+    message: string;
+    data?: T;
+};
 
-export type NonPromiseActionResponse = {
-    success: boolean,
-    message: string
+export type ActionResponse = Promise<NonPromiseActionResponse>;
+
+type InferActionData<R> = R extends string ? string : R;
+
+function getSuccessMessage(result: unknown, fallback = "Operation successful."): string {
+    if (typeof result === "string") {
+        return result;
+    }
+
+    if (result && typeof result === "object" && "message" in result && typeof result.message === "string") {
+        return result.message;
+    }
+
+    return fallback;
 }
 
 export function adminAction<T extends any[], R>(
     callback: (...args: T) => Promise<R>,
     tag?: string
 ) {
-    return async (...args: T) => {
+    return async (...args: T): Promise<NonPromiseActionResponse<InferActionData<R>>> => {
         try {
             const { requireAuth } = await import("@/lib/auth-server");
             const { isAdmin } = await requireAuth();
@@ -28,20 +43,18 @@ export function adminAction<T extends any[], R>(
                 revalidateTag(tag, "max");
             }
 
+            const isStringResult = typeof result === "string";
+
             return {
                 success: true,
-                message: typeof result === 'string' ? result : "Operation successful.",
-                data: result ? result : undefined
+                message: getSuccessMessage(result),
+                data: result as InferActionData<R>
             };
 
         } catch (error) {
             if (error instanceof AppError) {
-                return {
-                    success: false,
-                    message: error.message
-                };
+                return { success: false, message: error.message };
             }
-
             console.error('[SERVER_ACTION_ERROR]:', error);
             return {
                 success: false,
@@ -54,23 +67,20 @@ export function adminAction<T extends any[], R>(
 export function customerAction<T extends any[], R>(
     callback: (...args: T) => Promise<R>,
 ) {
-    return async (...args: T) => {
+    return async (...args: T): Promise<NonPromiseActionResponse<InferActionData<R>>> => {
         try {
-
             const result = await callback(...args);
+            const isStringResult = typeof result === "string";
 
             return {
                 success: true,
-                message: typeof result === 'string' ? result : "Operation successful.",
-                data: result ? result : undefined
+                message: getSuccessMessage(result),
+                data: result as InferActionData<R>
             };
 
         } catch (error) {
             if (error instanceof AppError) {
-                return {
-                    success: false,
-                    message: error.message
-                };
+                return { success: false, message: error.message };
             }
 
             console.error('[SERVER_ACTION_ERROR]:', error);

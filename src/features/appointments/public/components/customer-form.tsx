@@ -7,9 +7,15 @@ import { UserInput, userSchema } from "../schemas/booking-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FieldSwitch } from "@/shared/components/form/field-switch"
 import { FormSubmit } from "@/shared/components/form/form-submit"
+import { showResponse } from "@/shared/lib/client-actions"
+import { getUserAction, registerUserAction } from "../actions/booking-actions"
+import { cn } from "@/shared/lib/utils"
+import { isCustomer } from "../helpers/customer"
+import { useBookingStore } from "../store/booking-store"
 
 export function CustomerForm() {
 
+    const { setCustomerId, setStep } = useBookingStore()
     const {
         handleSubmit,
         control,
@@ -26,7 +32,19 @@ export function CustomerForm() {
 
     const isFirstTime = watch("isFirstTime")
     const submit = async (data: UserInput) => {
-        console.log(data)
+        const phone = `+${data.countryCode}${data.phone}`
+        if (!isFirstTime) {
+            const response = showResponse(await getUserAction(phone))
+            if (!response) return
+            setCustomerId(response.data.id)
+            setStep(4)
+        }
+        if (isFirstTime) {
+            const response = showResponse(await registerUserAction(data))
+            if (!response) return
+            setCustomerId(response.data.id)
+            setStep(4)
+        }
     }
 
     return (
@@ -72,33 +90,53 @@ export function CustomerForm() {
                             </Field>
                             <Field>
                                 <FieldLabel htmlFor="phone">Phone</FieldLabel>
-                                <Input
-                                    id="phone"
-                                    {...register("phone")}
-                                    type="text"
-                                    placeholder="Enter your phone number"
-                                />
-                                {errors.phone && (
-                                    <FieldError>
-                                        {errors.phone.message}
-                                    </FieldError>
-                                )}
+                                <div className="flex gap-2">
+                                    <Input
+                                        id="countryCode"
+                                        {...register("countryCode")}
+                                        type="text"
+                                        placeholder="+52"
+                                        maxLength={5}
+                                        className={cn("w-20",
+                                            errors.countryCode ? "border-2 animate-pulse border-red-500" : ""
+                                        )}
+                                    />
+                                    <Input
+                                        id="phone"
+                                        {...register("phone")}
+                                        type="text"
+                                        placeholder="1234567890"
+                                        className={cn(
+                                            errors.phone ? "border-2 animate-pulse border-red-500" : ""
+                                        )}
+                                    />
+                                </div>
                             </Field>
                         </>
                     ) : (
                         <Field>
                             <FieldLabel htmlFor="phone">Phone</FieldLabel>
-                            <Input
-                                id="phone"
-                                {...register("phone")}
-                                type="text"
-                                placeholder="Enter your phone number"
-                            />
-                            {errors.phone && (
-                                <FieldError>
-                                    {errors.phone.message}
-                                </FieldError>
-                            )}
+                            <div className="flex gap-2">
+                                <Input
+                                    id="countryCode"
+                                    {...register("countryCode")}
+                                    type="text"
+                                    placeholder="+52"
+                                    maxLength={5}
+                                    className={cn("w-20",
+                                        errors.countryCode ? "border-2 animate-pulse border-red-500" : ""
+                                    )}
+                                />
+                                <Input
+                                    id="phone"
+                                    {...register("phone")}
+                                    type="text"
+                                    placeholder="1234567890"
+                                    className={cn(
+                                        errors.phone ? "border-2 animate-pulse border-red-500" : ""
+                                    )}
+                                />
+                            </div>
                         </Field>
                     )}
                 </FieldGroup>
