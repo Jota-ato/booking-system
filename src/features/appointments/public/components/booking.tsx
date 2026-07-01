@@ -11,6 +11,7 @@ import { Progress } from "@/shared/components/ui/progress"
 import { useEffect, useState } from "react"
 import { BackLinkBooking } from "./back-link-booking"
 import { CustomerForm } from "./customer-form"
+import { ExtrasSelection } from "./extras-selection"
 
 export function Booking({
     services,
@@ -38,6 +39,13 @@ export function Booking({
         return () => clearTimeout(timer)
     }, [step])
 
+    const titles: Record<number, string> = {
+        1: "Select a service",
+        2: "Select a time slot",
+        3: "How can we contact you?",
+        4: "Would you like some extras?"
+    }
+
     return (
         <Card className="min-h-100">
             <CardHeader>
@@ -52,11 +60,7 @@ export function Booking({
                                 callBack={() => setStep(step - 1)}
                             />
                         )}
-                        {step === 1 ? "Select a service"
-                            : step == 2 ?
-                                "Select a time slot"
-                                : "How can we contact you?"
-                        }
+                        {titles[step]}
                     </CardTitle>
                     <Progress
                         className="my-4 h-px"
@@ -99,7 +103,24 @@ export function Booking({
                     </div>
                 )}
                 {step === 3 && (
-                    <CustomerForm />
+                    <motion.div
+                        className="w-full"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                    >
+                        <CustomerForm />
+                    </motion.div>
+                )}
+                {step === 4 && (
+                    <motion.div
+                        className="w-full"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                    >
+                        <ExtrasSelection />
+                    </motion.div>
                 )}
             </CardContent>
         </Card>
