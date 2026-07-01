@@ -8,6 +8,7 @@ import { AdminAgendaDialog } from "../../admin/components/admin-agenda-dialog";
 import { AdminHourCell } from "../../admin/components/admin-hour-cell";
 import { AdminEvent } from "../../admin/components/admin-event";
 import { AdminBlockPeriod } from "../../admin/components/admin-block-period";
+import { PublicHourCell } from "./public-hour-cell";
 
 
 export function AgendaBody({
@@ -41,7 +42,7 @@ export function AgendaBody({
                         isAdmin ? (
                             <AdminHourCell dayDifference={dayDifference} hour={hour} key={hour.getTime()} />
                         ) : (
-                            <HourCell key={hour.getTime()} />
+                            <PublicHourCell dayDifference={dayDifference} hour={hour} key={hour.getTime()} />
                         )
                     ))}
 
