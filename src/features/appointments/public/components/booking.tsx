@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { BackLinkBooking } from "./back-link-booking"
 import { CustomerForm } from "./customer-form"
 import { ExtrasSelection } from "./extras-selection"
+import { Button } from "@/shared/components/ui/button"
 
 export function Booking({
     services,
@@ -23,7 +24,7 @@ export function Booking({
     today: TZDate
 }) {
 
-    const { step, setStep } = useBookingStore()
+    const { step, setStep, selectedService } = useBookingStore()
     const [introHasAppeared, setIntroHasAppeared] = useState(false)
     const [showIntro, setShowIntro] = useState(true)
 
@@ -119,7 +120,16 @@ export function Booking({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                     >
-                        <ExtrasSelection />
+                        {!selectedService ? (
+                            <p className="text-center text-lg mb-4">
+                                Please select a service first.
+                                <Button className="mt-4 w-full" variant={"outline"} onClick={() => setStep(1)}>
+                                    Go to step 1
+                                </Button>
+                            </p>
+                        ) : (
+                            <ExtrasSelection service={selectedService} />
+                        )}
                     </motion.div>
                 )}
             </CardContent>
