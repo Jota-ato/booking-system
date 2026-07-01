@@ -1,6 +1,5 @@
 import { ServiceWithExtras } from "@/features/services/types/service.types"
 import { create } from "zustand"
-import { NotRegisterUserSchema, RegisterUserSchema } from "../schemas/booking-schema"
 
 interface BookingStore {
     step: number
@@ -12,8 +11,8 @@ interface BookingStore {
     removeExtra: (extra: string) => void
     time: { startTime: Date; endTime: Date } | null
     setTime: (time: { startTime: Date; endTime: Date } | null) => void
-    user: RegisterUserSchema | NotRegisterUserSchema | null
-    setUser: (user: RegisterUserSchema | NotRegisterUserSchema | null) => void
+    user: string | null
+    setUser: (userId: string | null) => void
 }
 
 export const useBookingStore = create<BookingStore>((set) => ({
